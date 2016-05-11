@@ -1,8 +1,10 @@
-webclgl
-=======
+[![Logo](demos/webclgl.jpg)](https://github.com/stormcolor/webclgl)
+
+[![Gitter](https://badges.gitter.im/stormcolor/webclgl.svg)](https://gitter.im/stormcolor/webclgl?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 <h2>Javascript Library for general purpose computing on GPU, aka GPGPU.</h2>
 WebCLGL use WebGL specification for interpreter the code.<br />
-[![Gitter](https://badges.gitter.im/stormcolor/webclgl.svg)](https://gitter.im/stormcolor/webclgl?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 
 <h3>Now only one dependency is required</h3>
 ```html
