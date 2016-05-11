@@ -175,25 +175,27 @@ float*			            | Array<Float or Int>, Float32Array, Uint8Array, WebGLTextu
 float4*		            	| Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
 float		            	| 30
 float4		            	| [30.0, 10.0, 5.0, 100.0]
-mat4		            	| new Float32Array([1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, -100.0, 0.0, 0.0, 0.0, 1.0])));
+mat4		            	| new Float32Array([1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, -100.0, 0.0, 0.0, 0.0, 1.0]);
 float*attr			        | Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
 float4*attr		            | Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
 
-`*attr` for indicate arguments of type "attributes". <br />
-`*attr` (vertex of Graphic program) only allow get the same/current ID value (type attribute):
+`*attr` for indicate arguments of type "attributes" (Graphic program only). <br />
+`*attr` only allow get the same/current ID value:
 
 ```js
 
+    // Vertex part of Graphic program
     main(float4*attr nodeVertexCoord) {
         vec4 nvc = nodeVertexCoord[];
     }
 ```
 
-`*` allow to get another ID (internally is sampler2D) for to get a specific node data id or a texture location: <br />
-Arguments type sampler2D (no attribute) allow be writed by a kernel program.
+`*` without `attr` allow to get another ID (internally is sampler2D) for to get a specific node data id or a texture location: <br />
+Arguments type sampler2D (no attribute) are allowed to be written by a kernel program.
 
 ```js
 
+    // Vertex part of Graphic program
     main(float4* nodePosition) {
         vec2 x = get_global_id(ID, bufferWidth, geometryLength);
         vec4 np = nodePosition[x];
