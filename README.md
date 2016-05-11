@@ -178,6 +178,7 @@ float4		            	| [30.0, 10.0, 5.0, 100.0]
 mat4		            	| new Float32Array([1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, -100.0, 0.0, 0.0, 0.0, 1.0]);
 float*attr			        | Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
 float4*attr		            | Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
+Use float4 instead vec4 only in the definition of the variables (not in code). 
 
 `*attr` for indicate arguments of type "attributes" (Graphic program only). <br />
 `*attr` only allow get the same/current ID value:
