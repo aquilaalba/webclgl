@@ -75,7 +75,7 @@ WebCLGL use WebGL specification for interpreter the code.<br />
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_vectors_output/index.html"> gpufor vector output</a><br />
 
 <h3>Output datatypes</h3>
-For to change the return precision from 0.0->1.0 by default to -1000.0->1000.0 set the gpufor precision variable
+For to change the return precision from 0.0->1.0 by default to -1000.0->1000.0 set the gpufor precision variable:
 ```js
 
     gpufor_precision = 1000.0;
@@ -84,6 +84,7 @@ For to change the return precision from 0.0->1.0 by default to -1000.0->1000.0 s
 
 
 <h3>Graphical output</h3>
+To represent data that evolve over time you can enable the graphical output as follows:
 ```html
 
     <canvas id="graph" width="512" height="512"></canvas>
@@ -166,10 +167,50 @@ For to change the return precision from 0.0->1.0 by default to -1000.0->1000.0 s
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics_geometry/index.html"> gpufor graphic output (using custom geometry)</a><br />
 
 
+<h3>Argument types</h3>
+
+Variable type	|	Value
+----------------------- |-------------------------------
+float*			            | Array<Float|Int>|Float32Array|Uint8Array|WebGLTexture|HTMLImageElement
+float4*		            	| Array<Float|Int>|Float32Array|Uint8Array|WebGLTexture|HTMLImageElement
+float		            	| 30
+float4		            	| [30.0, 10.0, 5.0, 100.0]
+mat4		            	| new Float32Array([1.0, 0.0, 0.0, 0.0,
+                            |                   0.0, 1.0, 0.0, 0.0,
+                            |                   0.0, 0.0, 1.0, -100.0,
+                            |                   0.0, 0.0, 0.0, 1.0])));
+float*attr			        | Array<Float|Int>|Float32Array|Uint8Array|WebGLTexture|HTMLImageElement
+float4*attr		            | Array<Float|Int>|Float32Array|Uint8Array|WebGLTexture|HTMLImageElement
+
+`*attr` for indicate arguments of type "attributes". <br />
+`*attr` (vertex of Graphic program) only allow get the same/current ID value (type attribute):
+
+```js
+
+    main(float4*attr nodeVertexCoord) {
+        vec4 nvc = nodeVertexCoord[];
+    }
+```
+
+`*` allow to get another ID (internally is sampler2D) for to get a specific node data id or a texture location: <br />
+Arguments type sampler2D (no attribute) allow be writed by a kernel program.
+
+```js
+
+    main(float4* nodePosition) {
+        vec2 x = get_global_id(ID, bufferWidth, geometryLength);
+        vec4 np = nodePosition[x];
+    }
+```
+
+
 
 
 <h3><a href="https://rawgit.com/stormcolor/webclgl/master/APIdoc/APIdoc/global.html#gpufor">API Doc WebCLGL</a></h3>
 <h3><a href="http://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf">OpenGL ES Shading Language 1.0 Reference Card (Pag 3-4)</a></h3>
+
+
+
 
 <h3>Old demos (without use gpufor function)</h3>
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/basic_sum_AB/index.html"> Basic example A+B</a><br />
@@ -186,18 +227,6 @@ For to change the return precision from 0.0->1.0 by default to -1000.0->1000.0 s
 <h3>ChangeLog</h3>
 <h4>v3.0</h4>
 - Changed *kernel in VertexFragmentPrograms(VFP) to *attr for indicate arguments of type "attributes". <br />
-*attr in vertex programs of VFP only allow get the same/current ID value (type attribute): <br />
-main(float4*attr nodeVertexCoord) { <br />
-    vec4 nvc = nodeVertexCoord[]; <br />
-} <br />
-* in vertex programs of VFP allow to get another ID (type sampler2D) (for to get a node data or a texture data) <br />
-main(float4* nodePosition) { <br />
-    vec2 x = get_global_id(ID, bufferWidth, geometryLength); <br />
-    vec4 np = nodePosition[x]; <br />
-} <br />
-(arguments type sampler2D (no attribute) allow be writed by a kernel program) <br />
- <br />
- <br />
 - Deleted optional geometryLength argument in enqueueNDRangeKernel & enqueueVertexFragmentProgram. It is indicated through glsl code with next available methods: <br />
 get_global_id(ID, bufferWidth, geometryLength) (in Kernels & vertex of VFP) (The last get_global_id(ID) is removed) <br />
 get_global_id(vec2(row, col), bufferWidth) (in Kernels & fragment of VFP) <br />
