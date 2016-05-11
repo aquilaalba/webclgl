@@ -171,16 +171,13 @@ To represent data that evolve over time you can enable the graphical output as f
 
 Variable type	|	Value
 ----------------------- |-------------------------------
-float*			            | Array<Float|Int>|Float32Array|Uint8Array|WebGLTexture|HTMLImageElement
-float4*		            	| Array<Float|Int>|Float32Array|Uint8Array|WebGLTexture|HTMLImageElement
+float*			            | Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
+float4*		            	| Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
 float		            	| 30
 float4		            	| [30.0, 10.0, 5.0, 100.0]
-mat4		            	| new Float32Array([1.0, 0.0, 0.0, 0.0,
-                            |                   0.0, 1.0, 0.0, 0.0,
-                            |                   0.0, 0.0, 1.0, -100.0,
-                            |                   0.0, 0.0, 0.0, 1.0])));
-float*attr			        | Array<Float|Int>|Float32Array|Uint8Array|WebGLTexture|HTMLImageElement
-float4*attr		            | Array<Float|Int>|Float32Array|Uint8Array|WebGLTexture|HTMLImageElement
+mat4		            	| new Float32Array([1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, -100.0, 0.0, 0.0, 0.0, 1.0])));
+float*attr			        | Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
+float4*attr		            | Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
 
 `*attr` for indicate arguments of type "attributes". <br />
 `*attr` (vertex of Graphic program) only allow get the same/current ID value (type attribute):
