@@ -85,42 +85,44 @@
                                     'float pole1Z': 0.0},
 
                                     // KERNEL PROGRAM 1 (update "dir" & "posXYZW" in return instrucction)
-                                    ["n", ["dir","posXYZW"],
-                                    // head
-                                    '',
-                                    // source
-                                    'vec4 dirA = dir[n];'+
-                                    'vec3 currentDir = vec3(dirA.x,dirA.y,dirA.z);\n'+
-                                    'vec3 currentPos = posXYZW[n].xyz;\n'+
-                                    pole_code()+
-                                    'vec3 newDir = currentDir*0.995;\n'+
-                                    'return [vec4(newDir,0.0), vec4(currentPos,1.0)+vec4(newDir,0.0)];\n'],
+                                    {"type": "KERNEL",
+                                    "config": ["n", ["dir","posXYZW"],
+                                                // head
+                                                '',
+                                                // source
+                                                'vec4 dirA = dir[n];'+
+                                                'vec3 currentDir = vec3(dirA.x,dirA.y,dirA.z);\n'+
+                                                'vec3 currentPos = posXYZW[n].xyz;\n'+
+                                                pole_code()+
+                                                'vec3 newDir = currentDir*0.995;\n'+
+                                                'return [vec4(newDir,0.0), vec4(currentPos,1.0)+vec4(newDir,0.0)];\n']},
 
                                     // GRAPHIC PROGRAM
-                                    [   // vertex head
-                                        'varying vec4 vVertexColor;',
+                                    {"type": "GRAPHIC",
+                                    "config": [  // vertex head
+                                                'varying vec4 vVertexColor;',
 
-                                        // vertex source
-                                        'vec2 xx = get_global_id(nodeId[], uBufferWidth, 1.0);'+
+                                                // vertex source
+                                                'vec2 xx = get_global_id(nodeId[], uBufferWidth, 1.0);'+
 
-                                        'vec4 nodePosition = posXYZW[xx];\n'+ // now use the updated posXYZW
-                                        'vec4 nodeVertexColor = nodeVertexCol[];\n'+
+                                                'vec4 nodePosition = posXYZW[xx];\n'+ // now use the updated posXYZW
+                                                'vec4 nodeVertexColor = nodeVertexCol[];\n'+
 
-                                        'mat4 nodepos = nodeWMatrix;'+
-                                        'nodepos[3][0] = nodePosition.x;'+
-                                        'nodepos[3][1] = nodePosition.y;'+
-                                        'nodepos[3][2] = nodePosition.z;'+
+                                                'mat4 nodepos = nodeWMatrix;'+
+                                                'nodepos[3][0] = nodePosition.x;'+
+                                                'nodepos[3][1] = nodePosition.y;'+
+                                                'nodepos[3][2] = nodePosition.z;'+
 
-                                        'vVertexColor = nodeVertexColor;'+
-                                        'gl_Position = PMatrix * cameraWMatrix * nodepos * vec4(1.0, 1.0, 1.0, 1.0);\n'+
-                                        'gl_PointSize = 2.0;\n',
+                                                'vVertexColor = nodeVertexColor;'+
+                                                'gl_Position = PMatrix * cameraWMatrix * nodepos * vec4(1.0, 1.0, 1.0, 1.0);\n'+
+                                                'gl_PointSize = 2.0;\n',
 
-                                        // fragment head
-                                        'varying vec4 vVertexColor;',
+                                                // fragment head
+                                                'varying vec4 vVertexColor;',
 
-                                        // fragment source
-                                        'gl_FragColor = vVertexColor;\n'
-                                    ]);
+                                                // fragment source
+                                                'gl_FragColor = vVertexColor;\n']
+                                    });
 
             var tick = function() {
                 window.requestAnimFrame(tick);
