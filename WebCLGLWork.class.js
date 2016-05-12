@@ -283,31 +283,40 @@ WebCLGLWork = function(webCLGL, offset) {
 
     /**
      * Process kernels
+     * @param {Int} [buffDest=undefined] - if 0 then output to null screen
      */
-    this.enqueueNDRangeKernel = function() {
+    this.enqueueNDRangeKernel = function(buffDest) {
         for(var key in this.kernels) {
             var kernel = this.kernels[key];
 
-            var outputBuff;
-            if(kernel.output instanceof Array) {
-                outputBuff = [];
-                for(var n=0; n < kernel.output.length; n++)
-                    outputBuff[n] = this.buffers_TEMP[kernel.output[n]];
-            } else {
-                outputBuff = this.buffers_TEMP[kernel.output];
-            }
+            if(kernel.output != undefined) {
+                var outputBuff;
+                if(kernel.output instanceof Array) {
+                    outputBuff = [];
+                    for(var n=0; n < kernel.output.length; n++)
+                        outputBuff[n] = this.buffers_TEMP[kernel.output[n]];
+                } else {
+                    outputBuff = this.buffers_TEMP[kernel.output];
+                }
 
-            this.webCLGL.enqueueNDRangeKernel(kernel, outputBuff);
+                if(buffDest != null && buffDest === 0)
+                    outputBuff = null;
+                this.webCLGL.enqueueNDRangeKernel(kernel, outputBuff);
+            } else {
+                this.webCLGL.enqueueNDRangeKernel(kernel);
+            }
         }
 
         for(var key in this.kernels) {
             var kernel = this.kernels[key];
 
-            if(kernel.output instanceof Array) {
-                for(var n=0; n < kernel.output.length; n++)
-                    this.webCLGL.copy(this.buffers_TEMP[kernel.output[n]], this.buffers[kernel.output[n]]);
-            } else {
-                this.webCLGL.copy(this.buffers_TEMP[kernel.output], this.buffers[kernel.output]);
+            if(kernel.output != undefined) {
+                if(kernel.output instanceof Array) {
+                    for(var n=0; n < kernel.output.length; n++)
+                        this.webCLGL.copy(this.buffers_TEMP[kernel.output[n]], this.buffers[kernel.output[n]]);
+                } else {
+                    this.webCLGL.copy(this.buffers_TEMP[kernel.output], this.buffers[kernel.output]);
+                }
             }
         }
     };

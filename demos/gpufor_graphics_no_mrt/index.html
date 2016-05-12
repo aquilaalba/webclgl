@@ -85,22 +85,25 @@
                                     'float pole1Z': 0.0},
 
                                     // KERNEL PROGRAM 1 (for to update "dir" argument)
-                                    ["n", "dir",
-                                    // head
-                                    '',
-                                    // source
-                                    'vec4 dirA = dir[n];'+
-                                    'vec3 currentDir = vec3(dirA.x,dirA.y,dirA.z);\n'+
-                                    'vec3 currentPos = posXYZW[n].xyz;\n'+
-                                    pole_code()+
-                                    'vec3 newDir = currentDir*0.995;\n'+
-                                    'return vec4(newDir,0.0);\n'],
+                                    {"type": "KERNEL",
+                                    "config": ["n", "dir",
+                                                // head
+                                                '',
+                                                // source
+                                                'vec4 dirA = dir[n];'+
+                                                'vec3 currentDir = vec3(dirA.x,dirA.y,dirA.z);\n'+
+                                                'vec3 currentPos = posXYZW[n].xyz;\n'+
+                                                pole_code()+
+                                                'vec3 newDir = currentDir*0.995;\n'+
+                                                'return vec4(newDir,0.0);\n']},
 
                                     // KERNEL PROGRAM 2 (for to update "posXYZW" argument from updated "dir" argument on KERNEL1)
-                                    ["posXYZW += dir"],
+                                    {"type": "KERNEL",
+                                    "config": ["posXYZW += dir"]},
 
                                     // GRAPHIC PROGRAM
-                                    [   // vertex head
+                                    {"type": "GRAPHIC",
+                                    "config": [   // vertex head
                                         'varying vec4 vVertexColor;',
 
                                         // vertex source
@@ -122,8 +125,8 @@
                                         'varying vec4 vVertexColor;',
 
                                         // fragment source
-                                        'gl_FragColor = vVertexColor;\n'
-                                    ]);
+                                        'gl_FragColor = vVertexColor;\n']
+                                    });
 
             var tick = function() {
                 window.requestAnimFrame(tick);
