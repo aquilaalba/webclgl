@@ -283,32 +283,32 @@ WebCLGLWork = function(webCLGL, offset) {
 
     /**
      * Process kernels
-     * @param {Bool} [update=true]
      */
-    this.enqueueNDRangeKernel = function(update) {
+    this.enqueueNDRangeKernel = function() {
         for(var key in this.kernels) {
             var kernel = this.kernels[key];
 
             var outputBuff;
             if(kernel.output instanceof Array) {
                 outputBuff = [];
-                for(var n=0; n < kernel.output.length; n++) {
-                    if(update != undefined && update == false) // when MaxDrawBuffer == 1
-                        outputBuff[n] = this.buffers_TEMP[kernel.output[n]];
-                    else // when MaxDrawBuffer >= 1
-                        outputBuff[n] = this.buffers[kernel.output[n]];
-                }
+                for(var n=0; n < kernel.output.length; n++)
+                    outputBuff[n] = this.buffers_TEMP[kernel.output[n]];
             } else {
-                if(update != undefined && update == false) // when MaxDrawBuffer == 1
-                    outputBuff = this.buffers_TEMP[kernel.output];
-                else // when MaxDrawBuffer >= 1
-                    outputBuff = this.buffers[kernel.output];
+                outputBuff = this.buffers_TEMP[kernel.output];
             }
 
-            if(update != undefined && update == false) // when MaxDrawBuffer == 1
-                this.webCLGL.enqueueNDRangeKernel(kernel, outputBuff);
-            else // when MaxDrawBuffer >= 1
-                this.webCLGL.enqueueNDRangeKernel(kernel, outputBuff);
+            this.webCLGL.enqueueNDRangeKernel(kernel, outputBuff);
+        }
+
+        for(var key in this.kernels) {
+            var kernel = this.kernels[key];
+
+            if(kernel.output instanceof Array) {
+                for(var n=0; n < kernel.output.length; n++)
+                    this.webCLGL.copy(this.buffers_TEMP[kernel.output[n]], this.buffers[kernel.output[n]]);
+            } else {
+                this.webCLGL.copy(this.buffers_TEMP[kernel.output], this.buffers[kernel.output]);
+            }
         }
     };
 

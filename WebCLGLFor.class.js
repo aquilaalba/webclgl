@@ -77,7 +77,7 @@ var gpufor = function() {
             var idx;
             var outArg;
             var argsInThisKernel = {};
-            var typOut;
+            var outStr;
             var kH;
             var kS;
 
@@ -116,7 +116,32 @@ var gpufor = function() {
                 }
             }
 
-            if(outArg instanceof Array) {
+            var objOutStr;
+            var retCode = kS.match(new RegExp(/return.*$/gm));
+            retCode = retCode[0].replace("return ", ""); // now "varx" or "[varx1,varx2,..]"
+            var isArr = retCode.match(new RegExp(/\[/gm));
+            if(isArr != null && isArr.length >= 1) { // type outputs array
+                objOutStr = [];
+                retCode = retCode.split("[")[1].split("]")[0];
+                var itemStr = "", openParenth = 0;
+                for(var n=0; n < retCode.length; n++) {
+                    if(retCode[n] == "," && openParenth == 0) {
+                        objOutStr.push(itemStr);
+                        itemStr = "";
+                    } else
+                        itemStr += retCode[n];
+
+                    if(retCode[n] == "(")
+                        openParenth++;
+                    if(retCode[n] == ")")
+                        openParenth--;
+                }
+                objOutStr.push(itemStr); // and the last
+            } else { // type one output
+                objOutStr = retCode.replace(/;$/gm, "");
+            }
+
+            if(outArg instanceof Array) { // type outputs array
                 for(var n = 0; n < outArg.length; n++) {
                     // set output type float|float4
                     _clglWork.setAllowKernelWriting(outArg[n]);
@@ -124,23 +149,23 @@ var gpufor = function() {
                         var expl = key.split(" ");
 
                         if(expl[1] == outArg[n]) {
-                            typOut = expl[0].match(new RegExp("float4", "gm"));
+                            var mt = expl[0].match(new RegExp("float4", "gm"));
                             if(n==0)
-                                typOut = (typOut != null && typOut.length > 0) ? "out_float4 = " : "out_float = ";
+                                outStr = (mt != null && mt.length > 0) ? "out_float4 = "+objOutStr[n]+";\n" : "out_float = "+objOutStr[n]+";\n";
                             else
-                                typOut = (typOut != null && typOut.length > 0) ? "out"+n+"_float4 = " : "out"+n+"_float = ";
+                                outStr += (mt != null && mt.length > 0) ? "out"+n+"_float4 = "+objOutStr[n]+";\n" : "out"+n+"_float = "+objOutStr[n]+";\n";
                         }
                     }
                 }
-            } else {
+            } else { // type one output
                 // set output type float|float4
                 _clglWork.setAllowKernelWriting(outArg);
                 for(var key in args) {
                     var expl = key.split(" ");
 
                     if(expl[1] == outArg) {
-                        typOut = expl[0].match(new RegExp("float4", "gm"));
-                        typOut = (typOut != null && typOut.length > 0) ? "out_float4 = " : "out_float = ";
+                        var mt = expl[0].match(new RegExp("float4", "gm"));
+                        outStr = (mt != null && mt.length > 0) ? "out_float4 = "+objOutStr+";\n" : "out_float = "+objOutStr+";\n";
                     }
                 }
             }
@@ -151,7 +176,7 @@ var gpufor = function() {
 
             kS = 'void main('+strArgs+') {'+
                     'vec2 '+idx+' = get_global_id();'+
-                    kS.replace("return", typOut)+
+                    kS.replace(/return.*$/gm, outStr)+
                 '}';
             var kernel = _webCLGL.createKernel();
             kernel.setKernelSource(kS, kH);
@@ -231,18 +256,9 @@ var gpufor = function() {
 
     /**
      * processKernels
-     * @param {Bool} [update=true]
      */
-    this.processKernels = function(update) {
-        _clglWork.enqueueNDRangeKernel(update);
-    };
-
-    /**
-     * update
-     * @param {String} argName
-     */
-    this.update = function(argName) {
-        _webCLGL.copy(_clglWork.buffers_TEMP[argName], _clglWork.buffers[argName]);
+    this.processKernels = function() {
+        _clglWork.enqueueNDRangeKernel();
     };
 
     /**

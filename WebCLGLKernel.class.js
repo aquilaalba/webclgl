@@ -18,6 +18,8 @@ WebCLGLKernel = function(gl, source, header) {
 	this.in_values = {};
     this.output; //String or Array<String> of arg names with the items in same order that in the final return
 
+    var _enableDebug = true;
+
     /**
      * checkArgNameInitialization
      * @param {Object} inValues
@@ -175,8 +177,9 @@ WebCLGLKernel = function(gl, source, header) {
             //this.kernelPrograms = [	new WebCLGLKernelProgram(_gl, sourceVertex, sourceFrag, this.in_values) ];
 
             this.kernel = _gl.createProgram();
-            new WebCLGLUtils().createShader(_gl, "WEBCLGL", sourceVertex, sourceFragment, this.kernel);
-            //console.log(sourceF);
+            var result = new WebCLGLUtils().createShader(_gl, "WEBCLGL", sourceVertex, sourceFragment, this.kernel);
+            if(result == true && _enableDebug == true)
+                console.log("WEBCLGL KERNEL\n "+sourceVertex+"\n "+sourceFragment);
 
 
             this.attr_VertexPos = _gl.getAttribLocation(this.kernel, "aVertexPosition");

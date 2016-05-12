@@ -259,10 +259,6 @@
 
 			clglWork.enqueueNDRangeKernel(false);
 			
-			webCLGL.copy(clglWork.buffers_TEMP["posXYZW"], clglWork.buffers["posXYZW"]);
-			webCLGL.copy(clglWork.buffers_TEMP["dir"], clglWork.buffers["dir"]);
-			
-			
       		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 			gl.viewport(0, 0, 512, 512);
 			gl.clearColor(0.0, 0.0, 0.0, 1.0);

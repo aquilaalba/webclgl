@@ -169,6 +169,8 @@ var WebCLGL = function(webglcontext) {
 
 	this.sampler_copyTexture_toSave = _gl.getUniformLocation(this.shader_copyTexture, "sampler_toSave");
 
+    this.rBuffer;
+
     /**
      * getContext
      * @returns {WebGLRenderingContext}
@@ -211,8 +213,7 @@ var WebCLGL = function(webglcontext) {
         if(valueToRead instanceof WebCLGLBufferItem) {
             _gl.viewport(0, 0, valueToWrite.W, valueToWrite.H);
             if(valueToWrite.fBuffer == undefined) {
-                valueToWrite.createWebGLRenderBuffer();
-                valueToWrite.createWebGLFrameBuffer();
+                this.rBuffer = valueToWrite.createWebGLFrameBuffer(this.rBuffer);
             }
             _gl.bindFramebuffer(_gl.FRAMEBUFFER, valueToWrite.fBuffer);
             _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_2D, valueToWrite.textureData, 0);
@@ -419,8 +420,7 @@ var WebCLGL = function(webglcontext) {
                     if(webCLGLBuffer.length > 0) {
                         _gl.viewport(0, 0, webCLGLBuffer.W, webCLGLBuffer.H);
                         if(webCLGLBuffer.fBuffer == undefined) {
-                            webCLGLBuffer.createWebGLRenderBuffer();
-                            webCLGLBuffer.createWebGLFrameBuffer();
+                            this.rBuffer = webCLGLBuffer.createWebGLFrameBuffer(this.rBuffer);
                         }
                         _gl.bindFramebuffer(_gl.FRAMEBUFFER, webCLGLBuffer.fBuffer);
 
@@ -443,8 +443,7 @@ var WebCLGL = function(webglcontext) {
                     if(webCLGLBuffer.length > 0) {
                         _gl.viewport(0, 0, webCLGLBuffer.W, webCLGLBuffer.H);
                         if(webCLGLBuffer.fBuffer == undefined) {
-                            webCLGLBuffer.createWebGLRenderBuffer();
-                            webCLGLBuffer.createWebGLFrameBuffer();
+                            this.rBuffer = webCLGLBuffer.createWebGLFrameBuffer(this.rBuffer);
                         }
                         _gl.bindFramebuffer(_gl.FRAMEBUFFER, webCLGLBuffer.fBuffer);
 
@@ -453,8 +452,8 @@ var WebCLGL = function(webglcontext) {
                                 console.log("Exceded maxDrawBuffers of "+maxDrawBuffers);
 
                             var arrDBuff = [];
-                            for(var n= 0, fn=_maxDrawBuffers; n < fn; n++) {
-                                _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _arrExt["WEBGL_draw_buffers"]['COLOR_ATTACHMENT'+n+'_WEBGL'], _gl.TEXTURE_2D, webCLGLBuffer.textureData, 0);
+                            for(var n= 0, fn=webCLGLBuffers.length; n < fn; n++) {
+                                _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _arrExt["WEBGL_draw_buffers"]['COLOR_ATTACHMENT'+n+'_WEBGL'], _gl.TEXTURE_2D, webCLGLBuffers[n].items[i].textureData, 0);
                                 arrDBuff[n] = _arrExt["WEBGL_draw_buffers"]['COLOR_ATTACHMENT'+n+'_WEBGL']; //gl_FragData[n]
                             }
                             _arrExt["WEBGL_draw_buffers"].drawBuffersWEBGL(arrDBuff);
