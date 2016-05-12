@@ -165,55 +165,55 @@ To represent data that evolve over time you can enable the graphical output as f
 When Max_draw_buffers is equal to 1 you can save only in one variable. For this you can use more Kernels:
 ```js
    
-       var arrayResult = gpufor(document.getElementById("graph"),
+       var gpufG = gpufor(document.getElementById("graph"),
        
-                               // VALUES
-                               {"float4* posXYZW": arrayNodePosXYZW,
-                               "float4* dir": arrayNodeDir,
-                               "float*attr nodeId": arrayNodeId,
-                               "mat4 PMatrix": transpose(getProyection()),
-                               "mat4 cameraWMatrix": transpose(new Float32Array([	1.0, 0.0, 0.0, 0.0,
-                                                                                   0.0, 1.0, 0.0, 0.0,
-                                                                                   0.0, 0.0, 1.0, -100.0,
-                                                                                   0.0, 0.0, 0.0, 1.0])),
-                               "mat4 nodeWMatrix": transpose(new Float32Array([	1.0, 0.0, 0.0, 0.0,
-                                                                                   0.0, 1.0, 0.0, 0.0,
-                                                                                   0.0, 0.0, 1.0, 0.0,
-                                                                                   0.0, 0.0, 0.0, 1.0]))},
-                           
-                               // KERNEL PROGRAM 1 (for to update "dir" argument)
-                               ["n", "dir",
-                               // head
-                               '',
-                               // source
-                               'vec3 newDir = dir[n].xyz*0.995;\n'+
-                               'return vec4(newDir,0.0);\n'],
-                           
-                               // KERNEL PROGRAM 2 (for to update "posXYZW" argument from updated "dir" argument on KERNEL1)
-                               ["posXYZW += dir"],
-                           
-                               // GRAPHIC PROGRAM
-                               [   // vertex head
-                                   '',
-                           
-                                   // vertex source
-                                   'vec2 xx = get_global_id(nodeId[], uBufferWidth, 1.0);'+
-                           
-                                   'vec4 nodePosition = posXYZW[xx];\n'+ // now use the updated posXYZW
-                                   'mat4 nodepos = nodeWMatrix;'+
-                                   'nodepos[3][0] = nodePosition.x;'+
-                                   'nodepos[3][1] = nodePosition.y;'+
-                                   'nodepos[3][2] = nodePosition.z;'+
-                           
-                                   'gl_Position = PMatrix * cameraWMatrix * nodepos * vec4(1.0, 1.0, 1.0, 1.0);\n'+
-                                   'gl_PointSize = 2.0;\n',
-                           
-                                   // fragment head
-                                   '',
-                           
-                                   // fragment source
-                                   'gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n'
-                               ]);
+                   // VALUES
+                   {"float4* posXYZW": arrayNodePosXYZW,
+                   "float4* dir": arrayNodeDir,
+                   "float*attr nodeId": arrayNodeId,
+                   "mat4 PMatrix": transpose(getProyection()),
+                   "mat4 cameraWMatrix": transpose(new Float32Array([	1.0, 0.0, 0.0, 0.0,
+                                                                       0.0, 1.0, 0.0, 0.0,
+                                                                       0.0, 0.0, 1.0, -100.0,
+                                                                       0.0, 0.0, 0.0, 1.0])),
+                   "mat4 nodeWMatrix": transpose(new Float32Array([	1.0, 0.0, 0.0, 0.0,
+                                                                       0.0, 1.0, 0.0, 0.0,
+                                                                       0.0, 0.0, 1.0, 0.0,
+                                                                       0.0, 0.0, 0.0, 1.0]))},
+               
+                   // KERNEL PROGRAM 1 (for to update "dir" argument)
+                   ["n", "dir",
+                   // head
+                   '',
+                   // source
+                   'vec3 newDir = dir[n].xyz*0.995;\n'+
+                   'return vec4(newDir,0.0);\n'],
+               
+                   // KERNEL PROGRAM 2 (for to update "posXYZW" argument from updated "dir" argument on KERNEL1)
+                   ["posXYZW += dir"],
+               
+                   // GRAPHIC PROGRAM
+                   [   // vertex head
+                       '',
+               
+                       // vertex source
+                       'vec2 xx = get_global_id(nodeId[], uBufferWidth, 1.0);'+
+               
+                       'vec4 nodePosition = posXYZW[xx];\n'+ // now use the updated posXYZW
+                       'mat4 nodepos = nodeWMatrix;'+
+                       'nodepos[3][0] = nodePosition.x;'+
+                       'nodepos[3][1] = nodePosition.y;'+
+                       'nodepos[3][2] = nodePosition.z;'+
+               
+                       'gl_Position = PMatrix * cameraWMatrix * nodepos * vec4(1.0, 1.0, 1.0, 1.0);\n'+
+                       'gl_PointSize = 2.0;\n',
+               
+                       // fragment head
+                       '',
+               
+                       // fragment source
+                       'gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n'
+                   ]);
 ```
 
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics_no_mrt/index.html"> gpufor graphic without MRT</a><br />
