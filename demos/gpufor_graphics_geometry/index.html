@@ -111,8 +111,8 @@
                                     'float pole1Y': 0.0,
                                     'float pole1Z': 0.0},
 
-                                    // KERNEL PROGRAM 1 (for to update "dir" argument)
-                                    ["n", "dir",
+                                    // KERNEL PROGRAM 1 (update "dir" & "posXYZW" in return instrucction)
+                                    ["n", ["dir","posXYZW"],
                                     // head
                                     '',
                                     // source
@@ -121,10 +121,7 @@
                                     'vec3 currentPos = posXYZW[n].xyz;\n'+
                                     pole_code()+
                                     'vec3 newDir = currentDir*0.995;\n'+
-                                    'return vec4(newDir,1.0);\n'],
-
-                                    // KERNEL PROGRAM 2 (for to update "posXYZW" argument from updated "dir" argument on KERNEL1)
-                                    ["posXYZW += dir"],
+                                    'return [vec4(newDir,0.0), vec4(currentPos,1.0)+vec4(newDir,0.0)];\n'],
 
                                     // GRAPHIC PROGRAM
                                     [   // vertex head
@@ -157,8 +154,6 @@
                 window.requestAnimFrame(tick);
 
                 gpufG.processKernels();
-                gpufG.update("posXYZW");
-                gpufG.update("dir");
 
                 var gl = gpufG.getCtx();
                 gl.bindFramebuffer(gl.FRAMEBUFFER, null);

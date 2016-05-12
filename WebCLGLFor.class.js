@@ -77,11 +77,11 @@ var gpufor = function() {
             var idx;
             var outArg;
             var argsInThisKernel = {};
-            var typOut;
+            var outStr;
             var kH;
             var kS;
 
-            if(K.length == 1) {
+            if(K.length == 1) { // type direct assign
                 idx = "n";
                 outArg = K[0].match(new RegExp(/(([a-z|A-Z])| )*/gm))[0].trim();
                 var rightVar = K[0].match(new RegExp(/=(([a-z|A-Z])| )*$/gm))[0].replace("=","").trim();
@@ -100,7 +100,7 @@ var gpufor = function() {
                     if(expl[1] == rightVar)
                         argsInThisKernel[key] = true;
                 }
-            } else {
+            } else { // by code
                 idx = K[0];
                 outArg = K[1];
                 kH = K[2];
@@ -116,16 +116,59 @@ var gpufor = function() {
                 }
             }
 
-            // set output type float|float4
-            for(var key in args) {
-                var expl = key.split(" ");
+            var objOutStr;
+            var retCode = kS.match(new RegExp(/return.*$/gm));
+            retCode = retCode[0].replace("return ", ""); // now "varx" or "[varx1,varx2,..]"
+            var isArr = retCode.match(new RegExp(/\[/gm));
+            if(isArr != null && isArr.length >= 1) { // type outputs array
+                objOutStr = [];
+                retCode = retCode.split("[")[1].split("]")[0];
+                var itemStr = "", openParenth = 0;
+                for(var n=0; n < retCode.length; n++) {
+                    if(retCode[n] == "," && openParenth == 0) {
+                        objOutStr.push(itemStr);
+                        itemStr = "";
+                    } else
+                        itemStr += retCode[n];
 
-                if(expl[1] == outArg) {
-                    typOut = expl[0].match(new RegExp("float4", "gm"));
-                    typOut = (typOut != null && typOut.length > 0) ? "out_float4 = " : "out_float = ";
+                    if(retCode[n] == "(")
+                        openParenth++;
+                    if(retCode[n] == ")")
+                        openParenth--;
+                }
+                objOutStr.push(itemStr); // and the last
+            } else { // type one output
+                objOutStr = retCode.replace(/;$/gm, "");
+            }
+
+            if(outArg instanceof Array) { // type outputs array
+                for(var n = 0; n < outArg.length; n++) {
+                    // set output type float|float4
+                    _clglWork.setAllowKernelWriting(outArg[n]);
+                    for(var key in args) {
+                        var expl = key.split(" ");
+
+                        if(expl[1] == outArg[n]) {
+                            var mt = expl[0].match(new RegExp("float4", "gm"));
+                            if(n==0)
+                                outStr = (mt != null && mt.length > 0) ? "out_float4 = "+objOutStr[n]+";\n" : "out_float = "+objOutStr[n]+";\n";
+                            else
+                                outStr += (mt != null && mt.length > 0) ? "out"+n+"_float4 = "+objOutStr[n]+";\n" : "out"+n+"_float = "+objOutStr[n]+";\n";
+                        }
+                    }
+                }
+            } else { // type one output
+                // set output type float|float4
+                _clglWork.setAllowKernelWriting(outArg);
+                for(var key in args) {
+                    var expl = key.split(" ");
+
+                    if(expl[1] == outArg) {
+                        var mt = expl[0].match(new RegExp("float4", "gm"));
+                        outStr = (mt != null && mt.length > 0) ? "out_float4 = "+objOutStr+";\n" : "out_float = "+objOutStr+";\n";
+                    }
                 }
             }
-            _clglWork.setAllowKernelWriting(outArg);
 
             var strArgs = "", sep="";
             for(var key in argsInThisKernel)
@@ -133,7 +176,7 @@ var gpufor = function() {
 
             kS = 'void main('+strArgs+') {'+
                     'vec2 '+idx+' = get_global_id();'+
-                    kS.replace("return", typOut)+
+                    kS.replace(/return.*$/gm, outStr)+
                 '}';
             var kernel = _webCLGL.createKernel();
             kernel.setKernelSource(kS, kH);
@@ -215,16 +258,7 @@ var gpufor = function() {
      * processKernels
      */
     this.processKernels = function() {
-        for(var key in _clglWork.kernels)
-            _clglWork.enqueueNDRangeKernel(key, _clglWork.buffers_TEMP[key]);
-    };
-
-    /**
-     * update
-     * @param {String} argName
-     */
-    this.update = function(argName) {
-        _webCLGL.copy(_clglWork.buffers_TEMP[argName], _clglWork.buffers[argName]);
+        _clglWork.enqueueNDRangeKernel();
     };
 
     /**

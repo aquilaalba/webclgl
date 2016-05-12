@@ -108,6 +108,79 @@ To represent data that evolve over time you can enable the graphical output as f
                                                                                    0.0, 0.0, 1.0, 0.0,
                                                                                    0.0, 0.0, 0.0, 1.0]))},
                            
+                               // KERNEL PROGRAM 1 (update "dir" & "posXYZW" in return instrucction)
+                               ["n", ["dir","posXYZW"],
+                               // head
+                               '',
+                               // source
+                               'vec3 currentPos = posXYZW[n].xyz;\n'+
+                               'vec3 newDir = dir[n].xyz*0.995;\n'+
+                               'return [vec4(newDir,0.0), vec4(currentPos,1.0)+vec4(newDir,0.0)];\n'],
+                           
+                               // GRAPHIC PROGRAM
+                               [   // vertex head
+                                   '',
+                           
+                                   // vertex source
+                                   'vec2 xx = get_global_id(nodeId[], uBufferWidth, 1.0);'+
+                           
+                                   'vec4 nodePosition = posXYZW[xx];\n'+ // now use the updated posXYZW
+                                   'mat4 nodepos = nodeWMatrix;'+
+                                   'nodepos[3][0] = nodePosition.x;'+
+                                   'nodepos[3][1] = nodePosition.y;'+
+                                   'nodepos[3][2] = nodePosition.z;'+
+                           
+                                   'gl_Position = PMatrix * cameraWMatrix * nodepos * vec4(1.0, 1.0, 1.0, 1.0);\n'+
+                                   'gl_PointSize = 2.0;\n',
+                           
+                                   // fragment head
+                                   '',
+                           
+                                   // fragment source
+                                   'gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n'
+                               ]);
+```
+```js
+
+    var tick = function() {
+                    window.requestAnimFrame(tick);
+    
+                    gpufG.processKernels();
+    
+                    var gl = gpufG.getCtx();
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+                    gl.viewport(0, 0, 512, 512);
+                    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+                    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);  
+    
+                    //gpufG.setArg("pole1X", 30);
+    
+                    gpufG.processGraphic("posXYZW", gl.POINTS);
+                };
+```
+
+- <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics/index.html"> gpufor graphic output</a><br />
+- <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics_geometry/index.html"> gpufor graphic output (using custom geometry)</a><br />
+
+When Max_draw_buffers is equal to 1 you can save only in one variable. For this you can use more Kernels:
+```js
+   
+       var arrayResult = gpufor(document.getElementById("graph"),
+       
+                               // VALUES
+                               {"float4* posXYZW": arrayNodePosXYZW,
+                               "float4* dir": arrayNodeDir,
+                               "float*attr nodeId": arrayNodeId,
+                               "mat4 PMatrix": transpose(getProyection()),
+                               "mat4 cameraWMatrix": transpose(new Float32Array([	1.0, 0.0, 0.0, 0.0,
+                                                                                   0.0, 1.0, 0.0, 0.0,
+                                                                                   0.0, 0.0, 1.0, -100.0,
+                                                                                   0.0, 0.0, 0.0, 1.0])),
+                               "mat4 nodeWMatrix": transpose(new Float32Array([	1.0, 0.0, 0.0, 0.0,
+                                                                                   0.0, 1.0, 0.0, 0.0,
+                                                                                   0.0, 0.0, 1.0, 0.0,
+                                                                                   0.0, 0.0, 0.0, 1.0]))},
+                           
                                // KERNEL PROGRAM 1 (for to update "dir" argument)
                                ["n", "dir",
                                // head
@@ -142,30 +215,8 @@ To represent data that evolve over time you can enable the graphical output as f
                                    'gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n'
                                ]);
 ```
-```js
 
-    var tick = function() {
-                    window.requestAnimFrame(tick);
-    
-                    gpufG.processKernels();
-                    gpufG.update("posXYZW");
-                    gpufG.update("dir");
-    
-                    var gl = gpufG.getCtx();
-                    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-                    gl.viewport(0, 0, 512, 512);
-                    gl.clearColor(0.0, 0.0, 0.0, 1.0);
-                    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);  
-    
-                    //gpufG.setArg("pole1X", 30);
-    
-                    gpufG.processGraphic("posXYZW", gl.POINTS);
-                };
-```
-
-- <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics/index.html"> gpufor graphic output</a><br />
-- <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics_geometry/index.html"> gpufor graphic output (using custom geometry)</a><br />
-
+- <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics_no_mrt/index.html"> gpufor graphic without MRT</a><br />
 
 <h3>Argument types</h3>
 
@@ -225,6 +276,13 @@ Arguments type sampler2D (no attribute) are allowed to be written by a kernel pr
 <br />
 <br />
 <h3>ChangeLog</h3>
+<h4>v3.1</h4>
+(Graphic mode only)
+- Allow write in more than final variable if client hardware allow (WEBGL_draw_buffers extension) 
+- webCLGL.enqueueNDRangeKernel allow webCLGLBuffer or Array of webCLGLBuffer for destination
+- webCLGLWork.enqueueNDRangeKernel not require any argument (nor webCLGL.copy required)
+- gpufor not require update call
+
 <h4>v3.0</h4>
 - Changed *kernel in VertexFragmentPrograms(VFP) to *attr for indicate arguments of type "attributes". <br />
 - Deleted optional geometryLength argument in enqueueNDRangeKernel & enqueueVertexFragmentProgram. It is indicated through glsl code with next available methods: <br />

@@ -78,7 +78,7 @@ WebCLGLVertexFragmentProgram = function(gl, vertexSource, vertexHeader, fragment
         }).bind(this);
 
 
-        var sourceVertex = 	_precision+
+        var sourceVertex = 	""+
             'uniform float uOffset;\n'+
             'uniform float uBufferWidth;'+
 

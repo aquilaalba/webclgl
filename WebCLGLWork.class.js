@@ -38,21 +38,17 @@ WebCLGLWork = function(webCLGL, offset) {
     /**
      * Add one WebCLGLKernel to the work
      * @param {WebCLGLKernel} kernel
-     * @param {String} name - Used for to write and update ARG name with the result in out_float4/out_float  (ScreenEffect output always to 'null')
+     * @param {String|Array<String>} output - Used for to write and update ARG name with the result in out_float4/out_float
      */
-    this.addKernel = function(kernel, name) {
-        var exists = false;
-        for(var key in this.kernels) {
-            if(this.kernels[key] == kernel) {
-                this.kernels[key] = kernel;
-                exists = true;
-                break;
-            }
+    this.addKernel = function(kernel, output) {
+        kernel.output = output;
+
+        if(output instanceof Array) {
+            this.kernels[output[0]] = kernel;
+        } else {
+            this.kernels[output] = kernel;
         }
-        if(exists == false) {
-            this.kernels[name] = kernel;
-        }
-        this.arrAllowKernelWriting[name] = true;
+        this.arrAllowKernelWriting[output] = true;
     };
 
     /**
@@ -287,11 +283,33 @@ WebCLGLWork = function(webCLGL, offset) {
 
     /**
      * Process kernels
-     * @param {String} kernelName
-     * @param {WebCLGLBuffer} [webCLGLBuffer=undefined]
      */
-    this.enqueueNDRangeKernel = function(kernelName, argumentToUpdate) {
-        this.webCLGL.enqueueNDRangeKernel(this.kernels[kernelName], argumentToUpdate);
+    this.enqueueNDRangeKernel = function() {
+        for(var key in this.kernels) {
+            var kernel = this.kernels[key];
+
+            var outputBuff;
+            if(kernel.output instanceof Array) {
+                outputBuff = [];
+                for(var n=0; n < kernel.output.length; n++)
+                    outputBuff[n] = this.buffers_TEMP[kernel.output[n]];
+            } else {
+                outputBuff = this.buffers_TEMP[kernel.output];
+            }
+
+            this.webCLGL.enqueueNDRangeKernel(kernel, outputBuff);
+        }
+
+        for(var key in this.kernels) {
+            var kernel = this.kernels[key];
+
+            if(kernel.output instanceof Array) {
+                for(var n=0; n < kernel.output.length; n++)
+                    this.webCLGL.copy(this.buffers_TEMP[kernel.output[n]], this.buffers[kernel.output[n]]);
+            } else {
+                this.webCLGL.copy(this.buffers_TEMP[kernel.output], this.buffers[kernel.output]);
+            }
+        }
     };
 
     /**
