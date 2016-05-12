@@ -257,8 +257,7 @@
 		var tick = function() {
 			window.requestAnimFrame(tick);
 
-			clglWork.enqueueNDRangeKernel("posXYZW", clglWork.buffers_TEMP["posXYZW"]);
-			clglWork.enqueueNDRangeKernel("dir", clglWork.buffers_TEMP["dir"]);
+			clglWork.enqueueNDRangeKernel(false);
 			
 			webCLGL.copy(clglWork.buffers_TEMP["posXYZW"], clglWork.buffers["posXYZW"]);
 			webCLGL.copy(clglWork.buffers_TEMP["dir"], clglWork.buffers["dir"]);

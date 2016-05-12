@@ -57,9 +57,19 @@ var WebCLGL = function(webglcontext) {
 		_gl = this.utils.getWebGLContextFromCanvas(this.e, {antialias: false});
 	} else _gl = webglcontext;
 
-	_gl.getExtension('OES_texture_float');
-	_gl.getExtension('OES_texture_float_linear');
-	_gl.getExtension('OES_element_index_uint');
+    // required extensions: OES_texture_float && OES_texture_float_linear
+    var _arrExt = {"OES_texture_float":null, "OES_texture_float_linear":null, "OES_element_index_uint":null, "WEBGL_draw_buffers":null};
+    for(var key in _arrExt) {
+        _arrExt[key] = _gl.getExtension(key);
+        if(_arrExt[key] == null)
+            console.error("extension "+key+" not available");
+    }
+    var _maxDrawBuffers = null;
+    if(_arrExt.hasOwnProperty("WEBGL_draw_buffers") && _arrExt["WEBGL_draw_buffers"] != null) {
+        _maxDrawBuffers = _gl.getParameter(_arrExt["WEBGL_draw_buffers"].MAX_DRAW_BUFFERS_WEBGL);
+        console.log("Max draw buffers: "+_maxDrawBuffers);
+    } else
+        console.log("Max draw buffers: 1");
 
 	var highPrecisionSupport = _gl.getShaderPrecisionFormat(_gl.FRAGMENT_SHADER, _gl.HIGH_FLOAT);
 	this.precision = (highPrecisionSupport.precision != 0) ? 'precision highp float;\n\nprecision highp int;\n\n' : 'precision lowp float;\n\nprecision lowp int;\n\n';
@@ -165,6 +175,14 @@ var WebCLGL = function(webglcontext) {
      */
     this.getContext = function() {
         return _gl;
+    };
+
+    /**
+     * getMaxDrawBuffers
+     * @returns {Int}
+     */
+    this.getMaxDrawBuffers = function() {
+        return _maxDrawBuffers;
     };
 
     /**
@@ -386,25 +404,66 @@ var WebCLGL = function(webglcontext) {
     /**
      * Perform calculation and save the result on a WebCLGLBuffer
      * @param {WebCLGLKernel} webCLGLKernel
-     * @param {WebCLGLBuffer} [webCLGLBuffer=undefined]
+     * @param {WebCLGLBuffer|Array<WebCLGLBuffer>} [webCLGLBuffer=undefined]
      */
     this.enqueueNDRangeKernel = function(webCLGLKernel, webCLGLBuffers) {
         _bufferWidth = 0;
 
+        _gl.useProgram(webCLGLKernel.kernel);
+
         if(webCLGLBuffers != undefined) {
-            for(var i=0; i < webCLGLBuffers.items.length; i++) {
-                var webCLGLBuffer = webCLGLBuffers.items[i];
+            if(webCLGLBuffers instanceof WebCLGLBuffer) {
+                for(var i=0; i < webCLGLBuffers.items.length; i++) {
+                    var webCLGLBuffer = webCLGLBuffers.items[i];
 
-                if(webCLGLBuffer.length > 0) {
-                    _gl.viewport(0, 0, webCLGLBuffer.W, webCLGLBuffer.H);
-                    if(webCLGLBuffer.fBuffer == undefined) {
-                        webCLGLBuffer.createWebGLRenderBuffer();
-                        webCLGLBuffer.createWebGLFrameBuffer();
+                    if(webCLGLBuffer.length > 0) {
+                        _gl.viewport(0, 0, webCLGLBuffer.W, webCLGLBuffer.H);
+                        if(webCLGLBuffer.fBuffer == undefined) {
+                            webCLGLBuffer.createWebGLRenderBuffer();
+                            webCLGLBuffer.createWebGLFrameBuffer();
+                        }
+                        _gl.bindFramebuffer(_gl.FRAMEBUFFER, webCLGLBuffer.fBuffer);
+
+                        if(_maxDrawBuffers != null) {
+                            _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _arrExt["WEBGL_draw_buffers"].COLOR_ATTACHMENT0_WEBGL, _gl.TEXTURE_2D, webCLGLBuffer.textureData, 0);
+                            _arrExt["WEBGL_draw_buffers"].drawBuffersWEBGL([
+                                _arrExt["WEBGL_draw_buffers"].COLOR_ATTACHMENT0_WEBGL
+                            ]);
+                        } else {
+                            _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_2D, webCLGLBuffer.textureData, 0);
+                        }
+
+                        enqueueNDRangeKernelNow(webCLGLKernel, i);
                     }
-                    _gl.bindFramebuffer(_gl.FRAMEBUFFER, webCLGLBuffer.fBuffer);
-                    _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_2D, webCLGLBuffer.textureData, 0);
+                }
+            } else { // Array of WebCLGLBuffers
+                for(var i=0; i < webCLGLBuffers[0].items.length; i++) {
+                    var webCLGLBuffer = webCLGLBuffers[0].items[i];
 
-                    enqueueNDRangeKernelNow(webCLGLKernel, i);
+                    if(webCLGLBuffer.length > 0) {
+                        _gl.viewport(0, 0, webCLGLBuffer.W, webCLGLBuffer.H);
+                        if(webCLGLBuffer.fBuffer == undefined) {
+                            webCLGLBuffer.createWebGLRenderBuffer();
+                            webCLGLBuffer.createWebGLFrameBuffer();
+                        }
+                        _gl.bindFramebuffer(_gl.FRAMEBUFFER, webCLGLBuffer.fBuffer);
+
+                        if(_maxDrawBuffers != null) {
+                            if(webCLGLBuffers.length > _maxDrawBuffers)
+                                console.log("Exceded maxDrawBuffers of "+maxDrawBuffers);
+
+                            var arrDBuff = [];
+                            for(var n= 0, fn=_maxDrawBuffers; n < fn; n++) {
+                                _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _arrExt["WEBGL_draw_buffers"]['COLOR_ATTACHMENT'+n+'_WEBGL'], _gl.TEXTURE_2D, webCLGLBuffer.textureData, 0);
+                                arrDBuff[n] = _arrExt["WEBGL_draw_buffers"]['COLOR_ATTACHMENT'+n+'_WEBGL']; //gl_FragData[n]
+                            }
+                            _arrExt["WEBGL_draw_buffers"].drawBuffersWEBGL(arrDBuff);
+                        } else {
+                            _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_2D, webCLGLBuffer.textureData, 0);
+                        }
+
+                        enqueueNDRangeKernelNow(webCLGLKernel, i);
+                    }
                 }
             }
         } else {
@@ -420,8 +479,6 @@ var WebCLGL = function(webglcontext) {
      * @param {Int} item
      */
     var enqueueNDRangeKernelNow = (function(webCLGLKernel, i) {
-        _gl.useProgram(webCLGLKernel.kernel);
-
         _currentTextureUnit = 0;
         for(var key in webCLGLKernel.in_values)
             bindValue(webCLGLKernel, webCLGLKernel.in_values[key], i);

@@ -81,7 +81,7 @@ var gpufor = function() {
             var kH;
             var kS;
 
-            if(K.length == 1) {
+            if(K.length == 1) { // type direct assign
                 idx = "n";
                 outArg = K[0].match(new RegExp(/(([a-z|A-Z])| )*/gm))[0].trim();
                 var rightVar = K[0].match(new RegExp(/=(([a-z|A-Z])| )*$/gm))[0].replace("=","").trim();
@@ -100,7 +100,7 @@ var gpufor = function() {
                     if(expl[1] == rightVar)
                         argsInThisKernel[key] = true;
                 }
-            } else {
+            } else { // by code
                 idx = K[0];
                 outArg = K[1];
                 kH = K[2];
@@ -116,16 +116,34 @@ var gpufor = function() {
                 }
             }
 
-            // set output type float|float4
-            for(var key in args) {
-                var expl = key.split(" ");
+            if(outArg instanceof Array) {
+                for(var n = 0; n < outArg.length; n++) {
+                    // set output type float|float4
+                    _clglWork.setAllowKernelWriting(outArg[n]);
+                    for(var key in args) {
+                        var expl = key.split(" ");
 
-                if(expl[1] == outArg) {
-                    typOut = expl[0].match(new RegExp("float4", "gm"));
-                    typOut = (typOut != null && typOut.length > 0) ? "out_float4 = " : "out_float = ";
+                        if(expl[1] == outArg[n]) {
+                            typOut = expl[0].match(new RegExp("float4", "gm"));
+                            if(n==0)
+                                typOut = (typOut != null && typOut.length > 0) ? "out_float4 = " : "out_float = ";
+                            else
+                                typOut = (typOut != null && typOut.length > 0) ? "out"+n+"_float4 = " : "out"+n+"_float = ";
+                        }
+                    }
+                }
+            } else {
+                // set output type float|float4
+                _clglWork.setAllowKernelWriting(outArg);
+                for(var key in args) {
+                    var expl = key.split(" ");
+
+                    if(expl[1] == outArg) {
+                        typOut = expl[0].match(new RegExp("float4", "gm"));
+                        typOut = (typOut != null && typOut.length > 0) ? "out_float4 = " : "out_float = ";
+                    }
                 }
             }
-            _clglWork.setAllowKernelWriting(outArg);
 
             var strArgs = "", sep="";
             for(var key in argsInThisKernel)
@@ -213,10 +231,10 @@ var gpufor = function() {
 
     /**
      * processKernels
+     * @param {Bool} [update=true]
      */
-    this.processKernels = function() {
-        for(var key in _clglWork.kernels)
-            _clglWork.enqueueNDRangeKernel(key, _clglWork.buffers_TEMP[key]);
+    this.processKernels = function(update) {
+        _clglWork.enqueueNDRangeKernel(update);
     };
 
     /**

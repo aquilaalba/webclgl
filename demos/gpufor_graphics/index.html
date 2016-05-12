@@ -128,7 +128,7 @@
             var tick = function() {
                 window.requestAnimFrame(tick);
 
-                gpufG.processKernels();
+                gpufG.processKernels(false);
                 gpufG.update("posXYZW");
                 gpufG.update("dir");
 
