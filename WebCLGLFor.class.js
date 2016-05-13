@@ -160,15 +160,18 @@ var gpufor = function() {
                     }
                 } else { // type one output
                     // set output type float|float4
-                    _clglWork.setAllowKernelWriting(outArg);
-                    for(var key in args) {
-                        var expl = key.split(" ");
+                    if(outArg != undefined) {
+                        _clglWork.setAllowKernelWriting(outArg);
+                        for(var key in args) {
+                            var expl = key.split(" ");
 
-                        if(expl[1] == outArg) {
-                            var mt = expl[0].match(new RegExp("float4", "gm"));
-                            outStr = (mt != null && mt.length > 0) ? "out_float4 = "+objOutStr+";\n" : "out_float = "+objOutStr+";\n";
+                            if(expl[1] == outArg) {
+                                var mt = expl[0].match(new RegExp("float4", "gm"));
+                                outStr = (mt != null && mt.length > 0) ? "out_float4 = "+objOutStr+";\n" : "out_float = "+objOutStr+";\n";
+                            }
                         }
-                    }
+                    } else
+                        outStr = "out_float4 = "+objOutStr+";\n";
                 }
 
                 var strArgs = "", sep="";
@@ -262,30 +265,67 @@ var gpufor = function() {
     };
 
     /**
-     * processKernels
+     * getWebCLGL
      */
-    this.processKernels = function() {
-        _clglWork.enqueueNDRangeKernel();
+    this.getWebCLGL = function() {
+        return _webCLGL;
+    };
+
+    /**
+     * getWork
+     */
+    this.getWork = function() {
+        return _clglWork;
+    };
+
+    /**
+     * processKernels
+     * @param {Int} [buffDest=undefined] - if 0 then output to null screen
+     */
+    this.processKernels = function(buffDest) {
+        _clglWork.enqueueNDRangeKernel(buffDest);
     };
 
     /**
      * setArg
      * @param {String} argName
      * @param {Array<Float>|Float32Array|Uint8Array|WebGLTexture|HTMLImageElement} value
+     * @param {Array<Float>} [splits=[value.length]]
+     * @param {Array<Float2>} [overrideDimensions=new Array(){Math.sqrt(value.length), Math.sqrt(value.length)}]
+     * @param {String} [overrideType="FLOAT4"] - force "FLOAT4" or "FLOAT"
+     * @returns {WebCLGLBuffer}
      */
-    this.setArg = function(argName, value) {
-        _clglWork.setArg(argName, value);
+    this.setArg = function(argName, value, splits, overrideDimensions, overrideType) {
+        return _clglWork.setArg(argName, value, splits, overrideDimensions, overrideType);
+    };
+
+    /**
+     * Set shared argument from other work
+     * @param {String} argument Argument to set
+     * @param {WebCLGLWork} clglWork
+     */
+    this.setSharedBufferArg = function(argument, clglWork) {
+        _clglWork.setSharedBufferArg(argument, clglWork);
+    };
+
+    /**
+     * Get all arguments existing in passed kernels & vertexFragmentPrograms
+     * @returns {Object}
+     */
+    this.getAllArgs = function() {
+        return _clglWork.getAllArgs();
     };
 
     /**
      * processGraphic
      * @param {String} [argument=undefined] Argument for vertices count or undefined if indices exist
      * @param {Int} [drawMode=0] 0=POINTS, 3=LINE_STRIP, 2=LINE_LOOP, 1=LINES, 5=TRIANGLE_STRIP, 6=TRIANGLE_FAN and 4=TRIANGLES
+     * @param {WebCLGLBuffer} [buffDest=undefined]
      **/
-    this.processGraphic = function(argument, drawMode) {
+    this.processGraphic = function(argument, drawMode, buffDest) {
         var dmode = (drawMode != undefined) ? drawMode : 0;
 
-        _clglWork.enqueueVertexFragmentProgram(argument, "vertexFragmentProgram1", dmode);
+        _clglWork.enqueueVertexFragmentProgram(argument, "vertexFragmentProgram1", dmode, buffDest);
     };
 };
 

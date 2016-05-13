@@ -180,6 +180,14 @@ var WebCLGL = function(webglcontext) {
     };
 
     /**
+     * getRenderBuffer
+     * @returns {WebGLRenderBuffer}
+     */
+    this.getRenderBuffer = function() {
+        return this.rBuffer;
+    };
+
+    /**
      * getMaxDrawBuffers
      * @returns {Int}
      */
@@ -499,11 +507,24 @@ var WebCLGL = function(webglcontext) {
      * @param {WebCLGLVertexFragmentProgram} webCLGLVertexFragmentProgram
      * @param {WebCLGLBuffer} buffer Buffer to draw type (type indices or vertex)
      * @param {Int} [drawMode=4] 0=POINTS, 3=LINE_STRIP, 2=LINE_LOOP, 1=LINES, 5=TRIANGLE_STRIP, 6=TRIANGLE_FAN and 4=TRIANGLES
+     * @param {WebCLGLBuffer} [buffDest=undefined]
      */
-    this.enqueueVertexFragmentProgram = function(webCLGLVertexFragmentProgram, buffer, drawMode) {
+    this.enqueueVertexFragmentProgram = function(webCLGLVertexFragmentProgram, buffer, drawMode, buffDest) {
         _bufferWidth = 0;
 
         var Dmode = (drawMode != undefined) ? drawMode : 4;
+
+        if(buffDest != undefined) {
+            _gl.bindFramebuffer(_gl.FRAMEBUFFER, buffDest.items[0].fBuffer);
+            if(_maxDrawBuffers != null) {
+                _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _arrExt["WEBGL_draw_buffers"].COLOR_ATTACHMENT0_WEBGL, _gl.TEXTURE_2D, buffDest.items[0].textureData, 0);
+                _arrExt["WEBGL_draw_buffers"].drawBuffersWEBGL([
+                    _arrExt["WEBGL_draw_buffers"].COLOR_ATTACHMENT0_WEBGL
+                ]);
+            } else {
+                _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_2D, buffDest.items[0].textureData, 0);
+            }
+        }
 
         _gl.useProgram(webCLGLVertexFragmentProgram.vertexFragmentProgram);
 
