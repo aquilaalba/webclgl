@@ -18,7 +18,7 @@ WebCLGLKernel = function(gl, source, header) {
 	this.in_values = {};
     this.output; //String or Array<String> of arg names with the items in same order that in the final return
 
-    var _enableDebug = true;
+    var _enableDebug = false;
 
     /**
      * checkArgNameInitialization
@@ -254,8 +254,6 @@ WebCLGLKernel = function(gl, source, header) {
      * @param {Float|Int|Array<Float4>|Array<Mat4>|WebCLGLBuffer} data
      */
     this.setKernelArg = function(argument, data) {
-        if(data == undefined) alert("Error in setKernelArg("+argument+", data) (data is undefined)");
-		
 		var arg = (typeof argument == "string") ? argument : Object.keys(this.in_values)[argument];
         this.in_values[arg].value = data;
     };
