@@ -323,6 +323,31 @@ var WebCLGL = function(webglcontext) {
     };
 
     /**
+     * fillBuffer with color
+     * @param {WebCLGLBuffer} buffer
+     * @param {Array<Float>} clearColor
+     */
+    this.fillBuffer = function(buffer, clearColor) {
+        if(buffer.items[0].fBuffer == undefined)
+            buffer.items[0].createWebGLFrameBuffer(this.getRenderBuffer());
+
+        _gl.bindFramebuffer(_gl.FRAMEBUFFER, buffer.items[0].fBuffer);
+
+        if(_maxDrawBuffers != null) {
+            _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _arrExt["WEBGL_draw_buffers"].COLOR_ATTACHMENT0_WEBGL, _gl.TEXTURE_2D, buffer.items[0].textureData, 0);
+            _arrExt["WEBGL_draw_buffers"].drawBuffersWEBGL([
+                _arrExt["WEBGL_draw_buffers"].COLOR_ATTACHMENT0_WEBGL
+            ]);
+        } else
+            _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_2D, buffer.items[0].textureData, 0);
+
+
+        if(clearColor != undefined)
+            _gl.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+        _gl.clear(_gl.COLOR_BUFFER_BIT | _gl.DEPTH_BUFFER_BIT);
+    };
+
+    /**
      * bindAttributeValue
      * @pram {WebCLGLVertexFragmentProgram}
      * @param {Object} inValue

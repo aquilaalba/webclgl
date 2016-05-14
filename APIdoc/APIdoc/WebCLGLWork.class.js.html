@@ -247,59 +247,85 @@ WebCLGLWork = function(webCLGL, offset) {
      * @returns {WebCLGLBuffer}
      */
     this.setArg = function(argument, value, splits, overrideDimensions, overrideType) {
-        this.checkArg(argument, value);
-
-        if(overrideType != undefined)
-            type = overrideType;
-
-        if(isBuffer == true) {
-            var mode = "SAMPLER"; // "ATTRIBUTE", "SAMPLER", "UNIFORM"
-            if(usedInVertex == true) {
-                if(kernelPr.length == 0 &amp;&amp; usedInFragment == false) {
-                    mode = "ATTRIBUTE";
-                }
-            }
-
-            var length;
-            if(overrideDimensions == undefined) {
-                length = (value instanceof HTMLImageElement) ? (value.width*value.height) : ((type == "FLOAT4") ? value.length/4 : value.length);
-            } else {
-                length = [overrideDimensions[0], overrideDimensions[1]];
-            }
-            var spl = (splits != undefined) ? splits : [length];
-
-            var buff = this.webCLGL.createBuffer(length, type, this.offset, false, mode, spl);
-            this.webCLGL.enqueueWriteBuffer(buff, value);
-            this.buffers[argument] = buff;
-            if(this.arrAllowKernelWriting.hasOwnProperty(argument) == true) {
-                var buffTMP = this.webCLGL.createBuffer(length, type, this.offset, false, mode, spl);
-                this.webCLGL.enqueueWriteBuffer(buffTMP, value);
-                this.buffers_TEMP[argument] = buffTMP;
-            }
-
-
-            for(var n=0; n &lt; kernelPr.length; n++)
-                kernelPr[n].setKernelArg(argument, this.buffers[argument]);
-
-            for(var n=0; n &lt; vPr.length; n++)
-                vPr[n].setVertexArg(argument, this.buffers[argument]);
-
-            for(var n=0; n &lt; fPr.length; n++)
-                fPr[n].setFragmentArg(argument, this.buffers[argument]);
-
-            return this.buffers[argument];
+        if(argument == "indices") {
+            this.setIndices(value, splits);
         } else {
-            for(var n=0; n &lt; kernelPr.length; n++)
-                kernelPr[n].setKernelArg(argument, value);
+            this.checkArg(argument, value);
 
-            for(var n=0; n &lt; vPr.length; n++)
-                vPr[n].setVertexArg(argument, value);
+            if(overrideType != undefined)
+                type = overrideType;
 
-            for(var n=0; n &lt; fPr.length; n++)
-                fPr[n].setFragmentArg(argument, value);
+            if(isBuffer == true) {
+                var mode = "SAMPLER"; // "ATTRIBUTE", "SAMPLER", "UNIFORM"
+                if(usedInVertex == true) {
+                    if(kernelPr.length == 0 &amp;&amp; usedInFragment == false) {
+                        mode = "ATTRIBUTE";
+                    }
+                }
 
-            return value;
+                if(value != undefined &amp;&amp; value != null) {
+                    var length;
+                    if(overrideDimensions == undefined) {
+                        length = (value instanceof HTMLImageElement) ? (value.width*value.height) : ((type == "FLOAT4") ? value.length/4 : value.length);
+                    } else {
+                        length = [overrideDimensions[0], overrideDimensions[1]];
+                    }
+                    var spl = (splits != undefined) ? splits : [length];
+
+                    var buff = this.webCLGL.createBuffer(length, type, this.offset, false, mode, spl);
+                    this.webCLGL.enqueueWriteBuffer(buff, value);
+                    this.buffers[argument] = buff;
+                    if(this.arrAllowKernelWriting.hasOwnProperty(argument) == true) {
+                        var buffTMP = this.webCLGL.createBuffer(length, type, this.offset, false, mode, spl);
+                        this.webCLGL.enqueueWriteBuffer(buffTMP, value);
+                        this.buffers_TEMP[argument] = buffTMP;
+                    }
+
+
+                    for(var n=0; n &lt; kernelPr.length; n++)
+                        kernelPr[n].setKernelArg(argument, this.buffers[argument]);
+
+                    for(var n=0; n &lt; vPr.length; n++)
+                        vPr[n].setVertexArg(argument, this.buffers[argument]);
+
+                    for(var n=0; n &lt; fPr.length; n++)
+                        fPr[n].setFragmentArg(argument, this.buffers[argument]);
+                } else {
+                    for(var n=0; n &lt; kernelPr.length; n++)
+                        kernelPr[n].setKernelArg(argument, null);
+
+                    for(var n=0; n &lt; vPr.length; n++)
+                        vPr[n].setVertexArg(argument, null);
+
+                    for(var n=0; n &lt; fPr.length; n++)
+                        fPr[n].setFragmentArg(argument, null);
+                }
+            } else {
+                for(var n=0; n &lt; kernelPr.length; n++)
+                    kernelPr[n].setKernelArg(argument, value);
+
+                for(var n=0; n &lt; vPr.length; n++)
+                    vPr[n].setVertexArg(argument, value);
+
+                for(var n=0; n &lt; fPr.length; n++)
+                    fPr[n].setFragmentArg(argument, value);
+
+                return value;
+            }
         }
+    };
+
+    /**
+     * fillPointerArg
+     * @param {String} argName
+     * @param {Array&lt;Float>} clearColor
+     */
+    this.fillPointerArg = function(argName, clearColor) {
+        if(this.buffers.hasOwnProperty(argName))
+            this.webCLGL.fillBuffer(this.buffers[argName], clearColor);
+
+        if(this.buffers_TEMP.hasOwnProperty(argName))
+            this.webCLGL.fillBuffer(this.buffers_TEMP[argName], clearColor);
     };
 
     /**
@@ -442,7 +468,7 @@ WebCLGLWork = function(webCLGL, offset) {
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha2</a>
-		on Fri May 13 2016 10:06:27 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Sat May 14 2016 11:22:03 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>
