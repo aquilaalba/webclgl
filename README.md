@@ -232,28 +232,63 @@ float*attr			        | Array<Float or Int>, Float32Array, Uint8Array, WebGLTextu
 float4*attr		            | Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
 Use float4 instead vec4 only in the definition of the variables (not in code). 
 
+<p>When indicate *attr arguments in Graphic program </p>
+In this example:
+
+```js
+
+    // VALUES
+    var values = {
+            'float4* posXYZW': null,
+            "float4* data": null,
+            "float*attr currentId": null,
+    		"float*attr otherId": null,
+            'float4*attr nodeVertexPos': null,
+            'float4*attr nodeVertexNormal': null,
+            'indices': null,
+            'mat4 PMatrix': null,
+            'mat4 cameraWMatrix': null,
+            'mat4 nodeWMatrix': null,
+            'float fontImgColumns': null,
+            'float4* ImgB': null};
+    		
+    // KERNEL
+    float cId = currentId[x];
+    vec4 currentPosition = posXYZW[x];
+    float anyData = data[x].x;
+    
+    float oId = otherId[x];
+    vec2 xb = get_global_id(oId, uBufferWidth, 6.0); // uBufferWidth is built-in variable
+    vec4 otherPosition = posXYZW[xb];
+    float otherData = data[xb].x;
+    
+    vec2 texCoord = get_global_id(vec2(64.0, 128.0), textureWidth);
+    vec4 textureColor = ImgB[texCoord];
+    
+    // GRAPHIC
+    // (vertex source)
+    float cId = currentId[];
+    float oId = otherId[];
+    vec4 vp = currentVertexPos[];
+    vec4 vn = currentVertexNormal[];
+    
+    vec2 x = get_global_id(cId, uBufferWidth, 6.0);
+    vec4 currentPosition = posXYZW[x];
+    float anyData = data[x].x;
+    
+    vec2 xb = get_global_id(oId, uBufferWidth, 6.0);
+    vec4 otherPosition = posXYZW[xb];
+    float otherData = data[xb].x;
+    
+    // (fragment source)
+    vec2 texCoord = get_global_id(vCoord, textureWidth);
+    vec4 textureColor = ImgB[texCoord];
+```
+
 `*attr` for indicate arguments of type "attributes" (Graphic program only). <br />
-`*attr` only allow get the same/current ID value:
-
-```js
-
-    // Vertex part of Graphic program
-    main(float4*attr nodeVertexCoord) {
-        vec4 nvc = nodeVertexCoord[];
-    }
-```
-
-`*` without `attr` allow to get another ID (internally is sampler2D) for to get a specific node data id or a texture location: <br />
-Arguments type sampler2D (no attribute) are allowed to be written by a kernel program.
-
-```js
-
-    // Vertex part of Graphic program
-    main(float4* nodePosition) {
-        vec2 x = get_global_id(ID, bufferWidth, geometryLength);
-        vec4 np = nodePosition[x];
-    }
-```
+`*` Allow update values and to be written by a kernel program; `*attr` no. <br />
+`*` Allow access to another ID; `*attr` Only can access to own ID. <br />
+For to access to `*` value in graphic program must use before get_global_id. <br />
 
 
 
