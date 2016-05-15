@@ -242,13 +242,14 @@ In this example:
                 "float4* data": null,
                 "float*attr currentId": null,
                 "float*attr otherId": null,
-                'float4*attr nodeVertexPos': null,
-                'float4*attr nodeVertexNormal': null,
+                'float4*attr currentVertexPos': null,
+                'float4*attr currentVertexNormal': null,
+                'float4*attr currentVertexTexture': null,
                 'indices': null,
                 'mat4 PMatrix': null,
                 'mat4 cameraWMatrix': null,
                 'mat4 nodeWMatrix': null,
-                'float fontImgColumns': null,
+                'float textureWidth': null,
                 'float4* ImgB': null},
     		
                 {"type": "KERNEL",
@@ -280,6 +281,7 @@ In this example:
                             'float oId = otherId[];'+
                             'vec4 vp = currentVertexPos[];'+
                             'vec4 vn = currentVertexNormal[];'+
+                            'vec4 vt = currentVertexTexture[];'+
                             
                             'vec2 x = get_global_id(cId, uBufferWidth, 6.0);'+
                             'vec4 currentPosition = posXYZW[x];'+
