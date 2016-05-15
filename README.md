@@ -232,7 +232,7 @@ float*attr			        | Array<Float or Int>, Float32Array, Uint8Array, WebGLTextu
 float4*attr		            | Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
 Use float4 instead vec4 only in the definition of the variables (not in code). 
 
-<p>When indicate *attr arguments in Graphic program </p>
+<h3>When indicate *attr arguments in Graphic program </h3>
 In this example:
 
 ```js
@@ -288,7 +288,7 @@ In this example:
 `*attr` for indicate arguments of type "attributes" (Graphic program only). <br />
 `*` Allow update values and to be written by a kernel program; `*attr` no. <br />
 `*` Allow access to another ID; `*attr` Only can access to own ID. <br />
-For to access to `*` value in graphic program must use before get_global_id. <br />
+For to access to any `*` value in graphic program must use before get_global_id. <br />
 
 
 
