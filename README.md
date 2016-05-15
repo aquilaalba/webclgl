@@ -112,9 +112,9 @@ To represent data that evolve over time you can enable the graphical output as f
                                        // head
                                        '',
                                        // source
-                                       'vec3 currentPos = posXYZW[n].xyz;\n'+
-                                       'vec3 newDir = dir[n].xyz*0.995;\n'+
-                                       'return [vec4(newDir,0.0), vec4(currentPos,1.0)+vec4(newDir,0.0)];\n']},
+                                       'vec3 currentPos = posXYZW[n].xyz;'+
+                                       'vec3 newDir = dir[n].xyz*0.995;'+
+                                       'return [vec4(newDir,0.0), vec4(currentPos,1.0)+vec4(newDir,0.0)];']},
                        
                            // GRAPHIC PROGRAM
                            {"type": "GRAPHIC",
@@ -124,20 +124,20 @@ To represent data that evolve over time you can enable the graphical output as f
                                        // vertex source
                                        'vec2 xx = get_global_id(nodeId[], uBufferWidth, 1.0);'+
                                
-                                       'vec4 nodePosition = posXYZW[xx];\n'+ // now use the updated posXYZW
+                                       'vec4 nodePosition = posXYZW[xx];'+ // now use the updated posXYZW
                                        'mat4 nodepos = nodeWMatrix;'+
                                        'nodepos[3][0] = nodePosition.x;'+
                                        'nodepos[3][1] = nodePosition.y;'+
                                        'nodepos[3][2] = nodePosition.z;'+
                                
-                                       'gl_Position = PMatrix * cameraWMatrix * nodepos * vec4(1.0, 1.0, 1.0, 1.0);\n'+
-                                       'gl_PointSize = 2.0;\n',
+                                       'gl_Position = PMatrix * cameraWMatrix * nodepos * vec4(1.0, 1.0, 1.0, 1.0);'+
+                                       'gl_PointSize = 2.0;',
                                
                                        // fragment head
                                        '',
                                
                                        // fragment source
-                                       'gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n']}
+                                       'gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);']}
                          );
 ```
 ```js
@@ -185,8 +185,8 @@ When Max_draw_buffers is equal to 1 you can save only in one variable. For this 
                                        // head
                                        '',
                                        // source
-                                       'vec3 newDir = dir[n].xyz*0.995;\n'+
-                                       'return vec4(newDir,0.0);\n']},
+                                       'vec3 newDir = dir[n].xyz*0.995;'+
+                                       'return vec4(newDir,0.0);']},
                        
                            // KERNEL PROGRAM 2 (for to update "posXYZW" argument from updated "dir" argument on KERNEL1)
                            {"type": "KERNEL",
@@ -200,20 +200,20 @@ When Max_draw_buffers is equal to 1 you can save only in one variable. For this 
                                        // vertex source
                                        'vec2 xx = get_global_id(nodeId[], uBufferWidth, 1.0);'+
                                
-                                       'vec4 nodePosition = posXYZW[xx];\n'+ // now use the updated posXYZW
+                                       'vec4 nodePosition = posXYZW[xx];'+ // now use the updated posXYZW
                                        'mat4 nodepos = nodeWMatrix;'+
                                        'nodepos[3][0] = nodePosition.x;'+
                                        'nodepos[3][1] = nodePosition.y;'+
                                        'nodepos[3][2] = nodePosition.z;'+
                                
-                                       'gl_Position = PMatrix * cameraWMatrix * nodepos * vec4(1.0, 1.0, 1.0, 1.0);\n'+
-                                       'gl_PointSize = 2.0;\n',
+                                       'gl_Position = PMatrix * cameraWMatrix * nodepos * vec4(1.0, 1.0, 1.0, 1.0);'+
+                                       'gl_PointSize = 2.0;',
                                
                                        // fragment head
                                        '',
                                
                                        // fragment source
-                                       'gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n']}
+                                       'gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);']}
                          );
 ```
 
@@ -237,52 +237,70 @@ In this example:
 
 ```js
 
-    // VALUES
-    var values = {
-            'float4* posXYZW': null,
-            "float4* data": null,
-            "float*attr currentId": null,
-    		"float*attr otherId": null,
-            'float4*attr nodeVertexPos': null,
-            'float4*attr nodeVertexNormal': null,
-            'indices': null,
-            'mat4 PMatrix': null,
-            'mat4 cameraWMatrix': null,
-            'mat4 nodeWMatrix': null,
-            'float fontImgColumns': null,
-            'float4* ImgB': null};
+    var gpufG = gpufor( document.getElementById("graph"),
+                {'float4* posXYZW': null,
+                "float4* data": null,
+                "float*attr currentId": null,
+                "float*attr otherId": null,
+                'float4*attr nodeVertexPos': null,
+                'float4*attr nodeVertexNormal': null,
+                'indices': null,
+                'mat4 PMatrix': null,
+                'mat4 cameraWMatrix': null,
+                'mat4 nodeWMatrix': null,
+                'float fontImgColumns': null,
+                'float4* ImgB': null},
     		
-    // KERNEL
-    float cId = currentId[x];
-    vec4 currentPosition = posXYZW[x];
-    float anyData = data[x].x;
+                {"type": "KERNEL",
+                "config": ["x", ["posXYZW"],
+                            // head
+                            '',
+                            // source
+                            'float cId = currentId[x];'+
+                            'vec4 currentPosition = posXYZW[x];'+
+                            'float anyData = data[x].x;'+
+                            
+                            'float oId = otherId[x];'+
+                            'vec2 xb = get_global_id(oId, uBufferWidth, 6.0);'+ // uBufferWidth is built-in variable
+                            'vec4 otherPosition = posXYZW[xb];'+
+                            'float otherData = data[xb].x;'+
+                            
+                            'vec2 texCoord = get_global_id(vec2(64.0, 128.0), textureWidth);'+
+                            'vec4 textureColor = ImgB[texCoord];'+
+                            
+                            '...'
+                          ]},
     
-    float oId = otherId[x];
-    vec2 xb = get_global_id(oId, uBufferWidth, 6.0); // uBufferWidth is built-in variable
-    vec4 otherPosition = posXYZW[xb];
-    float otherData = data[xb].x;
-    
-    vec2 texCoord = get_global_id(vec2(64.0, 128.0), textureWidth);
-    vec4 textureColor = ImgB[texCoord];
-    
-    // GRAPHIC
-    // (vertex source)
-    float cId = currentId[];
-    float oId = otherId[];
-    vec4 vp = currentVertexPos[];
-    vec4 vn = currentVertexNormal[];
-    
-    vec2 x = get_global_id(cId, uBufferWidth, 6.0);
-    vec4 currentPosition = posXYZW[x];
-    float anyData = data[x].x;
-    
-    vec2 xb = get_global_id(oId, uBufferWidth, 6.0);
-    vec4 otherPosition = posXYZW[xb];
-    float otherData = data[xb].x;
-    
-    // (fragment source)
-    vec2 texCoord = get_global_id(vCoord, textureWidth);
-    vec4 textureColor = ImgB[texCoord];
+                {"type": "GRAPHIC",
+                "config": [ // vertex head
+                            '',
+                            
+                            // vertex source
+                            'float cId = currentId[];'+
+                            'float oId = otherId[];'+
+                            'vec4 vp = currentVertexPos[];'+
+                            'vec4 vn = currentVertexNormal[];'+
+                            
+                            'vec2 x = get_global_id(cId, uBufferWidth, 6.0);'+
+                            'vec4 currentPosition = posXYZW[x];'+
+                            'float anyData = data[x].x;'+
+                            
+                            'vec2 xb = get_global_id(oId, uBufferWidth, 6.0);'+
+                            'vec4 otherPosition = posXYZW[xb];'+
+                            'float otherData = data[xb].x;'+
+                            
+                            '...',
+                            
+                            // fragment head
+                            '',
+                            
+                            // fragment source
+                            'vec2 texCoord = get_global_id(vCoord, textureWidth);'+
+                            'vec4 textureColor = ImgB[texCoord];'+
+                            
+                            '...'
+                          ]}
+            );
 ```
 
 `*attr` for indicate arguments of type "attributes" (Graphic program only). <br />
