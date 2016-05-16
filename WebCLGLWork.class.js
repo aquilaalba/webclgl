@@ -143,10 +143,8 @@ WebCLGLWork = function(webCLGL, offset) {
         this.vertexFragmentPrograms[vfpName].enabled = false;
     };
 
-    /**
-     * @private
-     */
-    this.checkArg = function(argument, value) {
+    /** @private  */
+    var checkArg = (function(argument, value) {
         kernelPr = [];
         vPr = [];
         fPr = [];
@@ -213,7 +211,7 @@ WebCLGLWork = function(webCLGL, offset) {
         if(kernelPr.length == 0 && usedInVertex == false && usedInFragment == false &&
             (value instanceof Array || value instanceof Float32Array || value instanceof Uint8Array || value instanceof HTMLImageElement))
             isBuffer = true;
-    };
+    }).bind(this);
 
     /**
      * Assign value of a argument for all added Kernels and vertexFragmentPrograms
@@ -228,7 +226,7 @@ WebCLGLWork = function(webCLGL, offset) {
         if(argument == "indices") {
             this.setIndices(value, splits);
         } else {
-            this.checkArg(argument, value);
+            checkArg(argument, value);
 
             if(overrideType != undefined)
                 type = overrideType;
@@ -315,7 +313,7 @@ WebCLGLWork = function(webCLGL, offset) {
      * @param {WebCLGLWork} clglWork
      */
     this.setSharedBufferArg = function(argument, clglWork) {
-        this.checkArg(argument);
+        checkArg(argument);
 
 
         this.buffers[argument] = clglWork.buffers[argument];
