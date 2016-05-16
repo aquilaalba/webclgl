@@ -440,11 +440,11 @@ var gpufor = function() {
     };
 
     /**
-     * Set shared argument from other work
+     * Set shared argument from other gpufor
      * @param {String} argument Argument to set
      * @param {gpufor} gpufor
      */
-    this.setSharedBufferArg = function(argument, gpufor) {
+    this.setSharedArg = function(argument, gpufor) {
         _clglWork.setSharedBufferArg(argument, gpufor.getWork());
     };
 
