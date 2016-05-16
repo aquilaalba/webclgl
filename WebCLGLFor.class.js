@@ -425,13 +425,9 @@ var gpufor = function() {
      * setArg
      * @param {String} argName
      * @param {Array<Float>|Float32Array|Uint8Array|WebGLTexture|HTMLImageElement} value
-     * @param {Array<Float>} [splits=[value.length]]
-     * @param {Array<Float2>} [overrideDimensions=new Array(){Math.sqrt(value.length), Math.sqrt(value.length)}]
-     * @param {String} [overrideType="FLOAT4"] - force "FLOAT4" or "FLOAT"
-     * @returns {WebCLGLBuffer}
      */
-    this.setArg = function(argName, value, splits, overrideDimensions, overrideType) {
-        return _clglWork.setArg(argName, value, splits, overrideDimensions, overrideType);
+    this.setArg = function(argName, value) {
+        return _clglWork.setArg(argName, value);
     };
 
     /**
