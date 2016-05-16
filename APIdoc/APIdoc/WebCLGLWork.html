@@ -329,7 +329,7 @@
 			
 				
 <dt>
-    <h4 class="name" id="addVertexFragmentProgram"><span class="type-signature"></span>addVertexFragmentProgram<span class="signature">(vertexFragmentProgram, name)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addVertexFragmentProgram"><span class="type-signature"></span>addVertexFragmentProgram<span class="signature">(vertexFragmentProgram, output, name)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -388,6 +388,32 @@
             
 
             <td class="description last"></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>output</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Array.&lt;String></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Used for to write and update ARG name with the result in out_float4/out_float</p></td>
         </tr>
 
 	
@@ -562,7 +588,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-124">line 124</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-126">line 126</a>
     </li></ul></dd>
     
 
@@ -682,7 +708,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-116">line 116</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-118">line 118</a>
     </li></ul></dd>
     
 
@@ -712,7 +738,7 @@
 			
 				
 <dt>
-    <h4 class="name" id="enqueueNDRangeKernel"><span class="type-signature"></span>enqueueNDRangeKernel<span class="signature">(<span class="optional">buffDest</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="enqueueNDRangeKernel"><span class="type-signature"></span>enqueueNDRangeKernel<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -728,75 +754,6 @@
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-
-		<th>Type</th>
-
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-
-	<tbody>
-	
-
-        <tr>
-            
-                <td class="name"><code>buffDest</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Int</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    undefined
-                
-                </td>
-            
-
-            <td class="description last"><p>if 0 then output to null screen</p></td>
-        </tr>
-
-	
-	</tbody>
-</table>
-
     
     
     
@@ -822,7 +779,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-357">line 357</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-403">line 403</a>
     </li></ul></dd>
     
 
@@ -852,7 +809,7 @@
 			
 				
 <dt>
-    <h4 class="name" id="enqueueVertexFragmentProgram"><span class="type-signature"></span>enqueueVertexFragmentProgram<span class="signature">(<span class="optional">argument</span>, drawMode, <span class="optional">buffDest</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="enqueueVertexFragmentProgram"><span class="type-signature"></span>enqueueVertexFragmentProgram<span class="signature">(<span class="optional">argumentInd</span>, drawMode)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -898,7 +855,7 @@
 
         <tr>
             
-                <td class="name"><code>argument</code></td>
+                <td class="name"><code>argumentInd</code></td>
             
 
             <td class="type">
@@ -969,48 +926,6 @@
         </tr>
 
 	
-
-        <tr>
-            
-                <td class="name"><code>buffDest</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="WebCLGLBuffer.html">WebCLGLBuffer</a></span>
-|
-
-<span class="param-type">Array.&lt;<a href="WebCLGLBuffer.html">WebCLGLBuffer</a>></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    undefined
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-	
 	</tbody>
 </table>
 
@@ -1039,7 +954,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-405">line 405</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-424">line 424</a>
     </li></ul></dd>
     
 
@@ -1182,7 +1097,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-283">line 283</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-288">line 288</a>
     </li></ul></dd>
     
 
@@ -1253,7 +1168,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-317">line 317</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-322">line 322</a>
     </li></ul></dd>
     
 
@@ -1392,7 +1307,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-76">line 76</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-75">line 75</a>
     </li></ul></dd>
     
 
@@ -1535,7 +1450,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-68">line 68</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-67">line 67</a>
     </li></ul></dd>
     
 
@@ -1678,7 +1593,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-108">line 108</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-110">line 110</a>
     </li></ul></dd>
     
 
@@ -1821,7 +1736,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-59">line 59</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-58">line 58</a>
     </li></ul></dd>
     
 
@@ -1964,7 +1879,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-99">line 99</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-101">line 101</a>
     </li></ul></dd>
     
 
@@ -2384,7 +2299,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-209">line 209</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-211">line 211</a>
     </li></ul></dd>
     
 
@@ -2578,7 +2493,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-347">line 347</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-352">line 352</a>
     </li></ul></dd>
     
 
@@ -2721,7 +2636,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-296">line 296</a>
+        <a href="WebCLGLWork.class.js.html">WebCLGLWork.class.js</a>, <a href="WebCLGLWork.class.js.html#sunlight-1-line-301">line 301</a>
     </li></ul></dd>
     
 
@@ -2817,7 +2732,7 @@
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha2</a>
-		on Sun May 15 2016 07:07:07 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Mon May 16 2016 12:33:36 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>
