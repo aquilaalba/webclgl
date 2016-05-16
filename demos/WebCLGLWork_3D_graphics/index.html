@@ -223,9 +223,8 @@
 			clglWork.setArg("nodesSize", 30);
 		};
 		var updatePP = function(clglWork) {
-			var kernel = clglWork.getKernel("dir");
-			kernel.setKernelSource(source_direction());
-			clglWork.addKernel(kernel, "dir"); // override old added
+            clglWorkernel_direction_nodes.setKernelSource(source_direction());
+			clglWork.addKernel(clglWorkernel_direction_nodes, "dir"); // override old added
 
 			for(var n = 0, f = arrPP.length; n < f; n++) {
 				clglWork.setArg('pole'+n+'X', arrPP[n].x);
