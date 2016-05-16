@@ -137,7 +137,8 @@ To represent data that evolve over time you can enable the graphical output as f
                                        '',
                                
                                        // fragment source
-                                       'gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);']}
+                                       'return vec4(1.0, 1.0, 1.0, 1.0);' // color
+                                     ]}
                          );
 ```
 ```js
@@ -213,7 +214,7 @@ When Max_draw_buffers is equal to 1 you can save only in one variable. For this 
                                        '',
                                
                                        // fragment source
-                                       'gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);']}
+                                       'return vec4(1.0, 1.0, 1.0, 1.0);']}
                          );
 ```
 
@@ -332,19 +333,25 @@ For to access to any `*` value in graphic program must use before get_global_id.
 <br />
 <br />
 <h3>ChangeLog</h3>
-<h4>v3.1</h4>
-(Graphic mode only)
-- Allow write in more than final variable if client hardware allow (WEBGL_draw_buffers extension) 
-- webCLGL.enqueueNDRangeKernel allow webCLGLBuffer or Array of webCLGLBuffer for destination
-- webCLGLWork.enqueueNDRangeKernel not require any argument (nor webCLGL.copy required)
-- gpufor not require update call
+```
 
-<h4>v3.0</h4>
-- Changed *kernel in VertexFragmentPrograms(VFP) to *attr for indicate arguments of type "attributes". <br />
-- Deleted optional geometryLength argument in enqueueNDRangeKernel & enqueueVertexFragmentProgram. It is indicated through glsl code with next available methods: <br />
-get_global_id(ID, bufferWidth, geometryLength) (in Kernels & vertex of VFP) (The last get_global_id(ID) is removed) <br />
-get_global_id(vec2(row, col), bufferWidth) (in Kernels & fragment of VFP) <br />
-get_global_id() (only in Kernels fot to get) <br />
- <br />
-Changed method setUpdateFromKernel to setAllowKernelWriting in WebCLGLWork <br />
-
+    <h4>v3.2</h4>
+    (Graphic mode only)
+    - Using return instead gl_FragColor in fragment of Graphic program
+    
+    <h4>v3.1</h4>
+    (Graphic mode only)
+    - Allow write in more than final variable if client hardware allow (WEBGL_draw_buffers extension) 
+    - webCLGL.enqueueNDRangeKernel allow webCLGLBuffer or Array of webCLGLBuffer for destination
+    - webCLGLWork.enqueueNDRangeKernel not require any argument (nor webCLGL.copy required)
+    - gpufor not require update call
+    
+    <h4>v3.0</h4>
+    - Changed *kernel in VertexFragmentPrograms(VFP) to *attr for indicate arguments of type "attributes". <br />
+    - Deleted optional geometryLength argument in enqueueNDRangeKernel & enqueueVertexFragmentProgram. It is indicated through glsl code with next available methods: <br />
+    get_global_id(ID, bufferWidth, geometryLength) (in Kernels & vertex of VFP) (The last get_global_id(ID) is removed) <br />
+    get_global_id(vec2(row, col), bufferWidth) (in Kernels & fragment of VFP) <br />
+    get_global_id() (only in Kernels fot to get) <br />
+     <br />
+    Changed method setUpdateFromKernel to setAllowKernelWriting in WebCLGLWork <br />
+```
