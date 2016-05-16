@@ -72,7 +72,7 @@
 
 				// fragment source
 				['void main(float nodesSize) {'+
-					'gl_FragColor = vVertexColor;\n'+
+					'out_float4 = vVertexColor;\n'+
 				 '}']];
 
 			return str_vfp;
@@ -278,7 +278,7 @@
 			                              0.0, 0.0, 1.0, 0.0,
 			                              0.0, 0.0, 0.0, 1.0])));
 			clglWork.setArg("nodesSize", 30);
-			clglWork.enqueueVertexFragmentProgram("posXYZW", "vertexFragmentProgram1", gl.TRIANGLES);
+			clglWork.enqueueVertexFragmentProgram("posXYZW", gl.TRIANGLES);
 		};
 
 		</script>
