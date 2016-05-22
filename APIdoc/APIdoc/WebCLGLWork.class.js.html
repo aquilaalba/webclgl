@@ -108,13 +108,52 @@ WebCLGLWork = function(webCLGL, offset) {
 
     var _alerted = false;
 
+    /** @private */
+    var defineOutputTempModes = function(output, args) {
+        var searchInArgs = function(outputName, args) {
+            var found = false;
+            for(var key in args) {
+                if(key != "indices") {
+                    var expl = key.split(" ");
+                    if(expl.length > 0) {
+                        var argName = expl[1];
+                        if(argName == outputName) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return found;
+        };
+
+        var outputTempModes;
+        if(output instanceof Array) {
+            outputTempModes = [];
+            for(var n=0; n &lt; output.length; n++) {
+                if(output[n] != null) {
+                    outputTempModes[n] = searchInArgs(output[n], args);
+                } else {
+                    outputTempModes[n] = false;
+                }
+            }
+        } else {
+            if(output != null) {
+                outputTempModes = searchInArgs(output, args);
+            }
+        }
+        return outputTempModes;
+    };
+
     /**
      * Add one WebCLGLKernel to the work
      * @param {WebCLGLKernel} kernel
      * @param {String|Array&lt;String>} output - Used for to write and update ARG name with the result in out_float4/out_float
+     * @param {Object} args
      */
-    this.addKernel = function(kernel, output) {
+    this.addKernel = function(kernel, output, args) {
         kernel.output = output;
+        kernel.outputTempModes = defineOutputTempModes(output, args);
 
         var name = Object.keys(this.kernels).length.toString();
 
@@ -172,9 +211,11 @@ WebCLGLWork = function(webCLGL, offset) {
      * Add one WebCLGLVertexFragmentProgram to the work
      * @param {WebCLGLVertexFragmentProgram} vertexFragmentProgram
      * @param {String|Array&lt;String>} output - Used for to write and update ARG name with the result in out_float4/out_float
+     * @param {Object} args
      */
-    this.addVertexFragmentProgram = function(vertexFragmentProgram, output) {
+    this.addVertexFragmentProgram = function(vertexFragmentProgram, output, args) {
         vertexFragmentProgram.output = output;
+        vertexFragmentProgram.outputTempModes = defineOutputTempModes(output, args);
 
         var name = Object.keys(this.vertexFragmentPrograms).length.toString();
 
@@ -292,14 +333,18 @@ WebCLGLWork = function(webCLGL, offset) {
      * @param {Array&lt;Float>|Float32Array|Uint8Array|WebGLTexture|HTMLImageElement} value
      * @param {Array&lt;Float>} [splits=[value.length]]
      * @param {Array&lt;Float2>} [overrideDimensions=new Array(){Math.sqrt(value.length), Math.sqrt(value.length)}]
+     * @param {String} [overrideType="FLOAT4"] - force "FLOAT4" or "FLOAT" (for no graphic program)
      * @returns {WebCLGLBuffer}
      */
-    this.setArg = function(argument, value, splits, overrideDimensions) {
+    this.setArg = function(argument, value, splits, overrideDimensions, overrideType) {
         if(argument == "indices") {
             this.setIndices(value, splits);
         } else {
             checkArg(argument, value);
 
+			if(overrideType != undefined)
+                type = overrideType;
+			
             if(isBuffer == true) {
                 var mode = "SAMPLER"; // "ATTRIBUTE", "SAMPLER", "UNIFORM"
                 if(usedInVertex == true) {
@@ -444,14 +489,21 @@ WebCLGLWork = function(webCLGL, offset) {
                 outputBuff = [];
                 if(prog.output[0] != null) {
                     for(var n=0; n &lt; prog.output.length; n++) {
-                        if(this.buffers_TEMP.hasOwnProperty(prog.output[n]) == false &amp;&amp; _alerted == false)
+                        if(this.buffers.hasOwnProperty(prog.output[n]) == false &amp;&amp; _alerted == false)
                             _alerted = true, alert("output argument "+prog.output[n]+" not found in buffers. add desired argument as shared");
-                        outputBuff[n] = this.buffers_TEMP[prog.output[n]];
+
+                        if(prog.outputTempModes[n] == true)
+                            outputBuff[n] = this.buffers_TEMP[prog.output[n]];
+                        else
+                            outputBuff[n] = this.buffers[prog.output[n]];
                     }
                 } else
                     outputBuff = null;
             } else {
-                outputBuff = this.buffers_TEMP[prog.output];
+                if(prog.outputTempModes == true)
+                    outputBuff = this.buffers_TEMP[prog.output];
+                else
+                    outputBuff = this.buffers[prog.output];
             }
 
             //if(buffDest != null &amp;&amp; buffDest === 0)
@@ -468,11 +520,12 @@ WebCLGLWork = function(webCLGL, offset) {
             if(prog.output != undefined) {
                 if(prog.output instanceof Array) {
                     for(var n=0; n &lt; prog.output.length; n++) {
-                        if(prog.output[n] != null)
+                        if(prog.output[n] != null &amp;&amp; prog.outputTempModes[n] == true)
                             this.webCLGL.copy(this.buffers_TEMP[prog.output[n]], this.buffers[prog.output[n]]);
                     }
                 } else {
-                    this.webCLGL.copy(this.buffers_TEMP[prog.output], this.buffers[prog.output]);
+                    if(prog.output != null &amp;&amp; prog.outputTempModes == true)
+                        this.webCLGL.copy(this.buffers_TEMP[prog.output], this.buffers[prog.output]);
                 }
             }
         }
@@ -552,7 +605,7 @@ WebCLGLWork = function(webCLGL, offset) {
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha2</a>
-		on Tue May 17 2016 02:01:10 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Sun May 22 2016 14:10:16 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>
