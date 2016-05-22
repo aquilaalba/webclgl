@@ -317,8 +317,8 @@ For to access to any `*` value in graphic program must use before get_global_id.
 <h3><a href="https://rawgit.com/stormcolor/webclgl/master/APIdoc/APIdoc/gpufor.html">API Doc WebCLGL</a></h3>
 <h3><a href="http://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf">OpenGL ES Shading Language 1.0 Reference Card (Pag 3-4)</a></h3>
 
-
-
+ <br />
+- <a href="https://github.com/stormcolor/SCEJS"> SCEJS</a> use WebCLGL as low level layer. You can See this for other advanced examples. <br />
 
 <h3>Old demos (without use gpufor function)</h3>
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/basic_sum_AB/index.html"> Basic example A+B</a><br />
@@ -326,9 +326,6 @@ For to access to any `*` value in graphic program must use before get_global_id.
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/benchmarks/index.html"> Benchmarks</a><br />
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/using_vectors/index.html"> Using vectors</a><br />
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/using_vectors_as_output/index.html"> Using vectors as output</a><br />
-- <a href="https://rawgit.com/stormcolor/webclgl/master/demos/WebCLGLWork_3D_graphics/index.html"> Graphic output using WebCLGLWork</a> <br />
-- <a href="https://github.com/stormcolor/SCEJS"> SCEJS</a> use WebCLGL as low level layer. You can See this for advanced examples
-
 
 <br />
 <br />
