@@ -163,62 +163,6 @@ To represent data that evolve over time you can enable the graphical output as f
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics/index.html"> gpufor graphic output</a><br />
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics_geometry/index.html"> gpufor graphic output (using custom geometry)</a><br />
 
-When Max_draw_buffers is equal to 1 you can save only in one variable. For this you can use more Kernels:
-```js
-   
-       var gpufG = gpufor( document.getElementById("graph"),
-                           {"float4* posXYZW": arrayNodePosXYZW,
-                           "float4* dir": arrayNodeDir,
-                           "float*attr nodeId": arrayNodeId,
-                           "mat4 PMatrix": transpose(getProyection()),
-                           "mat4 cameraWMatrix": transpose(new Float32Array([  1.0, 0.0, 0.0, 0.0,
-                                                                               0.0, 1.0, 0.0, 0.0,
-                                                                               0.0, 0.0, 1.0, -100.0,
-                                                                               0.0, 0.0, 0.0, 1.0])),
-                           "mat4 nodeWMatrix": transpose(new Float32Array([1.0, 0.0, 0.0, 0.0,
-                                                                           0.0, 1.0, 0.0, 0.0,
-                                                                           0.0, 0.0, 1.0, 0.0,
-                                                                           0.0, 0.0, 0.0, 1.0]))},
-                       
-                           // KERNEL PROGRAM 1 (for to update "dir" argument)
-                           {"type": "KERNEL",
-                           "config": ["n", "dir",
-                                       // head
-                                       '',
-                                       // source
-                                       'vec3 newDir = dir[n].xyz*0.995;'+
-                                       'return vec4(newDir,0.0);']},
-                       
-                           // KERNEL PROGRAM 2 (for to update "posXYZW" argument from updated "dir" argument on KERNEL1)
-                           {"type": "KERNEL",
-                           "config": ["posXYZW += dir"]},
-                       
-                           // GRAPHIC PROGRAM
-                           {"type": "GRAPHIC",
-                           "config": [ // vertex head
-                                       '',
-                               
-                                       // vertex source
-                                       'vec2 xx = get_global_id(nodeId[], uBufferWidth, 1.0);'+
-                               
-                                       'vec4 nodePosition = posXYZW[xx];'+ // now use the updated posXYZW
-                                       'mat4 nodepos = nodeWMatrix;'+
-                                       'nodepos[3][0] = nodePosition.x;'+
-                                       'nodepos[3][1] = nodePosition.y;'+
-                                       'nodepos[3][2] = nodePosition.z;'+
-                               
-                                       'gl_Position = PMatrix * cameraWMatrix * nodepos * vec4(1.0, 1.0, 1.0, 1.0);'+
-                                       'gl_PointSize = 2.0;',
-                               
-                                       // fragment head
-                                       '',
-                               
-                                       // fragment source
-                                       'return vec4(1.0, 1.0, 1.0, 1.0);']}
-                         );
-```
-
-- <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics_no_mrt/index.html"> gpufor graphic without MRT</a><br />
 
 <h3>Argument types</h3>
 
@@ -317,21 +261,20 @@ For to access to any `*` value in graphic program must use before get_global_id.
 <h3><a href="https://rawgit.com/stormcolor/webclgl/master/APIdoc/APIdoc/gpufor.html">API Doc WebCLGL</a></h3>
 <h3><a href="http://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf">OpenGL ES Shading Language 1.0 Reference Card (Pag 3-4)</a></h3>
 
- <br />
+<br />
 - <a href="https://github.com/stormcolor/SCEJS"> SCEJS</a> use WebCLGL as low level layer. You can See this for other advanced examples. <br />
 
-<h3>Old demos (without use gpufor function)</h3>
-- <a href="https://rawgit.com/stormcolor/webclgl/master/demos/basic_sum_AB/index.html"> Basic example A+B</a><br />
-- <a href="https://rawgit.com/stormcolor/webclgl/master/demos/basic_sum_AB_and_number/index.html"> Basic example A+B+num</a><br />
-- <a href="https://rawgit.com/stormcolor/webclgl/master/demos/benchmarks/index.html"> Benchmarks</a><br />
-- <a href="https://rawgit.com/stormcolor/webclgl/master/demos/using_vectors/index.html"> Using vectors</a><br />
-- <a href="https://rawgit.com/stormcolor/webclgl/master/demos/using_vectors_as_output/index.html"> Using vectors as output</a><br />
 
 <br />
 <br />
 <h3>ChangeLog</h3>
 ```
 
+    <h4>v3.3</h4>
+    - Now is required initialisation through gpufor
+    - WEBGL_draw_buffers extension is now required
+    - FrameBuffer/RenderBuffer reconfiguration (x4-x5 more fast in same hardware)
+    
     <h4>v3.2</h4>
     (Graphic mode only)
     - Using return instead gl_FragColor in fragment of Graphic program
