@@ -306,7 +306,7 @@ WebCLGLUtils = function() {
      * updateFB
      * @private
      */
-    var createFBs = (function(gl, extDB, maxDrawBuffers, pgr, buffers, width, height) {
+    this.createFBs = function(gl, extDB, maxDrawBuffers, pgr, buffers, width, height) {
         var createWebGLFrameBuffer = (function(gl, extDB, pgr, buffers, width, height) {
             var webCLGLBuffers = this.getOutputBuffers(pgr, buffers);
 
@@ -379,16 +379,16 @@ WebCLGLUtils = function() {
         updateFBnow(true, pgr.fBufferTemp, gl, extDB, maxDrawBuffers, pgr, buffers);
 
         return [fBuffer, fBufferTemp];
-    }).bind(this);
+    };
 
     this.checkUpdateFBs = function(gl, glDrawBuff_ext, maxDrawBuffers, pgr, argument, data, buffers) {
         if(buffers != undefined) {
             if(pgr.output != undefined &&
                 ((pgr.output instanceof Array && pgr.output.indexOf(argument) > -1) || (pgr.output == argument))
             ) {
-                var fbs = createFBs(gl, glDrawBuff_ext, maxDrawBuffers, pgr, buffers, data.W, data.H);
+                var fbs = this.createFBs(gl, glDrawBuff_ext, maxDrawBuffers, pgr, buffers, data.W, data.H);
             }
         }
     };
-    
+
 };
