@@ -37,7 +37,7 @@ var gpufor = function() {
             '}';
         var kernel = _webCLGL.createKernel();
         kernel.setKernelSource(ksrc);
-        _clglWork.addKernel(kernel, "result");
+        _clglWork.addKernel(kernel, ["result"]);
 
 
         var buffLength = 0;
