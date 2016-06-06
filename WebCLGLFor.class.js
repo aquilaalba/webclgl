@@ -33,7 +33,7 @@ var gpufor = function() {
 
         var ksrc =   'void main('+strArgs+') {'+
                 'vec2 '+idx+' = get_global_id();'+
-                code.replace("return", ((typOut=="FLOAT")?"out_float":"out_float4")+" = ")+
+                code.replace("return", ((typOut=="FLOAT")?"out0_float":"out0_float4")+" = ")+
             '}';
         var kernel = _webCLGL.createKernel();
         kernel.setKernelSource(ksrc);
