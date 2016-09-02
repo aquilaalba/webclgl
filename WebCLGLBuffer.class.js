@@ -52,10 +52,7 @@ WebCLGLBuffer = function(gl, type, offset, linear, mode) {
             if(arr instanceof HTMLImageElement)  {
                 //texImage2D(target, level, internalformat, format, type, TexImageSource);
                 if(this.type == 'FLOAT4') {
-                    if(_oldW != this.W)
                         _gl.texImage2D(	_gl.TEXTURE_2D, 0, _gl.RGBA, _gl.RGBA, this._supportFormat, arr);
-                    else
-                        _gl.texSubImage2D(_gl.TEXTURE_2D, 0, 0, 0, this.W, this.H, _gl.RGBA, this._supportFormat, arr);
                 }/* else if(this.type == 'INT4') {
                     _gl.texImage2D(_gl.TEXTURE_2D, 0, _gl.RGBA, _gl.RGBA, _gl.UNSIGNED_BYTE, arr);
                  }*/
