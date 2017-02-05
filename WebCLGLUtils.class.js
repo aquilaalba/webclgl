@@ -55,7 +55,7 @@ WebCLGLUtils = function() {
     /** @private **/
     this.getWebGLContextFromCanvas = function(canvas, ctxOpt) {
         var gl;
-        try {
+        /*try {
             if(ctxOpt == undefined) gl = canvas.getContext("webgl2");
             else gl = canvas.getContext("webgl2", ctxOpt);
 
@@ -72,7 +72,7 @@ WebCLGLUtils = function() {
             } catch(e) {
                 gl = null;
             }
-        }
+        }*/
         if(gl == null) {
             try {
                 if(ctxOpt == undefined) gl = canvas.getContext("webgl");
