@@ -86,6 +86,8 @@
 
                                     // KERNEL PROGRAM 1 (update "dir" & "posXYZW" in return instrucction)
                                     {"type": "KERNEL",
+                                    "name": "PARTICLE_KERNEL",
+                                    "viewSource": false,
                                     "config": ["n", ["dir","posXYZW"],
                                                 // head
                                                 '',
@@ -95,10 +97,18 @@
                                                 'vec3 currentPos = posXYZW[n].xyz;\n'+
                                                 pole_code()+
                                                 'vec3 newDir = currentDir*0.995;\n'+
-                                                'return [vec4(newDir,0.0), vec4(currentPos,1.0)+vec4(newDir,0.0)];\n']},
+                                                'return [vec4(newDir,0.0), vec4(currentPos,1.0)+vec4(newDir,0.0)];\n'],
+                                    "drawMode": 4,
+                                    "depthTest": true,
+                                    "blend": false,
+                                    "blendEquation": "FUNC_ADD",
+                                    "blendSrcMode": "SRC_ALPHA",
+                                    "blendDstMode": "ONE_MINUS_SRC_ALPHA"},
 
                                     // GRAPHIC PROGRAM
                                     {"type": "GRAPHIC",
+                                    "name": "PARTICLE_GRAPHIC",
+                                    "viewSource": false,
                                     "config": [  // vertex head
                                                 'varying vec4 vVertexColor;',
 
@@ -121,7 +131,13 @@
                                                 'varying vec4 vVertexColor;',
 
                                                 // fragment source
-                                                'return vVertexColor;\n']
+                                                'return vVertexColor;\n'],
+                                    "drawMode": 0,
+                                    "depthTest": true,
+                                    "blend": false,
+                                    "blendEquation": "FUNC_ADD",
+                                    "blendSrcMode": "SRC_ALPHA",
+                                    "blendDstMode": "ONE_MINUS_SRC_ALPHA"
                                     });
 
             var tick = function() {
@@ -139,7 +155,7 @@
                 gpufG.setArg("PMatrix", transpose(getProyection()));
                 gpufG.setArg("cameraWMatrix", transpose(new Float32Array([	1.0, 0.0, 0.0, 0.0,
                                                                             0.0, 1.0, 0.0, 0.0,
-                                                                            0.0, 0.0, 1.0, -100.0,
+                                                                            0.0, 0.0, 1.0, -100.0+Math.random(),
                                                                             0.0, 0.0, 0.0, 1.0])));
                 gpufG.setArg("nodeWMatrix", transpose(new Float32Array([	1.0, 0.0, 0.0, 0.0,
                                                                             0.0, 1.0, 0.0, 0.0,
@@ -148,7 +164,7 @@
                 //gpufG.setArg("pole1X", 30);
 
 
-                gpufG.processGraphic("posXYZW", gl.POINTS);
+                gpufG.processGraphic("posXYZW");
             };
         </script>
     </body>
