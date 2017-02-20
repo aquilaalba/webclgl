@@ -4,7 +4,7 @@
 WebCLGL use WebGL specification for interpreter the code.<br />
 
 
-<h3>Now only one dependency is required</h3>
+<h3>Import library</h3>
 ```html
 
     <script src="/js/WebCLGL.class.js"></script>
@@ -256,7 +256,7 @@ For to access to any `*` value in graphic program must use before get_global_id.
 
 
 
-<h3><a href="https://rawgit.com/stormcolor/webclgl/master/APIdoc/gpufor.html">API Doc WebCLGL</a></h3>
+<h3><a href="https://rawgit.com/stormcolor/webclgl/master/APIdoc/WebCLGLFor.class.js.html">API Doc WebCLGL</a></h3>
 <h3><a href="http://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf">OpenGL ES Shading Language 1.0 Reference Card (Pag 3-4)</a></h3>
 
 <br />
@@ -267,6 +267,9 @@ For to access to any `*` value in graphic program must use before get_global_id.
 <br />
 <h3>ChangeLog</h3>
 ```
+
+    <h4>v3.4</h4>
+    - drawMode argument in processGraphic now must be indicated from new drawMode attribute of the program json
 
     <h4>v3.3</h4>
     - Now is required initialisation through gpufor
