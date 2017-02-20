@@ -256,7 +256,7 @@ For to access to any `*` value in graphic program must use before get_global_id.
 
 
 
-<h3><a href="https://rawgit.com/stormcolor/webclgl/master/APIdoc/APIdoc/gpufor.html">API Doc WebCLGL</a></h3>
+<h3><a href="https://rawgit.com/stormcolor/webclgl/master/APIdoc/gpufor.html">API Doc WebCLGL</a></h3>
 <h3><a href="http://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf">OpenGL ES Shading Language 1.0 Reference Card (Pag 3-4)</a></h3>
 
 <br />
