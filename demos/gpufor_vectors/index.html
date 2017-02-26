@@ -43,7 +43,7 @@ A+B GPU<div id="DIVC_GPU"></div>
                         'vec4 _B = B[n];'+
                         "float sum = _A+_B.z;"+
                         "return sum;"); // return range is from 0.0 to 1.0
-    document.getElementById('DIVC_GPU').innerText = result[0].join();
+    document.getElementById('DIVC_GPU').innerText = result.join();
 </script>
 </body>
 </html>
