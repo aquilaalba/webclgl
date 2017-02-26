@@ -389,6 +389,9 @@ KERNEL("A","B")->KERNEL("result")->readPixels
 <h3>ChangeLog</h3>
 ```
 
+    <h4>v3.5.1</h4>
+    - getGPUForPointerArg to getGPUForArg, addArgument to addArg, fillPointerArg to fillArg. Added readArg(String)
+    
     <h4>v3.5</h4>
     - readPixel type FLOAT instead UNSIGNED_BYTE (removed unpacks). All enqueueRead methods moved to readBuffer
     

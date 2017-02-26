@@ -267,11 +267,11 @@ var WebCLGLFor = function() {
     }).bind(this);
 
     /**
-     * fillPointerArg
+     * fillArg
      * @param {String} argName
      * @param {Array<Float>} clearColor
      */
-    this.fillPointerArg = function(argName, clearColor) {
+    this.fillArg = function(argName, clearColor) {
         _webCLGL.fillBuffer(this._argsValues[argName].textureData, clearColor, this._argsValues[argName].fBuffer),
         _webCLGL.fillBuffer(this._argsValues[argName].textureDataTemp, clearColor, this._argsValues[argName].fBufferTemp);
     };
@@ -285,19 +285,19 @@ var WebCLGLFor = function() {
     };
 
     /**
-     * addArgument
+     * addArg
      * @param {String} arg
      */
-    this.addArgument = function(arg) {
+    this.addArg = function(arg) {
         this._args[arg] = null;
     };
 
     /**
-     * Get argument from other gpufor (instead of addArgument & setArg)
+     * Get argument from other gpufor (instead of addArg & setArg)
      * @param {String} argument Argument to set
      * @param {WebCLGLFor} gpufor
      */
-    this.getGPUForPointerArg = function(argument, gpufor) {
+    this.getGPUForArg = function(argument, gpufor) {
         if(this.calledArgs.hasOwnProperty(argument) == false)
             this.calledArgs[argument] = [];
         this.calledArgs[argument].push(gpufor);
@@ -382,6 +382,15 @@ var WebCLGLFor = function() {
     };
 
     /**
+     * Get Float32Array array from a argument
+     * @param {String} argument
+     * @returns {Float32Array}
+     */
+    this.readArg = function(argument) {
+        return _webCLGL.readBuffer(this._argsValues[argument]);
+    };
+
+    /**
      * Set indices for the geometry passed in vertexFragmentProgram
      * @param {Array<Float>} arr
      */
@@ -450,9 +459,9 @@ var WebCLGLFor = function() {
                 buffLength = argVal.length;
         }
         if(typOut=="FLOAT")
-            this.addArgument("float* result");
+            this.addArg("float* result");
         else
-            this.addArgument("float4* result");
+            this.addArg("float4* result");
         this.setArg("result", new Float32Array(buffLength), null, typOut);
 
 
