@@ -2,12 +2,12 @@
 
 <h2>Javascript Library for GPGPU computing</h2>
 WebCLGL use WebGL specification for interpreter the code.<br />
-First version of the algoritm created in 2013 is alojed in <a href="https://code.google.com/archive/p/webclgl">GoogleCode</a>. In this WebGL is used like OpenCL for gpgpu calculous using the traditional RenderToTexture technique. <br />
+First version of the algoritm created in 2013 is alojed in <a href="https://code.google.com/archive/p/webclgl">GoogleCode</a>. In this WebGL is used like OpenCL for GPGPU calculous using the traditional RenderToTexture technique. <br />
 
 Features: <br />
 - Basic GPU numeric calculous. <br />
 - WebGL graphics allowing write multiple shaders, interconnect and save arguments. <br />
-- WebCLGL handle any WebGL operation preparing all the neccesary (buffers and program initialization, vertex/fragment programs buffers interconnection, Renders to texture, etc... reducing the time for write any type of advanced shaders. <br /> 
+- WebCLGL handle any WebGL operation preparing all the neccesary (buffers and programs initialization, vertex/fragment programs buffers interconnection, Renders to texture, etc... reducing the time for write any type of advanced shaders. <br /> 
 
 <h3><a href="https://rawgit.com/stormcolor/webclgl/master/APIdoc/WebCLGLFor.html">API Doc WebCLGL</a></h3>
 <h3><a href="http://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf">OpenGL ES Shading Language 1.0 Reference Card (Pag 3-4)</a></h3>
@@ -116,16 +116,25 @@ To represent data that evolve over time you can enable the graphical output indi
                        
                            // KERNEL PROGRAM (update "dir" & "posXYZW" in return instruction)
                            {"type": "KERNEL",
+                            "name": "PROG_KERNEL",
+                            "viewSource": false,
                            "config": ["n", ["dir","posXYZW"],
                                        // head
                                        '',
                                        // source
                                        'vec3 currentPos = posXYZW[n].xyz;'+
                                        'vec3 newDir = dir[n].xyz*0.995;'+
-                                       'return [vec4(newDir,0.0), vec4(currentPos,1.0)+vec4(newDir,0.0)];']},
+                                       'return [vec4(newDir,0.0), vec4(currentPos,1.0)+vec4(newDir,0.0)];'],
+                            "depthTest": true,
+                            "blend": false,
+                            "blendEquation": "FUNC_ADD",
+                            "blendSrcMode": "SRC_ALPHA",
+                            "blendDstMode": "ONE_MINUS_SRC_ALPHA"},
                        
                            // GRAPHIC PROGRAM
                            {"type": "GRAPHIC",
+                            "name": "PROG_GRAPHIC",
+                            "viewSource": false,
                            "config": [ // vertex head
                                        '',
                                
@@ -146,7 +155,13 @@ To represent data that evolve over time you can enable the graphical output indi
                                
                                        // fragment source
                                        'return vec4(1.0, 1.0, 1.0, 1.0);' // color
-                                     ]}
+                                     ],
+                          "drawMode": 4,
+                          "depthTest": true,
+                          "blend": false,
+                          "blendEquation": "FUNC_ADD",
+                          "blendSrcMode": "SRC_ALPHA",
+                          "blendDstMode": "ONE_MINUS_SRC_ALPHA"}
                          );
 ```
 ```js
@@ -168,11 +183,49 @@ To represent data that evolve over time you can enable the graphical output indi
                 };
 ```
 
-First program type KERNEL is a fragment program that perform a RenderToTexture updating the buffers "dir" and "posXYZW". Second program type GRAPHIC is a vertex and fragment program with output to direct screen (framebuffer=null) because we not indicate output in this program. <br />
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics/index.html"> gpufor graphic output</a><br />
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics_geometry/index.html"> gpufor graphic output (using custom geometry)</a><br />
+First program type KERNEL is a fragment program that perform a RenderToTexture updating the buffers "dir" and "posXYZW". Second program type GRAPHIC is a vertex and fragment program with output to direct screen (framebuffer=null) because we not indicate output in this program. <br />
+You can use any number of KERNELS or GRAPHICS on any order. Anterior example use two programs, KERNEL("dir","posXYZW")->GRAPHIC(null=screen) but you can select one appropiate order for you algoritm. Examples: <br />
+GRAPHIC("a","b")->KERNEL(null) <br />
+KERNEL("a")->GRAPHIC("b")->KERNEL(null) <br />
+In case of not indicate the output is same that indicate null as output [null].
+```js
+                  
+   // GRAPHIC PROGRAM
+   {"type": "GRAPHIC",
+   "config": [ [null],
+                // vertex head
+               '',
+                ...
+```
+or
+```js
+                  
+   // GRAPHIC PROGRAM
+   {"type": "GRAPHIC",
+   "config": [ null,
+                // vertex head
+               '',
+                ...
+```
 
-
+You can indicate arguments with a Json as second argument. With <b>setArg</b> method you can update any argument or add new arguments with <b>addArgument</b>/<b>setArg</b>.
+```js
+                  
+   gpufG.addArgument("float4* destination");
+   gpufG.setArg("destination", destinationArray);
+   
+```
+ It also can get argument from others gpufor and to shared a same buffer.
+ ```js
+                   
+    other_gpufG.getGPUForPointerArg("destination", gpufG);
+    ...
+    gpufG.setArg("destination", destinationArray); // update destination for gpufG and other_gpufG
+    
+ ```
+ 
 <h3>Argument types</h3>
 
 Variable type	|	Value
@@ -207,6 +260,8 @@ In this example:
                 'float4* ImgB': null},
     		
                 {"type": "KERNEL",
+                "name": "PROG_KERNEL",
+                "viewSource": false,
                 "config": ["x", ["posXYZW"],
                             // head
                             '',
@@ -224,9 +279,16 @@ In this example:
                             'vec4 textureColor = ImgB[texCoord];'+
                             
                             '...'
-                          ]},
+                          ],
+               "depthTest": true,
+               "blend": false,
+               "blendEquation": "FUNC_ADD",
+               "blendSrcMode": "SRC_ALPHA",
+               "blendDstMode": "ONE_MINUS_SRC_ALPHA"},
     
                 {"type": "GRAPHIC",
+                "name": "PROG_GRAPHIC",
+                "viewSource": false,
                 "config": [ // vertex head
                             '',
                             
@@ -255,7 +317,13 @@ In this example:
                             'vec4 textureColor = ImgB[texCoord];'+
                             
                             '...'
-                          ]}
+                          ],
+                 "drawMode": 4,
+                 "depthTest": true,
+                 "blend": false,
+                 "blendEquation": "FUNC_ADD",
+                 "blendSrcMode": "SRC_ALPHA",
+                 "blendDstMode": "ONE_MINUS_SRC_ALPHA"}
             );
 ```
 
