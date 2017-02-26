@@ -210,7 +210,22 @@ or
                 ...
 ```
 
-You can indicate arguments with a Json as second argument. With <b>setArg</b> method you can update any argument or add new arguments with <b>addArgument</b>/<b>setArg</b>. It also can get argument from others gpufor and to shared a same buffer.<br />
+You can indicate arguments with a Json as second argument. With <b>setArg</b> method you can update any argument or add new arguments with <b>addArgument</b>/<b>setArg</b>.
+```js
+                  
+   gpufG.addArgument("float4* destination");
+   gpufG.setArg("destination", destinationArray);
+   
+```
+ It also can get argument from others gpufor and to shared a same buffer.
+ ```js
+                   
+    other_gpufG.getGPUForPointerArg("destination", gpufG);
+    ...
+    gpufG.setArg("destination", destinationArray); // update destination for gpufG and other_gpufG
+    
+ ```
+ 
 <h3>Argument types</h3>
 
 Variable type	|	Value
