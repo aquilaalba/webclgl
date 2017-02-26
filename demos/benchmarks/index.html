@@ -75,7 +75,7 @@
                                     'for(int nB=0; nB < 10000; nB++) result = sqrt(result+A[n]+B[n]+float(nB));'+
                                     'return result;');
                 document.getElementById('benchmarkGPU').innerText = (new Date().getTime()-dat)+'ms';
-                document.getElementById('DIVC_GPU').innerText = C_GPU[0].join();
+                document.getElementById('DIVC_GPU').innerText = C_GPU.join();
 			};
 			
 			

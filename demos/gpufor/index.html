@@ -50,7 +50,7 @@ A+B GPU<div id="DIVC_GPU"></div>
     var result = gpufor({"float* A": arrayA, "float* B": arrayB}, "n",
                         "float sum = A[n]+B[n];"+
                         "return sum;"); // return range is from 0.0 to 1.0
-    document.getElementById('DIVC_GPU').innerText = result[0].join();
+    document.getElementById('DIVC_GPU').innerText = result.join();
 </script>
 </body>
 </html>

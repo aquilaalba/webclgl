@@ -389,6 +389,9 @@ KERNEL("A","B")->KERNEL("result")->readPixels
 <h3>ChangeLog</h3>
 ```
 
+    <h4>v3.5</h4>
+    - readPixel type FLOAT instead UNSIGNED_BYTE (removed unpacks). All enqueueRead methods moved to readBuffer
+    
     <h4>v3.4</h4>
     - drawMode argument in processGraphic now must be indicated from new drawMode attribute of the program json
 
