@@ -80,14 +80,6 @@ Features: <br />
 
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_vectors_output/index.html"> gpufor vector output</a><br />
 
-<h3>Precision</h3>
-For to change the return precision from 0.0->1.0 by default to -1000.0->1000.0 set the gpufor precision variable:
-```js
-
-    gpufor_precision = 1000.0;
-    var arrayResult = gpufor...
-```
-
 
 <h3>Graphical output</h3>
 The anterior examples only execute one program type "KERNEL" (fragment program), write to a hidden buffer "result", perform readPixels over this buffer and return the output.
@@ -213,14 +205,14 @@ or
 You can indicate arguments with a Json as second argument. With <b>setArg</b> method you can update any argument or add new arguments with <b>addArgument</b>/<b>setArg</b>.
 ```js
                   
-   gpufG.addArgument("float4* destination");
+   gpufG.addArg("float4* destination");
    gpufG.setArg("destination", destinationArray);
    
 ```
  It also can get argument from others gpufor and to shared a same buffer.
  ```js
                    
-    other_gpufG.getGPUForPointerArg("destination", gpufG);
+    other_gpufG.getGPUForArg("destination", gpufG);
     ...
     gpufG.setArg("destination", destinationArray); // update destination for gpufG and other_gpufG
     
@@ -351,12 +343,7 @@ KERNEL("A","B")->KERNEL("result")->readPixels
                                    '',
                                    // source
                                    "float sum = A[n]+B[n];"+
-                                   "return [sum, sum+sum];"],
-                        "depthTest": true,
-                        "blend": false,
-                        "blendEquation": "FUNC_ADD",
-                        "blendSrcMode": "SRC_ALPHA",
-                        "blendDstMode": "ONE_MINUS_SRC_ALPHA"},
+                                   "return [sum, sum+sum];"]},
                    
                        // KERNEL PROGRAM 2
                       {"type": "KERNEL",
@@ -367,15 +354,10 @@ KERNEL("A","B")->KERNEL("result")->readPixels
                                   '',
                                   // source
                                   "float sum = A[n]+B[n];"+ // sum+(sum+sum)
-                                  "return sum;"],
-                       "depthTest": true,
-                       "blend": false,
-                       "blendEquation": "FUNC_ADD",
-                       "blendSrcMode": "SRC_ALPHA",
-                       "blendDstMode": "ONE_MINUS_SRC_ALPHA"}
+                                  "return sum;"]}
                      );
     this.processKernels();
-    var arrayResult = gpufG.getWebCLGL().enqueueReadBuffer_Float(gpufG.getAllArgs()["result"]);
+    var arrayResult = gpufG.readArg("result");
 ```
 
 
