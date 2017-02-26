@@ -1,8 +1,16 @@
 [![Logo](demos/webclgl.jpg)](https://github.com/stormcolor/webclgl)
 
-<h2>Javascript Library for general purpose computing on GPU, aka GPGPU.</h2>
+<h2>Javascript Library for GPGPU computing</h2>
 WebCLGL use WebGL specification for interpreter the code.<br />
+First version of the algoritm created in 2013 is alojed in <a href="https://code.google.com/archive/p/webclgl">GoogleCode</a>. In this WebGL is used like OpenCL for gpgpu calculous using the traditional RenderToTexture technique. <br />
 
+Features: <br />
+- Basic GPU numeric calculous. <br />
+- WebGL graphics allowing write multiple shaders, interconnect and save arguments. <br />
+- WebCLGL handle any WebGL operation preparing all the neccesary (buffers and program initialization, vertex/fragment programs buffers interconnection, Renders to texture, etc... reducing the time for write any type of advanced shaders. <br /> 
+
+<h3><a href="https://rawgit.com/stormcolor/webclgl/master/APIdoc/WebCLGLFor.html">API Doc WebCLGL</a></h3>
+<h3><a href="http://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf">OpenGL ES Shading Language 1.0 Reference Card (Pag 3-4)</a></h3>
 
 <h3>Import library</h3>
 ```html
@@ -72,7 +80,7 @@ WebCLGL use WebGL specification for interpreter the code.<br />
 
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_vectors_output/index.html"> gpufor vector output</a><br />
 
-<h3>Output datatypes</h3>
+<h3>Precision</h3>
 For to change the return precision from 0.0->1.0 by default to -1000.0->1000.0 set the gpufor precision variable:
 ```js
 
@@ -82,7 +90,9 @@ For to change the return precision from 0.0->1.0 by default to -1000.0->1000.0 s
 
 
 <h3>Graphical output</h3>
-To represent data that evolve over time you can enable the graphical output as follows:
+The anterior examples only execute one program type "KERNEL" (fragment program), write to a hidden buffer, perform readPixels and return the output.
+<br />
+To represent data that evolve over time you can enable the graphical output indicating the canvas element as first argument:
 ```html
 
     <canvas id="graph" width="512" height="512"></canvas>
@@ -154,10 +164,11 @@ To represent data that evolve over time you can enable the graphical output as f
     
                     //gpufG.setArg("pole1X", 30);
     
-                    gpufG.processGraphic("posXYZW", gl.POINTS);
+                    gpufG.processGraphic("posXYZW");
                 };
 ```
 
+First program type KERNEL is a fragment program that perform a RenderToTexture updating the buffers "dir" and "posXYZW". Second program type GRAPHIC is a vertex and fragment program with output to direct screen (framebuffer=null) because we not indicate output in this program. <br />
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics/index.html"> gpufor graphic output</a><br />
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics_geometry/index.html"> gpufor graphic output (using custom geometry)</a><br />
 
@@ -256,8 +267,7 @@ For to access to any `*` value in graphic program must use before get_global_id.
 
 
 
-<h3><a href="https://rawgit.com/stormcolor/webclgl/master/APIdoc/WebCLGLFor.html">API Doc WebCLGL</a></h3>
-<h3><a href="http://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf">OpenGL ES Shading Language 1.0 Reference Card (Pag 3-4)</a></h3>
+
 
 <br />
 - <a href="https://github.com/stormcolor/SCEJS"> SCEJS</a> use WebCLGL as low level layer. You can See this for other advanced examples. <br />
