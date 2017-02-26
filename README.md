@@ -90,7 +90,7 @@ For to change the return precision from 0.0->1.0 by default to -1000.0->1000.0 s
 
 
 <h3>Graphical output</h3>
-The anterior examples only execute one program type "KERNEL" (fragment program), write to a hidden buffer, perform readPixels and return the output.
+The anterior examples only execute one program type "KERNEL" (fragment program), write to a hidden buffer "result", perform readPixels over this buffer and return the output.
 <br />
 To represent data that evolve over time you can enable the graphical output indicating the canvas element as first argument:
 ```html
@@ -332,8 +332,50 @@ In this example:
 `*` Allow access to another ID; `*attr` Only can access to own ID. <br />
 For to access to any `*` value in graphic program must use before get_global_id. <br />
 
-
-
+If not need graphic output and you want use various KERNELS for to get the output in numeric mode: <br />
+KERNEL("A","B")->KERNEL("result")->readPixels
+```js
+   
+   var gpufG = gpufor( document.getElementById("graph"), // canvas or existings WebGL context
+                       {"float* A": arrayA,
+                        "float* B": arrayB,
+                        "float* result": null},
+                   
+                       // KERNEL PROGRAM 1
+                       {"type": "KERNEL",
+                        "name": "PROG_KERNEL_1",
+                        "viewSource": false,
+                       "config": ["n", ["A","B"],
+                                   // head
+                                   '',
+                                   // source
+                                   "float sum = A[n]+B[n];"+
+                                   "return [sum, sum+sum];"],
+                        "depthTest": true,
+                        "blend": false,
+                        "blendEquation": "FUNC_ADD",
+                        "blendSrcMode": "SRC_ALPHA",
+                        "blendDstMode": "ONE_MINUS_SRC_ALPHA"},
+                   
+                       // KERNEL PROGRAM 2
+                      {"type": "KERNEL",
+                       "name": "PROG_KERNEL_2",
+                       "viewSource": false,
+                      "config": ["n", ["result"],
+                                  // head
+                                  '',
+                                  // source
+                                  "float sum = A[n]+B[n];"+ // sum+(sum+sum)
+                                  "return sum;"],
+                       "depthTest": true,
+                       "blend": false,
+                       "blendEquation": "FUNC_ADD",
+                       "blendSrcMode": "SRC_ALPHA",
+                       "blendDstMode": "ONE_MINUS_SRC_ALPHA"}
+                     );
+    this.processKernels(false);
+    var arrayResult = gpufG.getWebCLGL().enqueueReadBuffer_Float(gpufG.getAllArgs()["result"]);
+```
 
 
 
