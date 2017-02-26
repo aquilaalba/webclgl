@@ -2,7 +2,7 @@
 
 <h2>Javascript Library for GPGPU computing</h2>
 WebCLGL use WebGL specification for interpreter the code.<br />
-First version of the algoritm created in 2013 is alojed in <a href="https://code.google.com/archive/p/webclgl">GoogleCode</a>. In this WebGL is used like OpenCL for GPGPU calculous using the traditional RenderToTexture technique. <br />
+First version of the algorithm created in 2013 is stored in Google Code. In this WebGL is used like OpenCL for GPGPU calculus using the traditional Render To Texture technique. <br />
 
 Features: <br />
 - Basic GPU numeric calculous. <br />
