@@ -332,6 +332,7 @@ In this example:
 `*` Allow access to another ID; `*attr` Only can access to own ID. <br />
 For to access to any `*` value in graphic program must use before get_global_id. <br />
 
+<h3>Multiples Kernels in numeric mode</h3>
 If not need graphic output and you want use various KERNELS for to get the output in numeric mode: <br />
 KERNEL("A","B")->KERNEL("result")->readPixels
 ```js
@@ -373,7 +374,7 @@ KERNEL("A","B")->KERNEL("result")->readPixels
                        "blendSrcMode": "SRC_ALPHA",
                        "blendDstMode": "ONE_MINUS_SRC_ALPHA"}
                      );
-    this.processKernels(false);
+    this.processKernels();
     var arrayResult = gpufG.getWebCLGL().enqueueReadBuffer_Float(gpufG.getAllArgs()["result"]);
 ```
 
