@@ -356,7 +356,7 @@ KERNEL("A","B")->KERNEL("result")->readPixels
                                   "float sum = A[n]+B[n];"+ // sum+(sum+sum)
                                   "return sum;"]}
                      );
-    this.processKernels();
+    gpufG.processKernels();
     var arrayResult = gpufG.readArg("result");
 ```
 
