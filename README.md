@@ -15,7 +15,7 @@ Features: <br />
 <h3>Import library</h3>
 ```html
 
-    <script src="/js/WebCLGL.class.js"></script>
+    <script src="/js/WebCLGL.min.js"></script>
 ```
 
 <h3>For a simple A+B</h3>
@@ -371,6 +371,9 @@ KERNEL("A","B")->KERNEL("result")->readPixels
 <h3>ChangeLog</h3>
 ```
 
+    <h4>v3.5.2</h4>
+    - using WebCLGL.min.js instead WebCLGL.class.js
+    
     <h4>v3.5.1</h4>
     - getGPUForPointerArg to getGPUForArg, addArgument to addArg, fillPointerArg to fillArg. Added readArg(String)
     
