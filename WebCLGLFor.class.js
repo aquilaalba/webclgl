@@ -585,9 +585,6 @@ var WebCLGLFor = function() {
 
                 if(kernel.onpost != undefined)
                     kernel.onpost();
-
-                if(kernel.depthTest == true)
-                    this._gl.clear(this._gl.DEPTH_BUFFER_BIT);
             }
         }
 
@@ -642,9 +639,6 @@ var WebCLGLFor = function() {
 
                     if(vfp.onpost != undefined)
                         vfp.onpost();
-
-                    if(vfp.depthTest == true)
-                        this._gl.clear(this._gl.DEPTH_BUFFER_BIT);
                 }
             }
         }
