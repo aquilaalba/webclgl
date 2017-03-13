@@ -2,10 +2,10 @@
 
 <h2>Javascript Library for GPGPU computing</h2>
 WebCLGL use WebGL specification for interpreter the code.<br />
-First version of the algorithm created in 2013 is stored in Google Code. In this WebGL is used like OpenCL for GPGPU calculus using the traditional Render To Texture technique. <br />
+First version of the algorithm created in 2013 is hosted in Google Code. In this WebGL is used like OpenCL for GPGPU calculus using the traditional Render To Texture technique. <br />
 
 Features: <br />
-- Basic GPU numeric calculous. <br />
+- Basic numerical calculus on GPU. <br />
 - WebGL graphics allowing write multiple shaders, interconnect and save arguments. <br />
 - WebCLGL handle any WebGL operation preparing all the neccesary (buffers and programs initialization, vertex/fragment programs buffers interconnection, Renders to texture, etc... reducing the time for write any type of advanced shaders. <br /> 
 
@@ -84,7 +84,7 @@ Features: <br />
 <h3>Graphical output</h3>
 The anterior examples only execute one program type "KERNEL" (fragment program), write to a hidden buffer "result", perform readPixels over this buffer and return the output.
 <br />
-To represent data that evolve over time you can enable the graphical output indicating the canvas element as first argument:
+To represent data that evolve over time you can enable the graphical output indicating one WebGLRenderingContext or canvas element as first argument:
 ```html
 
     <canvas id="graph" width="512" height="512"></canvas>
