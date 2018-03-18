@@ -20,6 +20,15 @@ var WebCLGLKernel = function(gl, source, header) {
     this._utils = new WebCLGLUtils();
 
     this.name = "";
+    this.enabled = true;
+
+    this.depthTest = null;
+    this.blend = null;
+    this.blendSrcMode = null;
+    this.blendDstMode = null;
+    this.blendEquation = null;
+    this.onpre = null;
+    this.onpost = null;
     this.viewSource = false;
 
     this.in_values = {};
@@ -92,7 +101,7 @@ var WebCLGLKernel = function(gl, source, header) {
                                     'mat4': "UNIFORM"}[this.in_values[key].type];
 
                 this._utils.checkArgNameInitialization(this.in_values, key);
-                this.in_values[key].location = [this._gl.getUniformLocation(this.kernel, key)];
+                this.in_values[key].location = [this._gl.getUniformLocation(this.kernel, key.replace(/\[\d.*/, ""))];
                 this.in_values[key].expectedMode = expectedMode;
             }
 
@@ -103,7 +112,7 @@ var WebCLGLKernel = function(gl, source, header) {
         var argumentsSource = source.split(')')[0].split('(')[1].split(','); // "float* A", "float* B", "float C", "float4* D"
 
         for(var n = 0, f = argumentsSource.length; n < f; n++) {
-            if(argumentsSource[n].match(/\*/gm) != null) {
+            if(argumentsSource[n].match(/\*/gm) !== null) {
                 var argName = argumentsSource[n].split('*')[1].trim();
                 this._utils.checkArgNameInitialization(this.in_values, argName);
 
@@ -111,8 +120,15 @@ var WebCLGLKernel = function(gl, source, header) {
                     this.in_values[argName].type = 'float4_fromSampler';
                 else if(argumentsSource[n].match(/float/gm) != null)
                     this.in_values[argName].type = 'float_fromSampler';
-            } else if(argumentsSource[n] != "") {
+            } else if(argumentsSource[n] !== "") {
                 var argName = argumentsSource[n].split(' ')[1].trim();
+                for(var key in this.in_values) {
+                    if(key.replace(/\[\d.*/, "") === argName) {
+                        argName = key; // for normal uniform arrays
+                        break;
+                    }
+                }
+
                 this._utils.checkArgNameInitialization(this.in_values, argName);
 
                 if(argumentsSource[n].match(/float4/gm) != null)

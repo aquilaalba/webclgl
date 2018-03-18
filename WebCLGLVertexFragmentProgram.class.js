@@ -77,6 +77,9 @@ var WebCLGLVertexFragmentProgram = function(gl, vertexSource, vertexHeader, frag
 
             this._utils.lines_fragment_attrs(this.in_fragment_values)+
 
+            this._utils.get_global_id3_GLSLFunctionString()+
+            this._utils.get_global_id2_GLSLFunctionString()+
+
             this._fragmentHead+
 
             //_utils.lines_drawBuffersWriteInit(8)+
@@ -104,7 +107,7 @@ var WebCLGLVertexFragmentProgram = function(gl, vertexSource, vertexHeader, frag
                                 'mat4': "UNIFORM"}[this.in_vertex_values[key].type];
 
             this._utils.checkArgNameInitialization(this.in_vertex_values, key);
-            var loc = (expectedMode == "ATTRIBUTE") ? this._gl.getAttribLocation(this.vertexFragmentProgram, key) : this._gl.getUniformLocation(this.vertexFragmentProgram, key);
+            var loc = (expectedMode == "ATTRIBUTE") ? this._gl.getAttribLocation(this.vertexFragmentProgram, key) : this._gl.getUniformLocation(this.vertexFragmentProgram, key.replace(/\[\d.*/, ""));
             this.in_vertex_values[key].location = [loc];
             this.in_vertex_values[key].expectedMode = expectedMode;
         }
@@ -117,7 +120,7 @@ var WebCLGLVertexFragmentProgram = function(gl, vertexSource, vertexHeader, frag
                                 'mat4': "UNIFORM"}[this.in_fragment_values[key].type];
 
             this._utils.checkArgNameInitialization(this.in_fragment_values, key);
-            this.in_fragment_values[key].location = [this._gl.getUniformLocation(this.vertexFragmentProgram, key)];
+            this.in_fragment_values[key].location = [this._gl.getUniformLocation(this.vertexFragmentProgram, key.replace(/\[\d.*/, ""))];
             this.in_fragment_values[key].expectedMode = expectedMode;
         }
 
@@ -134,7 +137,7 @@ var WebCLGLVertexFragmentProgram = function(gl, vertexSource, vertexHeader, frag
         var argumentsSource = vertexSource.split(')')[0].split('(')[1].split(','); // "float* A", "float* B", "float C", "float4* D"
 
         for(var n = 0, f = argumentsSource.length; n < f; n++) {
-            if(argumentsSource[n].match(/\*attr/gm) != null) {
+            if(argumentsSource[n].match(/\*attr/gm) !== null) {
                 var argName = argumentsSource[n].split('*attr')[1].trim();
                 this._utils.checkArgNameInitialization(this.in_vertex_values, argName);
 
@@ -142,7 +145,7 @@ var WebCLGLVertexFragmentProgram = function(gl, vertexSource, vertexHeader, frag
                     this.in_vertex_values[argName].type = 'float4_fromAttr';
                 else if(argumentsSource[n].match(/float/gm) != null)
                     this.in_vertex_values[argName].type = 'float_fromAttr';
-            } else if(argumentsSource[n].match(/\*/gm) != null) {
+            } else if(argumentsSource[n].match(/\*/gm) !== null) {
                 var argName = argumentsSource[n].split('*')[1].trim();
                 this._utils.checkArgNameInitialization(this.in_vertex_values, argName);
 
@@ -150,8 +153,15 @@ var WebCLGLVertexFragmentProgram = function(gl, vertexSource, vertexHeader, frag
                     this.in_vertex_values[argName].type = 'float4_fromSampler';
                 else if(argumentsSource[n].match(/float/gm) != null)
                     this.in_vertex_values[argName].type = 'float_fromSampler';
-            } else if(argumentsSource[n] != "") {
+            } else if(argumentsSource[n] !== "") {
                 var argName = argumentsSource[n].split(' ')[1].trim();
+                for(var key in this.in_vertex_values) {
+                    if(key.replace(/\[\d.*/, "") === argName) {
+                        argName = key; // for normal uniform arrays
+                        break;
+                    }
+                }
+
                 this._utils.checkArgNameInitialization(this.in_vertex_values, argName);
 
                 if(argumentsSource[n].match(/float4/gm) != null)
@@ -195,7 +205,7 @@ var WebCLGLVertexFragmentProgram = function(gl, vertexSource, vertexHeader, frag
         var argumentsSource = fragmentSource.split(')')[0].split('(')[1].split(','); // "float* A", "float* B", "float C", "float4* D"
 
         for(var n = 0, f = argumentsSource.length; n < f; n++) {
-            if(argumentsSource[n].match(/\*/gm) != null) {
+            if(argumentsSource[n].match(/\*/gm) !== null) {
                 var argName = argumentsSource[n].split('*')[1].trim();
                 this._utils.checkArgNameInitialization(this.in_fragment_values, argName);
 
@@ -203,8 +213,15 @@ var WebCLGLVertexFragmentProgram = function(gl, vertexSource, vertexHeader, frag
                     this.in_fragment_values[argName].type = 'float4_fromSampler';
                 else if(argumentsSource[n].match(/float/gm) != null)
                     this.in_fragment_values[argName].type = 'float_fromSampler';
-            } else if(argumentsSource[n] != "") {
+            } else if(argumentsSource[n] !== "") {
                 var argName = argumentsSource[n].split(' ')[1].trim();
+                for(var key in this.in_fragment_values) {
+                    if(key.replace(/\[\d.*/, "") === argName) {
+                        argName = key; // for normal uniform arrays
+                        break;
+                    }
+                }
+
                 this._utils.checkArgNameInitialization(this.in_fragment_values, argName);
 
                 if(argumentsSource[n].match(/float4/gm) != null)

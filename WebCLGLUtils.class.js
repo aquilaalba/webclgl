@@ -8,8 +8,8 @@ var WebCLGLUtils = function() {
      * loadQuad
      */
     this.loadQuad = function(node, length, height) {
-        var l=(length==undefined)?0.5:length;
-        var h=(height==undefined)?0.5:height;
+        var l = (length === undefined || length === null) ? 0.5 : length;
+        var h = (height === undefined || height === null) ? 0.5 : height;
         this.vertexArray = [-l, -h, 0.0,
             l, -h, 0.0,
             l,  h, 0.0,
@@ -38,7 +38,7 @@ var WebCLGLUtils = function() {
     this.getWebGLContextFromCanvas = function(canvas, ctxOpt) {
         var gl;
         /*try {
-            if(ctxOpt == undefined) gl = canvas.getContext("webgl2");
+            if(ctxOpt == undefined || ctxOpt === null) gl = canvas.getContext("webgl2");
             else gl = canvas.getContext("webgl2", ctxOpt);
 
             console.log((gl == null)?"no webgl2":"using webgl2");
@@ -47,7 +47,7 @@ var WebCLGLUtils = function() {
         }
         if(gl == null) {
             try {
-                if(ctxOpt == undefined) gl = canvas.getContext("experimental-webgl2");
+                if(ctxOpt == undefined || ctxOpt === null) gl = canvas.getContext("experimental-webgl2");
                 else gl = canvas.getContext("experimental-webgl2", ctxOpt);
 
                 console.log((gl == null)?"no experimental-webgl2":"using experimental-webgl2");
@@ -57,7 +57,7 @@ var WebCLGLUtils = function() {
         }*/
         if(gl == null) {
             try {
-                if(ctxOpt == undefined) gl = canvas.getContext("webgl");
+                if(ctxOpt === undefined || ctxOpt === null) gl = canvas.getContext("webgl");
                 else gl = canvas.getContext("webgl", ctxOpt);
 
                 console.log((gl == null)?"no webgl":"using webgl");
@@ -67,7 +67,7 @@ var WebCLGLUtils = function() {
         }
         if(gl == null) {
             try {
-                if(ctxOpt == undefined) gl = canvas.getContext("experimental-webgl");
+                if(ctxOpt === undefined || ctxOpt === null) gl = canvas.getContext("experimental-webgl");
                 else gl = canvas.getContext("experimental-webgl", ctxOpt);
 
                 console.log((gl == null)?"no experimental-webgl":"using experimental-webgl");
@@ -103,13 +103,13 @@ var WebCLGLUtils = function() {
                 var lineWithError = false;
                 var errorStr = '';
                 for(var e = 0, fe = arrErrors.length; e < fe; e++) {
-                    if(n == arrErrors[e][0]) {
+                    if(n === arrErrors[e][0]) {
                         lineWithError = true;
                         errorStr = arrErrors[e][1];
                         break;
                     }
                 }
-                if(lineWithError == false) {
+                if(lineWithError === false) {
                     console.log("%c"+n+' %c'+sour[n], "color:black", "color:blue");
                 } else {
                     console.log('%c►►%c'+n+' %c'+sour[n]+'\n%c'+errorStr, "color:red", "color:black", "color:blue", "color:red");
@@ -125,7 +125,7 @@ var WebCLGLUtils = function() {
             var infoLog = gl.getShaderInfoLog(shaderVertex);
             console.log("%c"+name+' ERROR (vertex program)', "color:red");
 
-            if(infoLog != undefined)
+            if(infoLog !== undefined && infoLog !== null)
                 makeDebug(infoLog, shaderVertex);
         } else  {
             gl.attachShader(shaderProgram, shaderVertex);
@@ -139,14 +139,14 @@ var WebCLGLUtils = function() {
             var infoLog = gl.getShaderInfoLog(shaderFragment);
             console.log("%c"+name+' ERROR (fragment program)', "color:red");
 
-            if(infoLog != undefined)
+            if(infoLog !== undefined && infoLog !== null)
                 makeDebug(infoLog, shaderFragment);
         } else {
             gl.attachShader(shaderProgram, shaderFragment);
             _sf = true;
         }
 
-        if(_sv == true && _sf == true) {
+        if(_sv === true && _sf === true) {
             gl.linkProgram(shaderProgram);
             var success = gl.getProgramParameter(shaderProgram, gl.LINK_STATUS);
             if(success) {
@@ -154,7 +154,7 @@ var WebCLGLUtils = function() {
             } else {
                 console.log('Error shader program '+name+':\n ');
                 var log = gl.getProgramInfoLog(shaderProgram);
-                if(log != undefined)
+                if(log !== undefined && log !== null)
                     console.log(log);
                 return false;
             }
@@ -190,7 +190,7 @@ var WebCLGLUtils = function() {
      * Compute the fractional part of the argument. fract(pi)=0.14159265...
      */
     this.fract = function(number) {
-        return number - Math.floor(number);
+        return (number>0) ? number - Math.floor(number) : number - Math.ceil(number);
     };
 
     /**
@@ -261,7 +261,7 @@ var WebCLGLUtils = function() {
      */
     this.getOutputBuffers = function(prog, buffers) {
         var outputBuff = null;
-        if(prog.output != undefined) {
+        if(prog.output !== undefined && prog.output !== null) {
             outputBuff = [];
             if(prog.output[0] != null) {
                 for(var n=0; n < prog.output.length; n++) {
@@ -284,7 +284,7 @@ var WebCLGLUtils = function() {
      */
     this.parseSource = function(source, values) {
         for(var key in values) {
-            var regexp = new RegExp(key+"\\[.*?\\]","gm");
+            var regexp = new RegExp(key+"\\[(?!\\d).*?\\]","gm"); // avoid normal uniform arrays
             var varMatches = source.match(regexp);// "Search current "argName" in source and store in array varMatches
             //console.log(varMatches);
             if(varMatches != null) {
@@ -385,7 +385,7 @@ var WebCLGLUtils = function() {
      * @param {String} argName
      */
     this.checkArgNameInitialization = function(inValues, argName) {
-        if(inValues.hasOwnProperty(argName) == false) {
+        if(inValues.hasOwnProperty(argName) === false) {
             inValues[argName] = {
                 "type": null,
                 "expectedMode": null, // "ATTRIBUTE", "SAMPLER", "UNIFORM"
@@ -399,14 +399,14 @@ var WebCLGLUtils = function() {
     this.get_global_id3_GLSLFunctionString = function() {
         return ''+
         'vec2 get_global_id(float id, float bufferWidth, float geometryLength) {\n'+
+            'float texelSize = 1.0/bufferWidth;'+
+
             'float num = (id*geometryLength)/bufferWidth;'+
-            'float column = fract(num)*bufferWidth;'+
-            'float row = floor(num);'+
+            'float column = fract(num)+(texelSize/2.0);'+
+            'float row = (floor(num)/bufferWidth)+(texelSize/2.0);'+
 
-            'float ts = 1.0/(bufferWidth-1.0);'+
-
-            'return vec2(column*ts, row*ts);'+
-            '}\n';
+            'return vec2(column, row);'+
+        '}\n';
     };
 
     /**
@@ -415,12 +415,12 @@ var WebCLGLUtils = function() {
     this.get_global_id2_GLSLFunctionString = function() {
         return ''+
             'vec2 get_global_id(vec2 id, float bufferWidth) {\n'+
-            'float column = id.x;'+
-            'float row = id.y;'+
+            'float texelSize = 1.0/bufferWidth;'+
 
-            'float ts = 1.0/(bufferWidth-1.0);'+
+            'float column = (id.x/bufferWidth)+(texelSize/2.0);'+
+            'float row = (id.y/bufferWidth)+(texelSize/2.0);'+
 
-            'return vec2(column*ts, row*ts);'+
+            'return vec2(column, row);'+
             '}\n';
     };
     

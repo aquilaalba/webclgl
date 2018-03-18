@@ -344,11 +344,14 @@ var WebCLGL = function(webglcontext) {
      */
     this.bindUniformValue = function(inValue, buff) {
         if(buff != null) {
-            if(inValue.type == 'float')
-                this._gl.uniform1f(inValue.location[0], buff);
-            else if(inValue.type == 'float4')
+            if(inValue.type === 'float') {
+                if(buff.constructor === Array)
+                    this._gl.uniform1fv(inValue.location[0], buff);
+                else
+                    this._gl.uniform1f(inValue.location[0], buff);
+            } else if(inValue.type === 'float4')
                 this._gl.uniform4f(inValue.location[0], buff[0], buff[1], buff[2], buff[3]);
-            else if(inValue.type == 'mat4')
+            else if(inValue.type === 'mat4')
                 this._gl.uniformMatrix4fv(inValue.location[0], false, buff);
         }
     };

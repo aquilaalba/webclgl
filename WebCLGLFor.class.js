@@ -22,11 +22,11 @@ var WebCLGLFor = function() {
         var searchInArgs = function(outputName, args) {
             var found = false;
             for(var key in args) {
-                if(key != "indices") {
+                if(key !== "indices") {
                     var expl = key.split(" ");
                     if(expl.length > 0) {
                         var argName = expl[1];
-                        if(argName == outputName) {
+                        if(argName === outputName) {
                             found = true;
                             break;
                         }
@@ -56,15 +56,15 @@ var WebCLGLFor = function() {
             retCode = retCode.split("[")[1].split("]")[0];
             var itemStr = "", openParenth = 0;
             for(var n=0; n < retCode.length; n++) {
-                if(retCode[n] == "," && openParenth == 0) {
+                if(retCode[n] === "," && openParenth === 0) {
                     objOutStr.push(itemStr);
                     itemStr = "";
                 } else
                     itemStr += retCode[n];
 
-                if(retCode[n] == "(")
+                if(retCode[n] === "(")
                     openParenth++;
-                if(retCode[n] == ")")
+                if(retCode[n] === ")")
                     openParenth--;
             }
             objOutStr.push(itemStr); // and the last
@@ -77,10 +77,10 @@ var WebCLGLFor = function() {
             // set output type float|float4
             var found = false;
             for(var key in this._args) {
-                if(key != "indices") {
+                if(key !== "indices") {
                     var expl = key.split(" ");
 
-                    if(expl[1] == outArg[n]) {
+                    if(expl[1] === outArg[n]) {
                         var mt = expl[0].match(new RegExp("float4", "gm"));
                         returnCode += (mt != null && mt.length > 0) ? "out"+n+"_float4 = "+objOutStr[n]+";\n" : "out"+n+"_float = "+objOutStr[n]+";\n";
 
@@ -89,7 +89,7 @@ var WebCLGLFor = function() {
                     }
                 }
             }
-            if(found == false)
+            if(found === false)
                 returnCode += "out"+n+"_float4 = "+objOutStr[n]+";\n";
         }
         return returnCode;
@@ -115,10 +115,12 @@ var WebCLGLFor = function() {
             var argName = expl[1];
 
             // search arguments in use
-            var matches = (kH+kS).match(new RegExp(argName, "gm"));
-            if(key != "indices" && matches != null && matches.length > 0) {
-                strArgs.push(key.replace("*attr ", "* ")); // make replace for ensure no *attr in KERNEL
-                kernel.in_values[argName] = {};
+            if(argName !== undefined && argName !== null) {
+                var matches = (kH+kS).match(new RegExp(argName.replace(/\[\d.*/, ""), "gm"));
+                if(key !== "indices" && matches != null && matches.length > 0) {
+                    kernel.in_values[argName] = {};
+                    strArgs.push(key.replace("*attr ", "* ").replace(/\[\d.*/, "")); // make replace for ensure no *attr in KERNEL
+                }
             }
         }
 
@@ -155,7 +157,7 @@ var WebCLGLFor = function() {
         var VFP_vertexS;
         var VFP_fragmentH;
         var VFP_fragmentS;
-        if(conf.length == 5) {
+        if(conf.length === 5) {
             outArg = (conf[0] instanceof Array) ? conf[0] : [conf[0]];
             VFP_vertexH = conf[1];
             VFP_vertexS = conf[2];
@@ -177,10 +179,12 @@ var WebCLGLFor = function() {
             var argName = expl[1];
 
             // search arguments in use
-            var matches = (VFP_vertexH+VFP_vertexS).match(new RegExp(argName, "gm"));
-            if(key != "indices" && matches != null && matches.length > 0) {
-                strArgs_v.push(key);
-                vfprogram.in_vertex_values[argName] = {};
+            if(argName !== undefined && argName !== null) {
+                var matches = (VFP_vertexH+VFP_vertexS).match(new RegExp(argName.replace(/\[\d.*/, ""), "gm"));
+                if(key !== "indices" && matches != null && matches.length > 0) {
+                    vfprogram.in_vertex_values[argName] = {};
+                    strArgs_v.push(key.replace(/\[\d.*/, "")); // make replace for ensure no *attr in KERNEL
+                }
             }
         }
         for(var key in this._args) {
@@ -188,10 +192,12 @@ var WebCLGLFor = function() {
             var argName = expl[1];
 
             // search arguments in use
-            var matches = (VFP_fragmentH+VFP_fragmentS).match(new RegExp(argName, "gm"));
-            if(key != "indices" && matches != null && matches.length > 0) {
-                strArgs_f.push(key);
-                vfprogram.in_fragment_values[argName] = {};
+            if(argName !== undefined && argName !== null) {
+                var matches = (VFP_fragmentH+VFP_fragmentS).match(new RegExp(argName.replace(/\[\d.*/, ""), "gm"));
+                if(key !== "indices" && matches != null && matches.length > 0) {
+                    vfprogram.in_fragment_values[argName] = {};
+                    strArgs_f.push(key.replace(/\[\d.*/, "")); // make replace for ensure no *attr in KERNEL
+                }
             }
         }
 
@@ -236,7 +242,7 @@ var WebCLGLFor = function() {
         for(var key in kernels) {
             for(var keyB in kernels[key].in_values) {
                 var inValues = kernels[key].in_values[keyB];
-                if(keyB == argument) {
+                if(keyB === argument) {
                     kernelPr.push(kernels[key]);
                     break;
                 }
@@ -247,7 +253,7 @@ var WebCLGLFor = function() {
         for(var key in vfps) {
             for(var keyB in vfps[key].in_vertex_values) {
                 var inValues = vfps[key].in_vertex_values[keyB];
-                if(keyB == argument) {
+                if(keyB === argument) {
                     usedInVertex = true;
                     break;
                 }
@@ -255,7 +261,7 @@ var WebCLGLFor = function() {
 
             for(var keyB in vfps[key].in_fragment_values) {
                 var inValues = vfps[key].in_fragment_values[keyB];
-                if(keyB == argument) {
+                if(keyB === argument) {
                     usedInFragment = true;
                     break;
                 }
@@ -300,20 +306,20 @@ var WebCLGLFor = function() {
      * @param {WebCLGLFor} gpufor
      */
     this.getGPUForArg = function(argument, gpufor) {
-        if(this.calledArgs.hasOwnProperty(argument) == false)
+        if(this.calledArgs.hasOwnProperty(argument) === false)
             this.calledArgs[argument] = [];
-        if(this.calledArgs[argument].indexOf(gpufor) == -1)
+        if(this.calledArgs[argument].indexOf(gpufor) === -1)
             this.calledArgs[argument].push(gpufor);
 
-        if(gpufor.calledArgs.hasOwnProperty(argument) == false)
+        if(gpufor.calledArgs.hasOwnProperty(argument) === false)
             gpufor.calledArgs[argument] = [];
-        if(gpufor.calledArgs[argument].indexOf(this) == -1)
+        if(gpufor.calledArgs[argument].indexOf(this) === -1)
             gpufor.calledArgs[argument].push(this);
 
 
         for(var key in gpufor._args) {
             var argName = key.split(" ")[1];
-            if(argName == argument) {
+            if(argName === argument) {
                 this._args[key] = gpufor._args[key];
                 this._argsValues[argName] = gpufor._argsValues[argName];
                 break;
@@ -330,30 +336,34 @@ var WebCLGLFor = function() {
      * @returns {float|Array<float>|Float32Array|Uint8Array|WebGLTexture|HTMLImageElement}
      */
     this.setArg = function(argument, value, overrideDimensions, overrideType) {
-        if(argument == "indices") {
+        if(argument === "indices") {
             this.setIndices(value);
         } else {
             for(var key in this._args) {
-                if(key.split(" ")[1] == argument) {
+                var completeVarName = key.split(" ")[1];
+                if(completeVarName !== undefined && completeVarName.replace(/\[\d.*/, "") === argument) {
+                    if(completeVarName !== argument)
+                        argument = completeVarName;
+
                     var updateCalledArg = false;
                     if(key.match(/\*/gm) != null) {
                         // buffer
                         var checkResult = checkArg(argument, this.kernels, this.vertexFragmentPrograms);
 
                         var mode = "SAMPLER"; // ATTRIBUTE or SAMPLER
-                        if(checkResult.usedInVertex == true) {
-                            if(checkResult.kernelPr.length == 0 && checkResult.usedInFragment == false)
+                        if(checkResult.usedInVertex === true) {
+                            if(checkResult.kernelPr.length === 0 && checkResult.usedInFragment === false)
                                 mode = "ATTRIBUTE";
                         }
 
                         var type = key.split("*")[0].toUpperCase();
-                        if(overrideType != undefined)
+                        if(overrideType !== undefined && overrideType !== null)
                             type = overrideType;
 
 
-                        if(value != undefined && value != null) {
-                            if(this._argsValues.hasOwnProperty(argument) == false ||
-                                (this._argsValues.hasOwnProperty(argument) == true && this._argsValues[argument] == null)) {
+                        if(value !== undefined && value !== null) {
+                            if(this._argsValues.hasOwnProperty(argument) === false ||
+                                (this._argsValues.hasOwnProperty(argument) === true && this._argsValues[argument] == null)) {
                                 this._argsValues[argument] = this._webCLGL.createBuffer(type, false, mode);
                                 this._argsValues[argument].argument = argument;
 
@@ -365,13 +375,13 @@ var WebCLGLFor = function() {
                         }
                     } else {
                         // UNIFORM
-                        if(value != undefined && value != null)
+                        if(value !== undefined && value !== null)
                             this._argsValues[argument] = value;
 
                         updateCalledArg = true;
                     }
 
-                    if(updateCalledArg == true && this.calledArgs.hasOwnProperty(argument) == true) {
+                    if(updateCalledArg === true && this.calledArgs.hasOwnProperty(argument) === true) {
                         for(var n=0; n < this.calledArgs[argument].length; n++) {
                             var gpufor = this.calledArgs[argument][n];
                             gpufor._argsValues[argument] = this._argsValues[argument];
@@ -468,7 +478,7 @@ var WebCLGLFor = function() {
      */
     this.getKernel = function(name) {
         for(var key in this.kernels) {
-            if(key == name)
+            if(key === name)
                 return this.kernels[key];
         }
 
@@ -524,7 +534,7 @@ var WebCLGLFor = function() {
      */
     this.getVertexFragmentProgram = function(name) {
         for(var key in this.vertexFragmentPrograms) {
-            if(key == name)
+            if(key === name)
                 return this.vertexFragmentPrograms[key];
         }
 
@@ -541,57 +551,75 @@ var WebCLGLFor = function() {
 
     /**
      * Process kernels
+     * @param {WebCLGLKernel} kernel
+     * @param {boolean} [outputToTemp=null]
+     * @param {boolean} [processCop]
+     */
+    this.processKernel = function(kernel, outputToTemp, processCop) {
+        if(kernel.enabled === true) {
+            if(processCop !== undefined && processCop !== null && processCop === true)
+                this.arrMakeCopy = [];
+
+            //kernel.drawMode
+            if(kernel.depthTest === true)
+                this._gl.enable(this._gl.DEPTH_TEST);
+            else
+                this._gl.disable(this._gl.DEPTH_TEST);
+
+
+            if(kernel.blend === true)
+                this._gl.enable(this._gl.BLEND);
+            else
+                this._gl.disable(this._gl.BLEND);
+
+            this._gl.blendFunc(this._gl[kernel.blendSrcMode], this._gl[kernel.blendDstMode]);
+            this._gl.blendEquation(this._gl[kernel.blendEquation]);
+
+            if(kernel.onpre !== undefined && kernel.onpre !== null)
+                kernel.onpre();
+
+            if(outputToTemp === undefined || outputToTemp === null || outputToTemp === true) {
+                var tempsFound = false;
+                for(var n=0; n < kernel.output.length; n++) {
+                    if(kernel.output[n] != null && kernel.outputTempModes[n] === true) {
+                        tempsFound = true;
+                        break;
+                    }
+                }
+
+                if(tempsFound === true) {
+                    this._webCLGL.enqueueNDRangeKernel(kernel, new WebCLGLUtils().getOutputBuffers(kernel, this._argsValues), true, this._argsValues);
+                    this.arrMakeCopy.push(kernel);
+                } else {
+                    this._webCLGL.enqueueNDRangeKernel(kernel, new WebCLGLUtils().getOutputBuffers(kernel, this._argsValues), false, this._argsValues);
+                }
+            } else
+                this._webCLGL.enqueueNDRangeKernel(kernel, new WebCLGLUtils().getOutputBuffers(kernel, this._argsValues), false, this._argsValues);
+
+            if(kernel.onpost !== undefined && kernel.onpost !== null)
+                kernel.onpost();
+
+            if(processCop !== undefined && processCop !== null && processCop === true)
+                this.processCopies();
+        }
+    };
+
+    this.processCopies = function(outputToTemp) {
+        for(var n=0; n < this.arrMakeCopy.length; n++)
+            this._webCLGL.copy(this.arrMakeCopy[n], new WebCLGLUtils().getOutputBuffers(this.arrMakeCopy[n], this._argsValues));
+    };
+
+    /**
+     * Process kernels
      * @param {boolean} [outputToTemp=null]
      */
     this.processKernels = function(outputToTemp) {
-        var arrMakeCopy = [];
-        for(var key in this.kernels) {
-            var kernel = this.kernels[key];
+        this.arrMakeCopy = [];
 
-            if(kernel.enabled == true) {
-                //kernel.drawMode
-                if(kernel.depthTest == true)
-                    this._gl.enable(this._gl.DEPTH_TEST);
-                else
-                    this._gl.disable(this._gl.DEPTH_TEST);
+        for(var key in this.kernels)
+            this.processKernel(this.kernels[key], outputToTemp);
 
-
-                if(kernel.blend == true)
-                    this._gl.enable(this._gl.BLEND);
-                else
-                    this._gl.disable(this._gl.BLEND);
-
-                this._gl.blendFunc(this._gl[kernel.blendSrcMode], this._gl[kernel.blendDstMode]);
-                this._gl.blendEquation(this._gl[kernel.blendEquation]);
-
-                if(kernel.onpre != undefined)
-                    kernel.onpre();
-
-                if(outputToTemp == undefined || outputToTemp == true) {
-                    var tempsFound = false;
-                    for(var n=0; n < kernel.output.length; n++) {
-                        if(kernel.output[n] != null && kernel.outputTempModes[n] == true) {
-                            tempsFound = true;
-                            break;
-                        }
-                    }
-
-                    if(tempsFound == true) {
-                        this._webCLGL.enqueueNDRangeKernel(kernel, new WebCLGLUtils().getOutputBuffers(kernel, this._argsValues), true, this._argsValues);
-                        arrMakeCopy.push(kernel);
-                    } else {
-                        this._webCLGL.enqueueNDRangeKernel(kernel, new WebCLGLUtils().getOutputBuffers(kernel, this._argsValues), false, this._argsValues);
-                    }
-                } else
-                    this._webCLGL.enqueueNDRangeKernel(kernel, new WebCLGLUtils().getOutputBuffers(kernel, this._argsValues), false, this._argsValues);
-
-                if(kernel.onpost != undefined)
-                    kernel.onpost();
-            }
-        }
-
-        for(var n=0; n < arrMakeCopy.length; n++)
-            this._webCLGL.copy(arrMakeCopy[n], new WebCLGLUtils().getOutputBuffers(arrMakeCopy[n], this._argsValues));
+        this.processCopies();
     };
 
     /**
@@ -603,17 +631,17 @@ var WebCLGLFor = function() {
         for(var key in this.vertexFragmentPrograms) {
             var vfp = this.vertexFragmentPrograms[key];
 
-            if(vfp.enabled == true) {
+            if(vfp.enabled === true) {
                 var buff = (argumentInd == undefined && this.CLGL_bufferIndices != undefined) ? this.CLGL_bufferIndices : this._argsValues[argumentInd];
 
                 if(buff != undefined && buff.length > 0) {
-                    if(vfp.depthTest == true)
+                    if(vfp.depthTest === true)
                         this._gl.enable(this._gl.DEPTH_TEST);
                     else
                         this._gl.disable(this._gl.DEPTH_TEST);
 
 
-                    if(vfp.blend == true)
+                    if(vfp.blend === true)
                         this._gl.enable(this._gl.BLEND);
                     else
                         this._gl.disable(this._gl.BLEND);
@@ -626,13 +654,13 @@ var WebCLGLFor = function() {
 
                     var tempsFound = false;
                     for(var n=0; n < vfp.output.length; n++) {
-                        if(vfp.output[n] != null && vfp.outputTempModes[n] == true) {
+                        if(vfp.output[n] != null && vfp.outputTempModes[n] === true) {
                             tempsFound = true;
                             break;
                         }
                     }
 
-                    if(tempsFound == true) {
+                    if(tempsFound === true) {
                         this._webCLGL.enqueueVertexFragmentProgram(vfp, buff, vfp.drawMode, new WebCLGLUtils().getOutputBuffers(vfp, this._argsValues), true, this._argsValues);
                         arrMakeCopy.push(vfp);
                     } else {
@@ -676,11 +704,11 @@ var WebCLGLFor = function() {
 
             this.setArg(key.split(" ")[1], argVal);
 
-            if(buffLength == 0 &&
+            if(buffLength === 0 &&
                 (argVal instanceof Array || argVal instanceof Float32Array || argVal instanceof Uint8Array || argVal instanceof HTMLImageElement))
                 buffLength = argVal.length;
         }
-        if(typOut=="FLOAT")
+        if(typOut==="FLOAT")
             this.addArg("float* result");
         else
             this.addArg("float4* result");
@@ -713,9 +741,9 @@ var WebCLGLFor = function() {
 
         // kernel & graphics
         for(var i = 2; i < argumentss.length; i++) {
-            if(argumentss[i].type == "KERNEL")
+            if(argumentss[i].type === "KERNEL")
                 this.addKernel(argumentss[i]);
-            else if(argumentss[i].type == "GRAPHIC") // VFP
+            else if(argumentss[i].type === "GRAPHIC") // VFP
                 this.addGraphic(argumentss[i]);
         }
 
@@ -723,7 +751,7 @@ var WebCLGLFor = function() {
         for(var key in this._args) {
             var argVal = this._args[key];
 
-            if(key == "indices") {
+            if(key === "indices") {
                 if(argVal != null)
                     this.setIndices(argVal);
             } else
