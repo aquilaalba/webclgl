@@ -15,7 +15,10 @@ Features: <br />
 <h3>Import library</h3>
 
 ```html
-<script src="/js/WebCLGL.min.js"></script>    
+npm install webclgl
+```
+```html
+<script src="/dist/WebCLGL.min.js"></script>    
 ```
 
 <h3>For a simple A+B</h3>
