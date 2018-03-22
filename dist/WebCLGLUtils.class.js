@@ -450,6 +450,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
 }();
 
 global.WebCLGLUtils = WebCLGLUtils;
+module.exports.WebCLGLUtils = WebCLGLUtils;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1]);

@@ -450,6 +450,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
 }();
 
 global.WebCLGLUtils = WebCLGLUtils;
+module.exports.WebCLGLUtils = WebCLGLUtils;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){
@@ -674,6 +675,7 @@ var WebCLGLVertexFragmentProgram = exports.WebCLGLVertexFragmentProgram = functi
 }();
 
 global.WebCLGLVertexFragmentProgram = WebCLGLVertexFragmentProgram;
+module.exports.WebCLGLVertexFragmentProgram = WebCLGLVertexFragmentProgram;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebCLGLUtils.class":1}]},{},[2]);

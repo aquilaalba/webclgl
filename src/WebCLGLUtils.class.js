@@ -430,3 +430,4 @@ export class WebCLGLUtils {
     
 }
 global.WebCLGLUtils = WebCLGLUtils;
+module.exports.WebCLGLUtils = WebCLGLUtils;

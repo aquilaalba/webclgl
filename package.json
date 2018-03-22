@@ -1,6 +1,6 @@
 {
   "name": "webclgl",
-  "version": "4.0.0",
+  "version": "4.0.16",
   "description": "GPGPU Javascript library",
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
       ]
     ]
   },
+  "main": "dist/WebCLGLFor.class.js",
   "file": "main.js",
   "output": "dist/bundle.js",
   "outputMap": "dist/bundle.js.map",
@@ -49,7 +50,7 @@
     "buildWebCLGLUtils": "browserify src/WebCLGLUtils.class.js -o dist/WebCLGLUtils.class.js",
     "buildWebCLGLVertexFragmentProgram": "browserify src/WebCLGLVertexFragmentProgram.class.js -o dist/WebCLGLVertexFragmentProgram.class.js",
     "buildAll": "yarn buildWebCLGLFor && yarn buildWebCLGL && yarn buildWebCLGLBuffer && yarn buildWebCLGLKernel && yarn buildWebCLGLUtils && yarn buildWebCLGLVertexFragmentProgram",
-    "deploy": "yarn buildAll && uglifyjs dist/WebCLGLFor.class.js dist/WebCLGL.class.js dist/WebCLGLBuffer.class.js dist/WebCLGLKernel.class.js dist/WebCLGLUtils.class.js dist/WebCLGLVertexFragmentProgram.class.js -cmo dist/WebCLGL.min.js",
+    "deploy": "yarn buildAll && uglifyjs dist/WebCLGLFor.class.js dist/WebCLGL.class.js dist/WebCLGLBuffer.class.js dist/WebCLGLKernel.class.js dist/WebCLGLUtils.class.js dist/WebCLGLVertexFragmentProgram.class.js -c -m --source-map -o dist/WebCLGL.min.js",
     "lint": "eslint $npm_package_file"
   },
   "license": "MIT"

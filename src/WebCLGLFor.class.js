@@ -764,6 +764,7 @@ export class WebCLGLFor {
 
 }
 global.WebCLGLFor = WebCLGLFor;
+module.exports.WebCLGLFor = WebCLGLFor;
 
 /**
  * gpufor
@@ -795,3 +796,4 @@ export function gpufor() {
     }
 }
 global.gpufor = gpufor;
+module.exports.gpufor = gpufor;

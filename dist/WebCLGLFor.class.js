@@ -33,6 +33,12 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _WebCLGLBuffer = require("./WebCLGLBuffer.class");
 
+var _WebCLGLKernel = require("./WebCLGLKernel.class");
+
+var _WebCLGLVertexFragmentProgram = require("./WebCLGLVertexFragmentProgram.class");
+
+var _WebCLGLUtils = require("./WebCLGLUtils.class");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -44,15 +50,15 @@ var WebCLGL = exports.WebCLGL = function () {
     function WebCLGL(webglcontext) {
         _classCallCheck(this, WebCLGL);
 
-        this.utils = new WebCLGLUtils();
+        this.utils = new _WebCLGLUtils.WebCLGLUtils();
 
         this._gl = null;
-        this.e = undefined;
+        this.e = null;
         if (webglcontext === undefined || webglcontext === null) {
             this.e = document.createElement('canvas');
             this.e.width = 32;
             this.e.height = 32;
-            this._gl = this.utils.getWebGLContextFromCanvas(this.e, { antialias: false });
+            this._gl = _WebCLGLUtils.WebCLGLUtils.getWebGLContextFromCanvas(this.e, { antialias: false });
         } else this._gl = webglcontext;
 
         this._arrExt = { "OES_texture_float": null, "OES_texture_float_linear": null, "OES_element_index_uint": null, "WEBGL_draw_buffers": null };
@@ -253,7 +259,7 @@ var WebCLGL = exports.WebCLGL = function () {
          * @param {String} [header=undefined] Additional functions
          */
         value: function createKernel(source, header) {
-            return new WebCLGLKernel(this._gl, source, header);
+            return new _WebCLGLKernel.WebCLGLKernel(this._gl, source, header);
         }
     }, {
         key: "createVertexFragmentProgram",
@@ -268,7 +274,7 @@ var WebCLGL = exports.WebCLGL = function () {
          * @param {String} [fragmentHeader=undefined]
          */
         value: function createVertexFragmentProgram(vertexSource, vertexHeader, fragmentSource, fragmentHeader) {
-            return new WebCLGLVertexFragmentProgram(this._gl, vertexSource, vertexHeader, fragmentSource, fragmentHeader);
+            return new _WebCLGLVertexFragmentProgram.WebCLGLVertexFragmentProgram(this._gl, vertexSource, vertexHeader, fragmentSource, fragmentHeader);
         }
     }, {
         key: "fillBuffer",
@@ -474,18 +480,6 @@ var WebCLGL = exports.WebCLGL = function () {
             }
         }
     }, {
-        key: "enqueueReadBuffer_WebGLTexture",
-
-
-        /**
-         * Get the internally WebGLTexture (type FLOAT), if the WebGLRenderingContext was given.
-         * @param {WebCLGLBuffer} buffer
-         * @returns {WebGLTexture}
-         */
-        value: function enqueueReadBuffer_WebGLTexture(buffer) {
-            return buffer.textureData;
-        }
-    }, {
         key: "readBuffer",
 
 
@@ -532,15 +526,28 @@ var WebCLGL = exports.WebCLGL = function () {
 
             return buffer.outArrayFloat;
         }
+    }], [{
+        key: "enqueueReadBuffer_WebGLTexture",
+
+
+        /**
+         * Get the internally WebGLTexture (type FLOAT), if the WebGLRenderingContext was given.
+         * @param {WebCLGLBuffer} buffer
+         * @returns {WebGLTexture}
+         */
+        value: function enqueueReadBuffer_WebGLTexture(buffer) {
+            return buffer.textureData;
+        }
     }]);
 
     return WebCLGL;
 }();
 
 global.WebCLGL = WebCLGL;
+module.exports.WebCLGL = WebCLGL;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./WebCLGLBuffer.class":2}],2:[function(require,module,exports){
+},{"./WebCLGLBuffer.class":2,"./WebCLGLKernel.class":4,"./WebCLGLUtils.class":5,"./WebCLGLVertexFragmentProgram.class":6}],2:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -552,7 +559,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/** 
+/**
 * WebCLGLBuffer
 * @class
  * @param {WebGLRenderingContext} gl
@@ -777,6 +784,7 @@ var WebCLGLBuffer = exports.WebCLGLBuffer = function () {
 }();
 
 global.WebCLGLBuffer = WebCLGLBuffer;
+module.exports.WebCLGLBuffer = WebCLGLBuffer;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],3:[function(require,module,exports){
@@ -1605,6 +1613,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
 }();
 
 global.WebCLGLFor = WebCLGLFor;
+module.exports.WebCLGLFor = WebCLGLFor;
 
 /**
  * gpufor
@@ -1636,9 +1645,153 @@ function gpufor() {
     }
 }
 global.gpufor = gpufor;
+module.exports.gpufor = gpufor;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./WebCLGL.class":1,"./WebCLGLUtils.class":4}],4:[function(require,module,exports){
+},{"./WebCLGL.class":1,"./WebCLGLUtils.class":5}],4:[function(require,module,exports){
+(function (global){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.WebCLGLKernel = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _WebCLGLUtils = require('./WebCLGLUtils.class');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+* WebCLGLKernel Object
+* @class
+ * @param {WebGLRenderingContext} gl
+ * @param {String} source
+ * @param {String} header
+*/
+var WebCLGLKernel = exports.WebCLGLKernel = function () {
+    function WebCLGLKernel(gl, source, header) {
+        _classCallCheck(this, WebCLGLKernel);
+
+        this._gl = gl;
+        var highPrecisionSupport = this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
+        this._precision = highPrecisionSupport.precision !== 0 ? 'precision highp float;\n\nprecision highp int;\n\n' : 'precision lowp float;\n\nprecision lowp int;\n\n';
+
+        var _glDrawBuff_ext = this._gl.getExtension("WEBGL_draw_buffers");
+        this._maxDrawBuffers = null;
+        if (_glDrawBuff_ext != null) this._maxDrawBuffers = this._gl.getParameter(_glDrawBuff_ext.MAX_DRAW_BUFFERS_WEBGL);
+
+        this.name = "";
+        this.enabled = true;
+
+        this.depthTest = null;
+        this.blend = null;
+        this.blendSrcMode = null;
+        this.blendDstMode = null;
+        this.blendEquation = null;
+        this.onpre = null;
+        this.onpost = null;
+        this.viewSource = false;
+
+        this.in_values = {};
+
+        this.output = null; //String or Array<String> of arg names with the items in same order that in the final return
+        this.outputTempModes = null;
+        this.fBuffer = null;
+        this.fBufferTemp = null;
+        this.fBufferLength = 0;
+        this.fBufferCount = 0;
+
+        if (source !== undefined && source !== null) this.setKernelSource(source, header);
+    }
+
+    /**
+     * Update the kernel source
+     * @param {String} source
+     * @param {String} [header=undefined] Additional functions
+     */
+
+
+    _createClass(WebCLGLKernel, [{
+        key: 'setKernelSource',
+        value: function setKernelSource(source, header) {
+            var compile = function () {
+                var sourceVertex = "" + this._precision + 'attribute vec3 aVertexPosition;\n' + 'varying vec2 global_id;\n' + 'void main(void) {\n' + 'gl_Position = vec4(aVertexPosition, 1.0);\n' + 'global_id = aVertexPosition.xy*0.5+0.5;\n' + '}\n';
+                var sourceFragment = '#extension GL_EXT_draw_buffers : require\n' + this._precision + _WebCLGLUtils.WebCLGLUtils.lines_fragment_attrs(this.in_values) + 'varying vec2 global_id;\n' + 'uniform float uBufferWidth;' + 'vec2 get_global_id() {\n' + 'return global_id;\n' + '}\n' + _WebCLGLUtils.WebCLGLUtils.get_global_id3_GLSLFunctionString() + _WebCLGLUtils.WebCLGLUtils.get_global_id2_GLSLFunctionString() + this._head +
+
+                //WebCLGLUtils.lines_drawBuffersWriteInit(8)+
+                'void main(void) {\n' + _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersInit(8) + this._source + _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWrite(8) + '}\n';
+
+                this.kernel = this._gl.createProgram();
+                var result = new _WebCLGLUtils.WebCLGLUtils().createShader(this._gl, "WEBCLGL", sourceVertex, sourceFragment, this.kernel);
+
+                this.attr_VertexPos = this._gl.getAttribLocation(this.kernel, "aVertexPosition");
+
+                this.uBufferWidth = this._gl.getUniformLocation(this.kernel, "uBufferWidth");
+
+                for (var key in this.in_values) {
+                    var expectedMode = { 'float4_fromSampler': "SAMPLER",
+                        'float_fromSampler': "SAMPLER",
+                        'float': "UNIFORM",
+                        'float4': "UNIFORM",
+                        'mat4': "UNIFORM" }[this.in_values[key].type];
+
+                    _WebCLGLUtils.WebCLGLUtils.checkArgNameInitialization(this.in_values, key);
+                    this.in_values[key].location = [this._gl.getUniformLocation(this.kernel, key.replace(/\[\d.*/, ""))];
+                    this.in_values[key].expectedMode = expectedMode;
+                }
+
+                return "VERTEX PROGRAM\n" + sourceVertex + "\n FRAGMENT PROGRAM\n" + sourceFragment;
+            }.bind(this);
+
+            var argumentsSource = source.split(')')[0].split('(')[1].split(','); // "float* A", "float* B", "float C", "float4* D"
+
+            for (var n = 0, f = argumentsSource.length; n < f; n++) {
+                if (argumentsSource[n].match(/\*/gm) !== null) {
+                    var argName = argumentsSource[n].split('*')[1].trim();
+                    _WebCLGLUtils.WebCLGLUtils.checkArgNameInitialization(this.in_values, argName);
+
+                    if (argumentsSource[n].match(/float4/gm) != null) this.in_values[argName].type = 'float4_fromSampler';else if (argumentsSource[n].match(/float/gm) != null) this.in_values[argName].type = 'float_fromSampler';
+                } else if (argumentsSource[n] !== "") {
+                    var _argName = argumentsSource[n].split(' ')[1].trim();
+                    for (var key in this.in_values) {
+                        if (key.replace(/\[\d.*/, "") === _argName) {
+                            _argName = key; // for normal uniform arrays
+                            break;
+                        }
+                    }
+
+                    _WebCLGLUtils.WebCLGLUtils.checkArgNameInitialization(this.in_values, _argName);
+
+                    if (argumentsSource[n].match(/float4/gm) != null) this.in_values[_argName].type = 'float4';else if (argumentsSource[n].match(/float/gm) != null) this.in_values[_argName].type = 'float';else if (argumentsSource[n].match(/mat4/gm) != null) this.in_values[_argName].type = 'mat4';
+                }
+            }
+
+            // parse header
+            this._head = header !== undefined && header !== null ? header : '';
+            this._head = this._head.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
+            this._head = _WebCLGLUtils.WebCLGLUtils.parseSource(this._head, this.in_values);
+
+            // parse source
+            this._source = source.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
+            this._source = this._source.replace(/^\w* \w*\([\w\s\*,]*\) {/gi, '').replace(/}(\s|\t)*$/gi, '');
+            this._source = _WebCLGLUtils.WebCLGLUtils.parseSource(this._source, this.in_values);
+
+            var ts = compile();
+
+            if (this.viewSource === true) console.log('%c KERNEL: ' + this.name, 'font-size: 20px; color: blue'), console.log('%c WEBCLGL --------------------------------', 'color: gray'), console.log('%c ' + header + source, 'color: gray'), console.log('%c TRANSLATED WEBGL ------------------------------', 'color: darkgray'), console.log('%c ' + ts, 'color: darkgray');
+        }
+    }]);
+
+    return WebCLGLKernel;
+}();
+
+global.WebCLGLKernel = WebCLGLKernel;
+module.exports.WebCLGLKernel = WebCLGLKernel;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./WebCLGLUtils.class":5}],5:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -2090,6 +2243,232 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
 }();
 
 global.WebCLGLUtils = WebCLGLUtils;
+module.exports.WebCLGLUtils = WebCLGLUtils;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[3]);
+},{}],6:[function(require,module,exports){
+(function (global){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.WebCLGLVertexFragmentProgram = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _WebCLGLUtils = require('./WebCLGLUtils.class');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+* WebCLGLVertexFragmentProgram Object
+* @class
+ * @param {WebGLRenderingContext} gl
+ * @param {String} vertexSource
+ * @param {String} vertexHeader
+ * @param {String} fragmentSource
+ * @param {String} fragmentHeader
+*/
+var WebCLGLVertexFragmentProgram = exports.WebCLGLVertexFragmentProgram = function () {
+    function WebCLGLVertexFragmentProgram(gl, vertexSource, vertexHeader, fragmentSource, fragmentHeader) {
+        _classCallCheck(this, WebCLGLVertexFragmentProgram);
+
+        this._gl = gl;
+        var highPrecisionSupport = this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
+        this._precision = highPrecisionSupport.precision !== 0 ? 'precision highp float;\n\nprecision highp int;\n\n' : 'precision lowp float;\n\nprecision lowp int;\n\n';
+
+        var _glDrawBuff_ext = this._gl.getExtension("WEBGL_draw_buffers");
+        this._maxDrawBuffers = null;
+        if (_glDrawBuff_ext != null) this._maxDrawBuffers = this._gl.getParameter(_glDrawBuff_ext.MAX_DRAW_BUFFERS_WEBGL);
+
+        this.name = "";
+        this.viewSource = false;
+
+        this.in_vertex_values = {};
+        this.in_fragment_values = {};
+
+        this._vertexP_ready = false;
+        this._fragmentP_ready = false;
+
+        this._vertexHead = null;
+        this._vertexSource = null;
+        this._fragmentHead = null;
+        this._fragmentSource = null;
+
+        this.output = null; //String or Array<String> of arg names with the items in same order that in the final return
+        this.outputTempModes = null;
+        this.fBuffer = null;
+        this.fBufferTemp = null;
+
+        this.drawMode = 4;
+
+        if (vertexSource !== undefined && vertexSource !== null) this.setVertexSource(vertexSource, vertexHeader);
+
+        if (fragmentSource !== undefined && fragmentSource !== null) this.setFragmentSource(fragmentSource, fragmentHeader);
+    }
+
+    /**
+     * compileVertexFragmentSource
+     */
+
+
+    _createClass(WebCLGLVertexFragmentProgram, [{
+        key: 'compileVertexFragmentSource',
+        value: function compileVertexFragmentSource() {
+            var sourceVertex = "" + this._precision + 'uniform float uOffset;\n' + 'uniform float uBufferWidth;' + _WebCLGLUtils.WebCLGLUtils.lines_vertex_attrs(this.in_vertex_values) + _WebCLGLUtils.WebCLGLUtils.unpackGLSLFunctionString() + _WebCLGLUtils.WebCLGLUtils.get_global_id3_GLSLFunctionString() + _WebCLGLUtils.WebCLGLUtils.get_global_id2_GLSLFunctionString() + this._vertexHead + 'void main(void) {\n' + this._vertexSource + '}\n';
+            var sourceFragment = '#extension GL_EXT_draw_buffers : require\n' + this._precision + _WebCLGLUtils.WebCLGLUtils.lines_fragment_attrs(this.in_fragment_values) + _WebCLGLUtils.WebCLGLUtils.get_global_id3_GLSLFunctionString() + _WebCLGLUtils.WebCLGLUtils.get_global_id2_GLSLFunctionString() + this._fragmentHead +
+
+            //WebCLGLUtils.lines_drawBuffersWriteInit(8)+
+            'void main(void) {\n' + _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersInit(8) + this._fragmentSource + _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWrite(8) + '}\n';
+
+            this.vertexFragmentProgram = this._gl.createProgram();
+            var result = new _WebCLGLUtils.WebCLGLUtils().createShader(this._gl, "WEBCLGL VERTEX FRAGMENT PROGRAM", sourceVertex, sourceFragment, this.vertexFragmentProgram);
+
+            this.uOffset = this._gl.getUniformLocation(this.vertexFragmentProgram, "uOffset");
+            this.uBufferWidth = this._gl.getUniformLocation(this.vertexFragmentProgram, "uBufferWidth");
+
+            for (var key in this.in_vertex_values) {
+                var expectedMode = { 'float4_fromSampler': "SAMPLER",
+                    'float_fromSampler': "SAMPLER",
+                    'float4_fromAttr': "ATTRIBUTE",
+                    'float_fromAttr': "ATTRIBUTE",
+                    'float': "UNIFORM",
+                    'float4': "UNIFORM",
+                    'mat4': "UNIFORM" }[this.in_vertex_values[key].type];
+
+                _WebCLGLUtils.WebCLGLUtils.checkArgNameInitialization(this.in_vertex_values, key);
+                var loc = expectedMode === "ATTRIBUTE" ? this._gl.getAttribLocation(this.vertexFragmentProgram, key) : this._gl.getUniformLocation(this.vertexFragmentProgram, key.replace(/\[\d.*/, ""));
+                this.in_vertex_values[key].location = [loc];
+                this.in_vertex_values[key].expectedMode = expectedMode;
+            }
+
+            for (var _key in this.in_fragment_values) {
+                var _expectedMode = { 'float4_fromSampler': "SAMPLER",
+                    'float_fromSampler': "SAMPLER",
+                    'float': "UNIFORM",
+                    'float4': "UNIFORM",
+                    'mat4': "UNIFORM" }[this.in_fragment_values[_key].type];
+
+                _WebCLGLUtils.WebCLGLUtils.checkArgNameInitialization(this.in_fragment_values, _key);
+                this.in_fragment_values[_key].location = [this._gl.getUniformLocation(this.vertexFragmentProgram, _key.replace(/\[\d.*/, ""))];
+                this.in_fragment_values[_key].expectedMode = _expectedMode;
+            }
+
+            return "VERTEX PROGRAM\n" + sourceVertex + "\n FRAGMENT PROGRAM\n" + sourceFragment;
+        }
+    }, {
+        key: 'setVertexSource',
+
+
+        /**
+         * Update the vertex source
+         * @param {String} vertexSource
+         * @param {String} vertexHeader
+         */
+        value: function setVertexSource(vertexSource, vertexHeader) {
+            var argumentsSource = vertexSource.split(')')[0].split('(')[1].split(','); // "float* A", "float* B", "float C", "float4* D"
+
+            for (var n = 0, f = argumentsSource.length; n < f; n++) {
+                if (argumentsSource[n].match(/\*attr/gm) !== null) {
+                    var argName = argumentsSource[n].split('*attr')[1].trim();
+                    _WebCLGLUtils.WebCLGLUtils.checkArgNameInitialization(this.in_vertex_values, argName);
+
+                    if (argumentsSource[n].match(/float4/gm) != null) this.in_vertex_values[argName].type = 'float4_fromAttr';else if (argumentsSource[n].match(/float/gm) != null) this.in_vertex_values[argName].type = 'float_fromAttr';
+                } else if (argumentsSource[n].match(/\*/gm) !== null) {
+                    var _argName = argumentsSource[n].split('*')[1].trim();
+                    _WebCLGLUtils.WebCLGLUtils.checkArgNameInitialization(this.in_vertex_values, _argName);
+
+                    if (argumentsSource[n].match(/float4/gm) != null) this.in_vertex_values[_argName].type = 'float4_fromSampler';else if (argumentsSource[n].match(/float/gm) != null) this.in_vertex_values[_argName].type = 'float_fromSampler';
+                } else if (argumentsSource[n] !== "") {
+                    var _argName2 = argumentsSource[n].split(' ')[1].trim();
+                    for (var key in this.in_vertex_values) {
+                        if (key.replace(/\[\d.*/, "") === _argName2) {
+                            _argName2 = key; // for normal uniform arrays
+                            break;
+                        }
+                    }
+
+                    _WebCLGLUtils.WebCLGLUtils.checkArgNameInitialization(this.in_vertex_values, _argName2);
+
+                    if (argumentsSource[n].match(/float4/gm) != null) this.in_vertex_values[_argName2].type = 'float4';else if (argumentsSource[n].match(/float/gm) != null) this.in_vertex_values[_argName2].type = 'float';else if (argumentsSource[n].match(/mat4/gm) != null) this.in_vertex_values[_argName2].type = 'mat4';
+                }
+            }
+
+            // parse header
+            this._vertexHead = vertexHeader !== undefined && vertexHeader !== null ? vertexHeader : '';
+            this._vertexHead = this._vertexHead.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
+            this._vertexHead = _WebCLGLUtils.WebCLGLUtils.parseSource(this._vertexHead, this.in_vertex_values);
+
+            // parse source
+            this._vertexSource = vertexSource.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
+            this._vertexSource = this._vertexSource.replace(/^\w* \w*\([\w\s\*,]*\) {/gi, '').replace(/}(\s|\t)*$/gi, '');
+            this._vertexSource = _WebCLGLUtils.WebCLGLUtils.parseSource(this._vertexSource, this.in_vertex_values);
+
+            this._vertexP_ready = true;
+            if (this._fragmentP_ready === true) {
+                var ts = this.compileVertexFragmentSource();
+
+                if (this.viewSource === true) console.log('%c VFP: ' + this.name, 'font-size: 20px; color: green'), console.log('%c WEBCLGL --------------------------------', 'color: gray'), console.log('%c ' + vertexHeader + vertexSource, 'color: gray'), console.log('%c TRANSLATED WEBGL ------------------------------', 'color: darkgray'), console.log('%c ' + ts, 'color: darkgray');
+            }
+        }
+    }, {
+        key: 'setFragmentSource',
+
+
+        /**
+         * Update the fragment source
+         * @param {String} fragmentSource
+         * @param {String} fragmentHeader
+         */
+        value: function setFragmentSource(fragmentSource, fragmentHeader) {
+            var argumentsSource = fragmentSource.split(')')[0].split('(')[1].split(','); // "float* A", "float* B", "float C", "float4* D"
+
+            for (var n = 0, f = argumentsSource.length; n < f; n++) {
+                if (argumentsSource[n].match(/\*/gm) !== null) {
+                    var argName = argumentsSource[n].split('*')[1].trim();
+                    _WebCLGLUtils.WebCLGLUtils.checkArgNameInitialization(this.in_fragment_values, argName);
+
+                    if (argumentsSource[n].match(/float4/gm) != null) this.in_fragment_values[argName].type = 'float4_fromSampler';else if (argumentsSource[n].match(/float/gm) != null) this.in_fragment_values[argName].type = 'float_fromSampler';
+                } else if (argumentsSource[n] !== "") {
+                    var _argName3 = argumentsSource[n].split(' ')[1].trim();
+                    for (var key in this.in_fragment_values) {
+                        if (key.replace(/\[\d.*/, "") === _argName3) {
+                            _argName3 = key; // for normal uniform arrays
+                            break;
+                        }
+                    }
+
+                    _WebCLGLUtils.WebCLGLUtils.checkArgNameInitialization(this.in_fragment_values, _argName3);
+
+                    if (argumentsSource[n].match(/float4/gm) != null) this.in_fragment_values[_argName3].type = 'float4';else if (argumentsSource[n].match(/float/gm) != null) this.in_fragment_values[_argName3].type = 'float';else if (argumentsSource[n].match(/mat4/gm) != null) this.in_fragment_values[_argName3].type = 'mat4';
+                }
+            }
+
+            // parse header
+            this._fragmentHead = fragmentHeader !== undefined && fragmentHeader !== null ? fragmentHeader : '';
+            this._fragmentHead = this._fragmentHead.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
+            this._fragmentHead = _WebCLGLUtils.WebCLGLUtils.parseSource(this._fragmentHead, this.in_fragment_values);
+
+            // parse source
+            this._fragmentSource = fragmentSource.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
+            this._fragmentSource = this._fragmentSource.replace(/^\w* \w*\([\w\s\*,]*\) {/gi, '').replace(/}(\s|\t)*$/gi, '');
+            this._fragmentSource = _WebCLGLUtils.WebCLGLUtils.parseSource(this._fragmentSource, this.in_fragment_values);
+
+            this._fragmentP_ready = true;
+            if (this._vertexP_ready === true) {
+                var ts = this.compileVertexFragmentSource();
+
+                if (this.viewSource === true) console.log('%c VFP: ', 'font-size: 20px; color: green'), console.log('%c WEBCLGL --------------------------------', 'color: gray'), console.log('%c ' + fragmentHeader + fragmentSource, 'color: gray'), console.log('%c TRANSLATED WEBGL ------------------------------', 'color: darkgray'), console.log('%c ' + ts, 'color: darkgray');
+            }
+        }
+    }]);
+
+    return WebCLGLVertexFragmentProgram;
+}();
+
+global.WebCLGLVertexFragmentProgram = WebCLGLVertexFragmentProgram;
+module.exports.WebCLGLVertexFragmentProgram = WebCLGLVertexFragmentProgram;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./WebCLGLUtils.class":5}]},{},[3]);

@@ -1,4 +1,4 @@
-/** 
+/**
 * WebCLGLBuffer
 * @class
  * @param {WebGLRenderingContext} gl
@@ -216,3 +216,4 @@ export class WebCLGLBuffer {
 
 }
 global.WebCLGLBuffer = WebCLGLBuffer;
+module.exports.WebCLGLBuffer = WebCLGLBuffer;

@@ -1,4 +1,5 @@
 import {WebCLGLUtils} from "./WebCLGLUtils.class";
+
 /**
 * WebCLGLKernel Object
 * @class
@@ -160,3 +161,4 @@ export class WebCLGLKernel {
 
 }
 global.WebCLGLKernel = WebCLGLKernel;
+module.exports.WebCLGLKernel = WebCLGLKernel;

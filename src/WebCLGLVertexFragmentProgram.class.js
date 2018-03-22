@@ -1,4 +1,5 @@
 import {WebCLGLUtils} from "./WebCLGLUtils.class";
+
 /**
 * WebCLGLVertexFragmentProgram Object
 * @class
@@ -257,3 +258,4 @@ export class WebCLGLVertexFragmentProgram {
 
 }
 global.WebCLGLVertexFragmentProgram = WebCLGLVertexFragmentProgram;
+module.exports.WebCLGLVertexFragmentProgram = WebCLGLVertexFragmentProgram;

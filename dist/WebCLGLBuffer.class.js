@@ -10,7 +10,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/** 
+/**
 * WebCLGLBuffer
 * @class
  * @param {WebGLRenderingContext} gl
@@ -235,6 +235,7 @@ var WebCLGLBuffer = exports.WebCLGLBuffer = function () {
 }();
 
 global.WebCLGLBuffer = WebCLGLBuffer;
+module.exports.WebCLGLBuffer = WebCLGLBuffer;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1]);

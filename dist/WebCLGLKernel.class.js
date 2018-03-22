@@ -138,6 +138,7 @@ var WebCLGLKernel = exports.WebCLGLKernel = function () {
 }();
 
 global.WebCLGLKernel = WebCLGLKernel;
+module.exports.WebCLGLKernel = WebCLGLKernel;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebCLGLUtils.class":2}],2:[function(require,module,exports){
@@ -592,6 +593,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
 }();
 
 global.WebCLGLUtils = WebCLGLUtils;
+module.exports.WebCLGLUtils = WebCLGLUtils;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1]);

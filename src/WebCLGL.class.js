@@ -23,6 +23,9 @@ THE SOFTWARE.
  */
 
 import {WebCLGLBuffer} from "./WebCLGLBuffer.class";
+import {WebCLGLKernel} from "./WebCLGLKernel.class";
+import {WebCLGLVertexFragmentProgram} from "./WebCLGLVertexFragmentProgram.class";
+import {WebCLGLUtils} from "./WebCLGLUtils.class";
 
 /**
 * Class for parallelization of calculations using the WebGL context similarly to webcl
@@ -34,12 +37,12 @@ export class WebCLGL {
         this.utils = new WebCLGLUtils();
 
         this._gl = null;
-        this.e = undefined;
+        this.e = null;
         if(webglcontext === undefined || webglcontext === null) {
             this.e = document.createElement('canvas');
             this.e.width = 32;
             this.e.height = 32;
-            this._gl = this.utils.getWebGLContextFromCanvas(this.e, {antialias: false});
+            this._gl = WebCLGLUtils.getWebGLContextFromCanvas(this.e, {antialias: false});
         } else this._gl = webglcontext;
 
         this._arrExt = {"OES_texture_float":null, "OES_texture_float_linear":null, "OES_element_index_uint":null, "WEBGL_draw_buffers":null};
@@ -475,7 +478,7 @@ export class WebCLGL {
      * @param {WebCLGLBuffer} buffer
      * @returns {WebGLTexture}
      */
-    enqueueReadBuffer_WebGLTexture(buffer) {
+    static enqueueReadBuffer_WebGLTexture(buffer) {
         return buffer.textureData;
     };
 
@@ -527,3 +530,4 @@ export class WebCLGL {
 
 }
 global.WebCLGL = WebCLGL;
+module.exports.WebCLGL = WebCLGL;
