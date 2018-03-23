@@ -236,6 +236,5 @@ var WebCLGLBuffer = exports.WebCLGLBuffer = function () {
 
 global.WebCLGLBuffer = WebCLGLBuffer;
 module.exports.WebCLGLBuffer = WebCLGLBuffer;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1]);

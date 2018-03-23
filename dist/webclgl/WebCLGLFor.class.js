@@ -545,7 +545,6 @@ var WebCLGL = exports.WebCLGL = function () {
 
 global.WebCLGL = WebCLGL;
 module.exports.WebCLGL = WebCLGL;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebCLGLBuffer.class":2,"./WebCLGLKernel.class":4,"./WebCLGLUtils.class":5,"./WebCLGLVertexFragmentProgram.class":6}],2:[function(require,module,exports){
 (function (global){
@@ -785,7 +784,6 @@ var WebCLGLBuffer = exports.WebCLGLBuffer = function () {
 
 global.WebCLGLBuffer = WebCLGLBuffer;
 module.exports.WebCLGLBuffer = WebCLGLBuffer;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],3:[function(require,module,exports){
 (function (global){
@@ -1646,7 +1644,6 @@ function gpufor() {
 }
 global.gpufor = gpufor;
 module.exports.gpufor = gpufor;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebCLGL.class":1,"./WebCLGLUtils.class":5}],4:[function(require,module,exports){
 (function (global){
@@ -1789,7 +1786,6 @@ var WebCLGLKernel = exports.WebCLGLKernel = function () {
 
 global.WebCLGLKernel = WebCLGLKernel;
 module.exports.WebCLGLKernel = WebCLGLKernel;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebCLGLUtils.class":5}],5:[function(require,module,exports){
 (function (global){
@@ -2244,7 +2240,6 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
 
 global.WebCLGLUtils = WebCLGLUtils;
 module.exports.WebCLGLUtils = WebCLGLUtils;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],6:[function(require,module,exports){
 (function (global){
@@ -2469,6 +2464,5 @@ var WebCLGLVertexFragmentProgram = exports.WebCLGLVertexFragmentProgram = functi
 
 global.WebCLGLVertexFragmentProgram = WebCLGLVertexFragmentProgram;
 module.exports.WebCLGLVertexFragmentProgram = WebCLGLVertexFragmentProgram;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebCLGLUtils.class":5}]},{},[3]);

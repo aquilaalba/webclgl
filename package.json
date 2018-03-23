@@ -1,13 +1,12 @@
 {
   "name": "webclgl",
-  "version": "4.0.16",
+  "version": "4.0.17",
   "description": "GPGPU Javascript library",
   "repository": {
     "type": "git",
     "url": "https://github.com/stormcolor/webclgl.git"
   },
   "dependencies": {
-    "babel-polyfill": "~6.26.0"
   },
   "devDependencies": {
     "babel-plugin-syntax-async-functions": "~6.13.0",
@@ -20,38 +19,10 @@
     "uglify-js": "~3.0.28",
     "watchify": "~3.9.0"
   },
-  "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "es2015"
-          ],
-          "plugins": [
-            "syntax-async-functions",
-            "transform-regenerator"
-          ]
-        }
-      ]
-    ]
-  },
   "main": "dist/WebCLGLFor.class.js",
-  "file": "main.js",
-  "output": "dist/bundle.js",
-  "outputMap": "dist/bundle.js.map",
   "scripts": {
-    "prep": "yarn && mkdirp dist",
-    "watch": "watchify $npm_package_file -v --debug -o $npm_package_output",
-    "buildWebCLGLFor": "browserify src/WebCLGLFor.class.js -o dist/WebCLGLFor.class.js",
-    "buildWebCLGL": "browserify src/WebCLGL.class.js -o dist/WebCLGL.class.js",
-    "buildWebCLGLBuffer": "browserify src/WebCLGLBuffer.class.js -o dist/WebCLGLBuffer.class.js",
-    "buildWebCLGLKernel": "browserify src/WebCLGLKernel.class.js -o dist/WebCLGLKernel.class.js",
-    "buildWebCLGLUtils": "browserify src/WebCLGLUtils.class.js -o dist/WebCLGLUtils.class.js",
-    "buildWebCLGLVertexFragmentProgram": "browserify src/WebCLGLVertexFragmentProgram.class.js -o dist/WebCLGLVertexFragmentProgram.class.js",
-    "buildAll": "yarn buildWebCLGLFor && yarn buildWebCLGL && yarn buildWebCLGLBuffer && yarn buildWebCLGLKernel && yarn buildWebCLGLUtils && yarn buildWebCLGLVertexFragmentProgram",
-    "deploy": "yarn buildAll && uglifyjs dist/WebCLGLFor.class.js dist/WebCLGL.class.js dist/WebCLGLBuffer.class.js dist/WebCLGLKernel.class.js dist/WebCLGLUtils.class.js dist/WebCLGLVertexFragmentProgram.class.js -c -m --source-map -o dist/WebCLGL.min.js",
-    "lint": "eslint $npm_package_file"
+    "build": "node build.js -b -s",
+    "build_deploy": "node build.js -b && node build.js -d=dist/webclgl/WebCLGL.min.js"
   },
   "license": "MIT"
 }

@@ -3,20 +3,21 @@
   <component name="ChangeListManager">
     <list default="true" id="d7c1a116-04df-4757-983c-bf1e2b6f06b3" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/dist/WebCLGL.class.js" afterPath="$PROJECT_DIR$/dist/WebCLGL.class.js" />
-      <change beforePath="$PROJECT_DIR$/dist/WebCLGL.min.js" afterPath="$PROJECT_DIR$/dist/WebCLGL.min.js" />
-      <change beforePath="$PROJECT_DIR$/dist/WebCLGLBuffer.class.js" afterPath="$PROJECT_DIR$/dist/WebCLGLBuffer.class.js" />
-      <change beforePath="$PROJECT_DIR$/dist/WebCLGLFor.class.js" afterPath="$PROJECT_DIR$/dist/WebCLGLFor.class.js" />
-      <change beforePath="$PROJECT_DIR$/dist/WebCLGLKernel.class.js" afterPath="$PROJECT_DIR$/dist/WebCLGLKernel.class.js" />
-      <change beforePath="$PROJECT_DIR$/dist/WebCLGLUtils.class.js" afterPath="$PROJECT_DIR$/dist/WebCLGLUtils.class.js" />
-      <change beforePath="$PROJECT_DIR$/dist/WebCLGLVertexFragmentProgram.class.js" afterPath="$PROJECT_DIR$/dist/WebCLGLVertexFragmentProgram.class.js" />
+      <change beforePath="$PROJECT_DIR$/dist/WebCLGL.class.js" afterPath="$PROJECT_DIR$/dist/webclgl/WebCLGL.class.js" />
+      <change beforePath="$PROJECT_DIR$/dist/WebCLGL.min.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/dist/WebCLGL.min.js.map" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/dist/WebCLGLBuffer.class.js" afterPath="$PROJECT_DIR$/dist/webclgl/WebCLGLBuffer.class.js" />
+      <change beforePath="$PROJECT_DIR$/dist/WebCLGLFor.class.js" afterPath="$PROJECT_DIR$/dist/webclgl/WebCLGLFor.class.js" />
+      <change beforePath="$PROJECT_DIR$/dist/WebCLGLKernel.class.js" afterPath="$PROJECT_DIR$/dist/webclgl/WebCLGLKernel.class.js" />
+      <change beforePath="$PROJECT_DIR$/dist/WebCLGLUtils.class.js" afterPath="$PROJECT_DIR$/dist/webclgl/WebCLGLUtils.class.js" />
+      <change beforePath="$PROJECT_DIR$/dist/WebCLGLVertexFragmentProgram.class.js" afterPath="$PROJECT_DIR$/dist/webclgl/WebCLGLVertexFragmentProgram.class.js" />
       <change beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change beforePath="$PROJECT_DIR$/src/WebCLGL.class.js" afterPath="$PROJECT_DIR$/src/WebCLGL.class.js" />
-      <change beforePath="$PROJECT_DIR$/src/WebCLGLBuffer.class.js" afterPath="$PROJECT_DIR$/src/WebCLGLBuffer.class.js" />
-      <change beforePath="$PROJECT_DIR$/src/WebCLGLFor.class.js" afterPath="$PROJECT_DIR$/src/WebCLGLFor.class.js" />
-      <change beforePath="$PROJECT_DIR$/src/WebCLGLKernel.class.js" afterPath="$PROJECT_DIR$/src/WebCLGLKernel.class.js" />
-      <change beforePath="$PROJECT_DIR$/src/WebCLGLUtils.class.js" afterPath="$PROJECT_DIR$/src/WebCLGLUtils.class.js" />
-      <change beforePath="$PROJECT_DIR$/src/WebCLGLVertexFragmentProgram.class.js" afterPath="$PROJECT_DIR$/src/WebCLGLVertexFragmentProgram.class.js" />
+      <change beforePath="$PROJECT_DIR$/src/WebCLGL.class.js" afterPath="$PROJECT_DIR$/src/webclgl/WebCLGL.class.js" />
+      <change beforePath="$PROJECT_DIR$/src/WebCLGLBuffer.class.js" afterPath="$PROJECT_DIR$/src/webclgl/WebCLGLBuffer.class.js" />
+      <change beforePath="$PROJECT_DIR$/src/WebCLGLFor.class.js" afterPath="$PROJECT_DIR$/src/webclgl/WebCLGLFor.class.js" />
+      <change beforePath="$PROJECT_DIR$/src/WebCLGLKernel.class.js" afterPath="$PROJECT_DIR$/src/webclgl/WebCLGLKernel.class.js" />
+      <change beforePath="$PROJECT_DIR$/src/WebCLGLUtils.class.js" afterPath="$PROJECT_DIR$/src/webclgl/WebCLGLUtils.class.js" />
+      <change beforePath="$PROJECT_DIR$/src/WebCLGLVertexFragmentProgram.class.js" afterPath="$PROJECT_DIR$/src/webclgl/WebCLGLVertexFragmentProgram.class.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -34,7 +35,7 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="0">
+              <first_editor relative-caret-position="209">
                 <caret line="19" column="7" lean-forward="false" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
                 <folding>
                   <marker date="1521503919567" expanded="true" signature="1246:1310" ph="{...}" />
@@ -71,15 +72,25 @@
       <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="407">
-              <caret line="37" column="4" lean-forward="false" selection-start-line="37" selection-start-column="4" selection-end-line="38" selection-end-column="37" />
+            <state relative-caret-position="264">
+              <caret line="24" column="77" lean-forward="false" selection-start-line="24" selection-start-column="77" selection-end-line="24" selection-end-column="77" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/build.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="305">
+              <caret line="38" column="46" lean-forward="false" selection-start-line="38" selection-start-column="46" selection-end-line="38" selection-end-column="46" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="WebCLGLFor.class.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/WebCLGLFor.class.js">
+        <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLFor.class.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="8382">
               <caret line="762" column="6" lean-forward="false" selection-start-line="762" selection-start-column="6" selection-end-line="762" selection-end-column="6" />
@@ -89,7 +100,7 @@
         </entry>
       </file>
       <file leaf-file-name="WebCLGL.class.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/WebCLGL.class.js">
+        <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGL.class.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="297">
               <caret line="27" column="50" lean-forward="false" selection-start-line="27" selection-start-column="50" selection-end-line="27" selection-end-column="50" />
@@ -99,7 +110,7 @@
         </entry>
       </file>
       <file leaf-file-name="WebCLGLBuffer.class.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/WebCLGLBuffer.class.js">
+        <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLBuffer.class.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="2398">
               <caret line="218" column="11" lean-forward="false" selection-start-line="218" selection-start-column="11" selection-end-line="218" selection-end-column="11" />
@@ -109,7 +120,7 @@
         </entry>
       </file>
       <file leaf-file-name="WebCLGLKernel.class.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/WebCLGLKernel.class.js">
+        <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLKernel.class.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="11">
               <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
@@ -119,7 +130,7 @@
         </entry>
       </file>
       <file leaf-file-name="WebCLGLVertexFragmentProgram.class.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/WebCLGLVertexFragmentProgram.class.js">
+        <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLVertexFragmentProgram.class.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="20" lean-forward="false" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="20" />
@@ -128,8 +139,8 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WebCLGLUtils.class.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/WebCLGLUtils.class.js">
+      <file leaf-file-name="WebCLGLUtils.class.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLUtils.class.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="4" lean-forward="false" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="4" />
@@ -161,6 +172,7 @@
       <find>WebCLGLBuffer</find>
       <find>WebCLGLFor</find>
       <find>WebCLGL</find>
+      <find>arrScripts</find>
     </findStrings>
     <replaceStrings>
       <replace>let</replace>
@@ -188,6 +200,7 @@
         <option value="$PROJECT_DIR$/src/WebCLGLFor.class.js" />
         <option value="$PROJECT_DIR$/src/WebCLGL.class.js" />
         <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/build.js" />
       </list>
     </option>
   </component>
@@ -209,9 +222,10 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="3840" />
+    <option name="x" value="1920" />
+    <option name="y" value="19" />
     <option name="width" value="1920" />
-    <option name="height" value="1057" />
+    <option name="height" value="1038" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -313,6 +327,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -328,25 +344,18 @@
             <path>
               <item name="webclgl" type="b2602c69:ProjectViewProjectNode" />
               <item name="webclgl" type="462c0819:PsiDirectoryNode" />
-              <item name="demos" type="462c0819:PsiDirectoryNode" />
-              <item name="gpufor_vectors_output" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="webclgl" type="b2602c69:ProjectViewProjectNode" />
-              <item name="webclgl" type="462c0819:PsiDirectoryNode" />
-              <item name="dist" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="webclgl" type="b2602c69:ProjectViewProjectNode" />
               <item name="webclgl" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="webclgl" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -358,7 +367,12 @@
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/dist/webclgl" />
+      <recent name="$PROJECT_DIR$/src/webclgl" />
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
@@ -374,7 +388,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="npm.buildWebCLGLFor">
+  <component name="RunManager">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="WIDTH" value="400" />
       <option name="HEIGHT" value="300" />
@@ -460,6 +474,15 @@
       <option name="PROGRAM_PARAMETERS" />
       <method />
     </configuration>
+    <configuration name="build" type="js.build_tools.npm" factoryName="npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+    </configuration>
     <configuration name="buildAll" type="js.build_tools.npm" factoryName="npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -469,29 +492,20 @@
       <node-interpreter value="project" />
       <envs />
     </configuration>
-    <configuration name="buildWebCLGLFor" type="js.build_tools.npm" factoryName="npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="buildWebCLGLFor" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-    </configuration>
-    <configuration name="buildWebCLGLKernel" type="js.build_tools.npm" factoryName="npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="buildWebCLGLKernel" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-    </configuration>
     <configuration name="buildWebCLGLVertexFragmentProgram" type="js.build_tools.npm" factoryName="npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
         <script value="buildWebCLGLVertexFragmentProgram" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+    </configuration>
+    <configuration name="build_deploy" type="js.build_tools.npm" factoryName="npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build_deploy" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -506,19 +520,19 @@
       <envs />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="npm.buildWebCLGLFor" />
-      <item index="1" class="java.lang.String" itemvalue="npm.buildAll" />
-      <item index="2" class="java.lang.String" itemvalue="npm.buildWebCLGLKernel" />
-      <item index="3" class="java.lang.String" itemvalue="npm.buildWebCLGLVertexFragmentProgram" />
-      <item index="4" class="java.lang.String" itemvalue="npm.deploy" />
+      <item index="0" class="java.lang.String" itemvalue="npm.buildAll" />
+      <item index="1" class="java.lang.String" itemvalue="npm.buildWebCLGLVertexFragmentProgram" />
+      <item index="2" class="java.lang.String" itemvalue="npm.deploy" />
+      <item index="3" class="java.lang.String" itemvalue="npm.build" />
+      <item index="4" class="java.lang.String" itemvalue="npm.build_deploy" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="npm.deploy" />
-        <item index="1" class="java.lang.String" itemvalue="npm.buildAll" />
-        <item index="2" class="java.lang.String" itemvalue="npm.buildWebCLGLVertexFragmentProgram" />
-        <item index="3" class="java.lang.String" itemvalue="npm.buildWebCLGLFor" />
-        <item index="4" class="java.lang.String" itemvalue="npm.buildWebCLGLKernel" />
+        <item index="0" class="java.lang.String" itemvalue="npm.build_deploy" />
+        <item index="1" class="java.lang.String" itemvalue="npm.build" />
+        <item index="2" class="java.lang.String" itemvalue="npm.deploy" />
+        <item index="3" class="java.lang.String" itemvalue="npm.buildAll" />
+        <item index="4" class="java.lang.String" itemvalue="npm.buildWebCLGLVertexFragmentProgram" />
       </list>
     </recent_temporary>
   </component>
@@ -541,25 +555,25 @@
       <workItem from="1521491166820" duration="9000" />
       <workItem from="1521503811786" duration="2265000" />
       <workItem from="1521550194404" duration="3607000" />
-      <workItem from="1521666190248" duration="21950000" />
+      <workItem from="1521666190248" duration="22675000" />
+      <workItem from="1521840629437" duration="7198000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60443000" />
+    <option name="totallyTimeSpent" value="68366000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="3840" y="0" width="1920" height="1057" extended-state="6" />
+    <frame x="1920" y="19" width="1920" height="1038" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11882229" sideWeight="0.4746424" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11882229" sideWeight="0.469496" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985386" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19728601" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1970181" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11882229" sideWeight="0.5253576" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11882229" sideWeight="0.530504" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -569,6 +583,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985386" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -583,15 +598,7 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLFor.class.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="12" column="30" lean-forward="false" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGL.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGL.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4312">
           <caret line="392" column="54" lean-forward="false" selection-start-line="392" selection-start-column="54" selection-end-line="392" selection-end-column="54" />
@@ -599,7 +606,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLBuffer.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLBuffer.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1650">
           <caret line="150" column="50" lean-forward="false" selection-start-line="150" selection-start-column="50" selection-end-line="150" selection-end-column="50" />
@@ -607,7 +614,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLKernel.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLKernel.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1672">
           <caret line="152" column="30" lean-forward="false" selection-start-line="152" selection-start-column="30" selection-end-line="152" selection-end-column="30" />
@@ -615,7 +622,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLVertexFragmentProgram.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLVertexFragmentProgram.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2651">
           <caret line="241" column="103" lean-forward="false" selection-start-line="241" selection-start-column="103" selection-end-line="241" selection-end-column="103" />
@@ -623,7 +630,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLUtils.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLUtils.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1892">
           <caret line="172" column="35" lean-forward="false" selection-start-line="172" selection-start-column="35" selection-end-line="172" selection-end-column="35" />
@@ -647,7 +654,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGL.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGL.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4312">
           <caret line="392" column="54" lean-forward="false" selection-start-line="392" selection-start-column="54" selection-end-line="392" selection-end-column="54" />
@@ -655,7 +662,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLBuffer.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLBuffer.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1650">
           <caret line="150" column="50" lean-forward="false" selection-start-line="150" selection-start-column="50" selection-end-line="150" selection-end-column="50" />
@@ -663,7 +670,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLKernel.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLKernel.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1672">
           <caret line="152" column="30" lean-forward="false" selection-start-line="152" selection-start-column="30" selection-end-line="152" selection-end-column="30" />
@@ -671,7 +678,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLVertexFragmentProgram.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLVertexFragmentProgram.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2651">
           <caret line="241" column="103" lean-forward="false" selection-start-line="241" selection-start-column="103" selection-end-line="241" selection-end-column="103" />
@@ -679,7 +686,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLUtils.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLUtils.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1892">
           <caret line="172" column="35" lean-forward="false" selection-start-line="172" selection-start-column="35" selection-end-line="172" selection-end-column="35" />
@@ -687,7 +694,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLFor.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLFor.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="12" column="30" lean-forward="true" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
@@ -703,7 +710,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGL.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGL.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4312">
           <caret line="392" column="54" lean-forward="false" selection-start-line="392" selection-start-column="54" selection-end-line="392" selection-end-column="54" />
@@ -711,7 +718,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLBuffer.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLBuffer.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1650">
           <caret line="150" column="50" lean-forward="false" selection-start-line="150" selection-start-column="50" selection-end-line="150" selection-end-column="50" />
@@ -719,7 +726,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLKernel.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLKernel.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1672">
           <caret line="152" column="30" lean-forward="false" selection-start-line="152" selection-start-column="30" selection-end-line="152" selection-end-column="30" />
@@ -727,7 +734,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLVertexFragmentProgram.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLVertexFragmentProgram.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2651">
           <caret line="241" column="103" lean-forward="false" selection-start-line="241" selection-start-column="103" selection-end-line="241" selection-end-column="103" />
@@ -735,7 +742,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLUtils.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLUtils.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1892">
           <caret line="172" column="35" lean-forward="false" selection-start-line="172" selection-start-column="35" selection-end-line="172" selection-end-column="35" />
@@ -743,7 +750,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLFor.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLFor.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="12" column="30" lean-forward="true" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
@@ -765,7 +772,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLFor.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLFor.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="40" lean-forward="true" selection-start-line="0" selection-start-column="40" selection-end-line="1" selection-end-column="50" />
@@ -781,7 +788,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLBuffer.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLBuffer.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1331">
           <caret line="121" column="9" lean-forward="false" selection-start-line="121" selection-start-column="9" selection-end-line="121" selection-end-column="9" />
@@ -789,7 +796,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLKernel.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLKernel.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="50" />
@@ -797,7 +804,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLVertexFragmentProgram.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLVertexFragmentProgram.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="50" />
@@ -805,7 +812,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLUtils.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLUtils.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="968">
           <caret line="88" column="4" lean-forward="false" selection-start-line="88" selection-start-column="4" selection-end-line="88" selection-end-column="4" />
@@ -813,7 +820,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGL.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGL.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2486">
           <caret line="226" column="17" lean-forward="true" selection-start-line="226" selection-start-column="17" selection-end-line="226" selection-end-column="17" />
@@ -828,7 +835,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLUtils.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLUtils.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -836,7 +843,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGL.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGL.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -854,7 +861,7 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="0">
+          <first_editor relative-caret-position="209">
             <caret line="19" column="7" lean-forward="false" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
             <folding>
               <marker date="1521503919567" expanded="true" signature="1246:1310" ph="{...}" />
@@ -888,7 +895,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WebCLGL.min.js" />
-    <entry file="file://$PROJECT_DIR$/dist/WebCLGL.class.js">
+    <entry file="file://$PROJECT_DIR$/dist/webclgl/WebCLGL.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="437">
           <caret line="476" column="14" lean-forward="false" selection-start-line="476" selection-start-column="14" selection-end-line="476" selection-end-column="14" />
@@ -896,7 +903,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLBuffer.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLBuffer.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2398">
           <caret line="218" column="11" lean-forward="false" selection-start-line="218" selection-start-column="11" selection-end-line="218" selection-end-column="11" />
@@ -904,7 +911,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLKernel.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLKernel.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="11">
           <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
@@ -912,7 +919,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLVertexFragmentProgram.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLVertexFragmentProgram.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="20" lean-forward="false" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="20" />
@@ -920,7 +927,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLFor.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLFor.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8382">
           <caret line="762" column="6" lean-forward="false" selection-start-line="762" selection-start-column="6" selection-end-line="762" selection-end-column="6" />
@@ -932,11 +939,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="77">
           <caret line="7" column="26" lean-forward="true" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGL.class.js">
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGL.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="297">
           <caret line="27" column="50" lean-forward="false" selection-start-line="27" selection-start-column="50" selection-end-line="27" selection-end-column="50" />
@@ -948,7 +954,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
           <caret line="19" column="32" lean-forward="true" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="53" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -956,7 +961,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="15" column="39" lean-forward="false" selection-start-line="15" selection-start-column="39" selection-end-line="15" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -964,7 +968,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="275">
           <caret line="25" column="40" lean-forward="true" selection-start-line="25" selection-start-column="40" selection-end-line="25" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -972,7 +975,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
           <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -980,7 +982,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
           <caret line="16" column="6" lean-forward="true" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -988,22 +989,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
           <caret line="21" column="22" lean-forward="true" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/webclgl/WebCLGLUtils.class.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="4" lean-forward="false" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="37" column="4" lean-forward="false" selection-start-line="37" selection-start-column="4" selection-end-line="38" selection-end-column="37" />
+        <state relative-caret-position="264">
+          <caret line="24" column="77" lean-forward="false" selection-start-line="24" selection-start-column="77" selection-end-line="24" selection-end-column="77" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WebCLGLUtils.class.js">
+    <entry file="file://$PROJECT_DIR$/build.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="4" lean-forward="false" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="4" />
+        <state relative-caret-position="305">
+          <caret line="38" column="46" lean-forward="false" selection-start-line="38" selection-start-column="46" selection-end-line="38" selection-end-column="46" />
           <folding />
         </state>
       </provider>
