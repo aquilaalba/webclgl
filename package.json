@@ -1,6 +1,6 @@
 {
   "name": "webclgl",
-  "version": "4.0.17",
+  "version": "4.0.19",
   "description": "GPGPU Javascript library",
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
     "uglify-js": "~3.0.28",
     "watchify": "~3.9.0"
   },
-  "main": "dist/WebCLGLFor.class.js",
+  "main": "dist/webclgl/WebCLGLFor.class.js",
   "scripts": {
     "build": "node build.js -b -s",
     "build_deploy": "node build.js -b && node build.js -d=dist/webclgl/WebCLGL.min.js"

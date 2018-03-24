@@ -61,7 +61,7 @@ glob("src/**/*.js", {}, function (er, files) {
 
         var options = {
             mangle: {
-                properties: true,
+                toplevel: true,
             }
         };
         console.log(files);
