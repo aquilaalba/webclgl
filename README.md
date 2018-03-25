@@ -1,13 +1,13 @@
 [![Logo](demos/webclgl.jpg)](https://github.com/stormcolor/webclgl)
 
 <h2>Javascript Library for GPGPU computing</h2>
-WebCLGL use WebGL specification for interpreter the code.<br />
-First version of the algorithm created in 2013 is hosted in Google Code. In this WebGL is used like OpenCL for GPGPU calculus using the traditional Render To Texture technique. <br />
+WebCLGL use WebGL specification to interpret code.<br />
+First version of algorithm was created in 2013 (hosted on <a href="https://code.google.com/archive/p/webclgl/downloads">Google Code</a>). On this, WebGL is used like OpenCL for GPGPU calculus using the traditional Render To Texture technique. <br />
 
 Features: <br />
 - Basic numerical calculus on GPU. <br />
 - WebGL graphics allowing write multiple shaders, interconnect and save arguments. <br />
-- WebCLGL handle any WebGL operation preparing all the neccesary (buffers and programs initialization, vertex/fragment programs buffers interconnection, Renders to texture, etc... reducing the time for write any type of advanced shaders. <br /> 
+- WebCLGL handle any WebGL operation preparing all neccesary resources (buffers and programs initialization, vertex/fragment programs buffers interconnection, Renders to texture, etc... reducing time to write any advanced shaders. <br /> 
 
 <h3><a href="https://rawgit.com/stormcolor/webclgl/master/APIdoc/WebCLGLFor.html">API Doc WebCLGL</a></h3>
 <h3><a href="http://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf">OpenGL ES Shading Language 1.0 Reference Card (Pag 3-4)</a></h3>
@@ -21,7 +21,7 @@ npm install webclgl
 <script src="/dist/WebCLGL.min.js"></script>    
 ```
 
-<h3>For a simple A+B</h3>
+<h3>Simple A+B</h3>
 
 ```js
 // TYPICAL A + B WITH CPU
@@ -57,7 +57,7 @@ var arrayResult = gpufor({"float* A": arrayA, "float* B": arrayB, "float num": n
 ```
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_numbers/index.html"> gpufor A+B+number</a><br />
 
-<h3>Using arrays type vector</h3>
+<h3>Using vector array types</h3>
 
 ```js
 var arrayResult = gpufor({"float* A": arrayA, "float4* B": arrayB}, "n",
@@ -81,7 +81,7 @@ var arrayResult = gpufor({"float4* A": arrayA, "float4* B": arrayB}, "n", "FLOAT
 
 
 <h3>Graphical output</h3>
-The anterior examples only execute one program type "KERNEL" (fragment program), write to a hidden buffer "result", perform readPixels over this buffer and return the output.
+Previous examples only execute one program type "KERNEL" (fragment program), write to a hidden buffer "result", perform readPixels over this buffer and return the output.
 <br />
 To represent data that evolve over time you can enable the graphical output indicating one WebGLRenderingContext or canvas element as first argument:
 
@@ -174,11 +174,11 @@ var tick = function() {
 ```
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics/index.html"> gpufor graphic output</a><br />
 - <a href="https://rawgit.com/stormcolor/webclgl/master/demos/gpufor_graphics_geometry/index.html"> gpufor graphic output (using custom geometry)</a><br />
-First program type KERNEL is a fragment program that perform a RenderToTexture updating the buffers "dir" and "posXYZW". Second program type GRAPHIC is a vertex and fragment program with output to direct screen (framebuffer=null) because we not indicate output in this program. <br />
-You can use any number of KERNELS or GRAPHICS on any order. Anterior example use two programs, KERNEL("dir","posXYZW")->GRAPHIC(null=screen) but you can select one appropiate order for you algoritm. Examples: <br />
+First program type KERNEL is a fragment program that perform a RenderToTexture updating "dir" and "posXYZW" buffers. Second program type GRAPHIC is a vertex and fragment program with output to direct screen (framebuffer=null) because we not indicate output on this program. <br />
+You can use multiples KERNELS or GRAPHICS on any order. Anterior example only use two programs, KERNEL("dir","posXYZW")->GRAPHIC(null=screen) but you can select an appropiate order for you algorithm. Examples: <br />
 GRAPHIC("a","b")->KERNEL(null) <br />
 KERNEL("a")->GRAPHIC("b")->KERNEL(null) <br />
-In case of not indicate the output is same that indicate null as output [null].
+In case of you not indicate output it will be the same like indicate null as output [null].
 
 ```js
 // GRAPHIC PROGRAM
@@ -199,14 +199,14 @@ or
             ...
 ```
 
-You can indicate arguments with a Json as second argument. With <b>setArg</b> method you can update any argument or add new arguments with <b>addArgument</b>/<b>setArg</b>.
+You can indicate arguments with one Json as second argument. With <b>setArg</b> method you can update any argument and to add new arguments with <b>addArgument</b>/<b>setArg</b>.
 
 ```js
 gpufG.addArg("float4* destination");
 gpufG.setArg("destination", destinationArray);
    
 ```
- It also can get argument from others gpufor and to shared a same buffer.
+Also you can get an argument from others gpufor and to shared a same buffer.
  
  ```js
 other_gpufG.getGPUForArg("destination", gpufG);

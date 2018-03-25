@@ -1,0 +1,95 @@
+Arguments: 
+  /home/gdr/.nvm/versions/node/v8.10.0/bin/node /home/gdr/.nvm/versions/node/v8.10.0/bin/yarn buildWebCLGLFor
+
+PATH: 
+  /home/gdr/.nvm/versions/node/v8.10.0/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/var/www/html/webclgl/node_modules/.bin:/home/gdr/.nvm/versions/node/v8.10.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+
+Yarn version: 
+  1.5.1
+
+Node version: 
+  8.10.0
+
+Platform: 
+  linux x64
+
+npm manifest: 
+  {
+    "name": "webclgl",
+    "version": "4.0.0",
+    "description": "GPGPU Javascript library",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/stormcolor/webclgl.git"
+    },
+    "dependencies": {
+      "babel-polyfill": "~6.26.0"
+    },
+    "devDependencies": {
+      "babel-plugin-syntax-async-functions": "~6.13.0",
+      "babel-plugin-transform-regenerator": "~6.26.0",
+      "babel-preset-es2015": "~6.24.1",
+      "babelify": "~7.3.0",
+      "eslint": "~4.11.0",
+      "eslint-config-google": "~0.9.1",
+      "mkdirp": "~0.5.1",
+      "uglify-js": "~2.4.11",
+      "watchify": "~3.9.0"
+    },
+    "browserify": {
+      "transform": [
+        [
+          "babelify",
+          {
+            "presets": [
+              "es2015"
+            ],
+            "plugins": [
+              "syntax-async-functions",
+              "transform-regenerator"
+            ]
+          }
+        ]
+      ]
+    },
+    "file": "main.js",
+    "output": "dist/bundle.js",
+    "outputMap": "dist/bundle.js.map",
+    "scripts": {
+      "prep": "yarn && mkdirp dist",
+      "watch": "watchify $npm_package_file -v --debug -o $npm_package_output",
+      "build": "browserify $npm_package_file -o $npm_package_output",
+      "buildWebCLGLFor": "browserify src/WebCLGLFor.class.js --standalone > dist/WebCLGLFor.class.js",
+      "buildWebCLGL": "browserify src/WebCLGL.class.js --standalone gpufor > dist/WebCLGL.class.js",
+      "buildWebCLGLBuffer": "browserify src/WebCLGLBuffer.class.js --standalone gpufor > dist/WebCLGLBuffer.class.js",
+      "buildWebCLGLKernel": "browserify src/WebCLGLKernel.class.js --standalone gpufor > dist/WebCLGLKernel.class.js",
+      "buildWebCLGLUtils": "browserify src/WebCLGLUtils.class.js --standalone gpufor > dist/WebCLGLUtils.class.js",
+      "buildWebCLGLVertexFragmentProgram": "browserify src/WebCLGLVertexFragmentProgram.class.js --standalone gpufor > dist/WebCLGLVertexFragmentProgram.class.js",
+      "buildAll": "yarn buildWebCLGLFor && yarn buildWebCLGL && yarn buildWebCLGLBuffer && yarn buildWebCLGLKernel && yarn buildWebCLGLUtils && yarn buildWebCLGLVertexFragmentProgram",
+      "lint": "eslint $npm_package_file",
+      "deploy": "yarn build && uglifyjs $npm_package_output -cmo $npm_package_output --source-map url=$npm_package_output"
+    },
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: Command failed.
+  Exit code: 1
+  Command: sh
+  Arguments: -c browserify src/WebCLGLFor.class.js --standalone > dist/WebCLGLFor.class.js
+  Directory: /var/www/html/webclgl
+  Output:
+  
+      at ProcessTermError.MessageError (/home/gdr/.nvm/versions/node/v8.10.0/lib/node_modules/yarn/lib/cli.js:186:110)
+      at new ProcessTermError (/home/gdr/.nvm/versions/node/v8.10.0/lib/node_modules/yarn/lib/cli.js:226:113)
+      at ChildProcess.<anonymous> (/home/gdr/.nvm/versions/node/v8.10.0/lib/node_modules/yarn/lib/cli.js:30281:17)
+      at emitTwo (events.js:126:13)
+      at ChildProcess.emit (events.js:214:7)
+      at maybeClose (internal/child_process.js:925:16)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)
