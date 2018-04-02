@@ -1,6 +1,6 @@
 {
   "name": "webclgl",
-  "version": "4.0.225",
+  "version": "4.0.226",
   "description": "GPGPU Javascript library",
   "repository": {
     "type": "git",

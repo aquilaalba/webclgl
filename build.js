@@ -74,7 +74,7 @@ glob("src/**/*.js", {}, function (er, files) {
                 var f = fs.readFileSync(arrDistScripts[n], "utf8");
                 var options = {
                     mangle: {
-                        //toplevel: true,
+                        toplevel: true,
                     }
                 };
                 console.log(f);
