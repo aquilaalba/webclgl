@@ -41,13 +41,22 @@ glob("src/**/*.js", {}, function (er, files) {
     for(var n=0; n < arrSrcScripts.length; n++)
         arrDistScripts.push(arrSrcScripts[n].replace("src/", "dist/"));
 
-    // BUILD
+    // BUILD & WATCH
     if(hasArg("-b", args) !== false) {
         for(var n=0; n < arrSrcScripts.length; n++) {
-            browserify(arrSrcScripts[n], {"debug": hasArg("-s", args)})
-                .transform("babelify", bT)
-                .bundle()
-                .pipe(fs.createWriteStream(arrDistScripts[n]));
+            var b = null;
+            if(hasArg("-s", args) === true) {
+                b = browserify(arrSrcScripts[n], {"debug": hasArg("-s", args), cache: {}, packageCache: {}, plugin: [watchify]});
+                b.on('update', bundle.bind(this, b, n));
+            } else {
+                b = browserify(arrSrcScripts[n], {"debug": hasArg("-s", args)});
+            }
+            bundle(b, n);
+
+            function bundle(b, n) {
+                b.transform("babelify", bT).bundle().pipe(fs.createWriteStream(arrDistScripts[n]));
+                console.log("- UPDATED: "+arrDistScripts[n]);
+            }
         }
     }
 
@@ -61,7 +70,7 @@ glob("src/**/*.js", {}, function (er, files) {
 
         var options = {
             mangle: {
-                toplevel: true,
+                //toplevel: true,
             }
         };
         console.log(files);
