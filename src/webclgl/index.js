@@ -1,11 +1,4 @@
 "use strict";
-import {WebCLGL} from "./WebCLGL.class";
-import {WebCLGLBuffer} from "./WebCLGLBuffer.class";
-import {WebCLGLFor} from "./WebCLGLFor.class";
-import {WebCLGLKernel} from "./WebCLGLKernel.class";
-import {WebCLGLUtils} from "./WebCLGLUtils.class";
-import {WebCLGLVertexFragmentProgram} from "./WebCLGLVertexFragmentProgram.class";
-
 Object.defineProperty(exports, "__esModule", { value: true });
 
 var exp = { "WebCLGL": "./WebCLGL.class",
