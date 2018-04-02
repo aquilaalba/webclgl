@@ -1,13 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-
-var exp = { "WebCLGL": "./WebCLGL.class",
-            "WebCLGLBuffer": "./WebCLGLBuffer.class.js",
-            "WebCLGLFor": "./WebCLGLFor.class.js",
-            "WebCLGLKernel": "./WebCLGLKernel.class.js",
-            "WebCLGLUtils": "./WebCLGLUtils.class.js",
-            "WebCLGLVertexFragmentProgram": "./WebCLGLVertexFragmentProgram.class.js"
-};
-
-for(var key in exp)
-    exports[key] = require(exp[key]);
+import "./WebCLGL.class";
+module.exports.WebCLGL = global.WebCLGL = WebCLGL;
+import "./WebCLGLBuffer.class";
+module.exports.WebCLGLBuffer = global.WebCLGLBuffer = WebCLGLBuffer;
+import "./WebCLGLFor.class";
+module.exports.WebCLGLFor = global.WebCLGLFor = WebCLGLFor;
+import "./WebCLGLKernel.class";
+module.exports.WebCLGLKernel = global.WebCLGLKernel = WebCLGLKernel;
+import "./WebCLGLUtils.class";
+module.exports.WebCLGLUtils = global.WebCLGLUtils = WebCLGLUtils;
+import "./WebCLGLVertexFragmentProgram.class";
+module.exports.WebCLGLVertexFragmentProgram = global.WebCLGLVertexFragmentProgram = WebCLGLVertexFragmentProgram;

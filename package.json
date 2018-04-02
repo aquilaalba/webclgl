@@ -1,6 +1,6 @@
 {
   "name": "webclgl",
-  "version": "4.0.21",
+  "version": "4.0.22",
   "description": "GPGPU Javascript library",
   "repository": {
     "type": "git",
@@ -19,10 +19,28 @@
     "uglify-js": "~3.0.28",
     "watchify": "~3.9.0"
   },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ],
+          "plugins": [
+            "syntax-async-functions",
+            "transform-regenerator"
+          ]
+        }
+      ]
+    ]
+  },
   "main": "src/webclgl/index.js",
   "scripts": {
     "build_&_watch": "node build.js -b -s",
-    "build_&_deploy": "node build.js -b && node build.js -d=dist/webclgl/WebCLGL.min.js"
+    "build_&_deploy": "node build.js -b && node build.js -d=dist/webclgl/WebCLGL.min.js",
+    "build": "browserify src/webclgl/index.js -o dist/webclgl/bundle.js",
+    "deploy": "uglifyjs dist/webclgl/bundle.js -cmo dist/webclgl/WebCLGL.min.js"
   },
   "license": "MIT"
 }
