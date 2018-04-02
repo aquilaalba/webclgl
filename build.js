@@ -63,8 +63,6 @@ glob("src/**/*.js", {}, function (er, files) {
             if(arrSrcScripts[n].match(/index.js/gi) !== null) {
                 b = browserify(arrSrcScripts[n], {"debug": false});
                 b.transform("babelify", bT).bundle().pipe(fs.createWriteStream(arrDistScripts[n]));
-
-
             }
 
         }
@@ -79,8 +77,8 @@ glob("src/**/*.js", {}, function (er, files) {
                         //toplevel: true,
                     }
                 };
-                console.log(files);
-                fs.writeFileSync(deployFile, uglifyjs.minify(files, options).code, "utf8");
+                console.log(f);
+                fs.writeFileSync(deployFile, uglifyjs.minify(f, options).code, "utf8");
             }
         }
     }

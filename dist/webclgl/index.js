@@ -7,37 +7,29 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WebCLGL = undefined;
 
-var _createClass = function () {
-    function defineProperties(target, props) {
-        for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-        }
-    }return function (Constructor, protoProps, staticProps) {
-        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-    };
-}(); /*
-     The MIT License (MIT)
-     
-     Copyright (c) <2013> <Roberto Gonzalez. http://stormcolour.appspot.com/>
-     
-     Permission is hereby granted, free of charge, to any person obtaining a copy
-     of this software and associated documentation files (the "Software"), to deal
-     in the Software without restriction, including without limitation the rights
-     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-     copies of the Software, and to permit persons to whom the Software is
-     furnished to do so, subject to the following conditions:
-     
-     The above copyright notice and this permission notice shall be included in
-     all copies or substantial portions of the Software.
-     
-     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-     THE SOFTWARE.
-      */
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     The MIT License (MIT)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Copyright (c) <2013> <Roberto Gonzalez. http://stormcolour.appspot.com/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Permission is hereby granted, free of charge, to any person obtaining a copy
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     of this software and associated documentation files (the "Software"), to deal
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     in the Software without restriction, including without limitation the rights
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     copies of the Software, and to permit persons to whom the Software is
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     furnished to do so, subject to the following conditions:
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     The above copyright notice and this permission notice shall be included in
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     all copies or substantial portions of the Software.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     THE SOFTWARE.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 var _WebCLGLBuffer = require("./WebCLGLBuffer.class");
 
@@ -47,11 +39,7 @@ var _WebCLGLVertexFragmentProgram = require("./WebCLGLVertexFragmentProgram.clas
 
 var _WebCLGLUtils = require("./WebCLGLUtils.class");
 
-function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-        throw new TypeError("Cannot call a class as a function");
-    }
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
 * Class for parallelization of calculations using the WebGL context similarly to webcl
@@ -157,6 +145,7 @@ var WebCLGL = exports.WebCLGL = function () {
      * @returns {WebGLRenderingContext}
      */
 
+
     _createClass(WebCLGL, [{
         key: "getContext",
         value: function getContext() {
@@ -164,6 +153,7 @@ var WebCLGL = exports.WebCLGL = function () {
         }
     }, {
         key: "getMaxDrawBuffers",
+
 
         /**
          * getMaxDrawBuffers
@@ -174,6 +164,7 @@ var WebCLGL = exports.WebCLGL = function () {
         }
     }, {
         key: "checkFramebufferStatus",
+
 
         /**
          * checkFramebufferStatus
@@ -195,6 +186,7 @@ var WebCLGL = exports.WebCLGL = function () {
         }
     }, {
         key: "copy",
+
 
         /**
          * copy
@@ -245,6 +237,7 @@ var WebCLGL = exports.WebCLGL = function () {
     }, {
         key: "createBuffer",
 
+
         /**
          * Create a empty WebCLGLBuffer
          * @param {String} [type="FLOAT"] type FLOAT4 OR FLOAT
@@ -258,6 +251,7 @@ var WebCLGL = exports.WebCLGL = function () {
     }, {
         key: "createKernel",
 
+
         /**
          * Create a kernel
          * @returns {WebCLGLKernel}
@@ -269,6 +263,7 @@ var WebCLGL = exports.WebCLGL = function () {
         }
     }, {
         key: "createVertexFragmentProgram",
+
 
         /**
          * Create a vertex and fragment programs for a WebGL graphical representation after some enqueueNDRangeKernel
@@ -283,6 +278,7 @@ var WebCLGL = exports.WebCLGL = function () {
         }
     }, {
         key: "fillBuffer",
+
 
         /**
          * fillBuffer with color
@@ -302,6 +298,7 @@ var WebCLGL = exports.WebCLGL = function () {
         }
     }, {
         key: "bindAttributeValue",
+
 
         /**
          * bindAttributeValue
@@ -323,6 +320,7 @@ var WebCLGL = exports.WebCLGL = function () {
         }
     }, {
         key: "bindSamplerValue",
+
 
         /**
          * bindSamplerValue
@@ -348,6 +346,7 @@ var WebCLGL = exports.WebCLGL = function () {
     }, {
         key: "bindUniformValue",
 
+
         /**
          * bindUniformValue
          * @param {Object} inValue
@@ -362,6 +361,7 @@ var WebCLGL = exports.WebCLGL = function () {
         }
     }, {
         key: "bindValue",
+
 
         /**
          * bindValue
@@ -384,6 +384,7 @@ var WebCLGL = exports.WebCLGL = function () {
         }
     }, {
         key: "bindFB",
+
 
         /**
          * bindFB
@@ -419,6 +420,7 @@ var WebCLGL = exports.WebCLGL = function () {
     }, {
         key: "enqueueNDRangeKernel",
 
+
         /**
          * Perform calculation and save the result on a WebCLGLBuffer
          * @param {WebCLGLKernel} webCLGLKernel
@@ -445,6 +447,7 @@ var WebCLGL = exports.WebCLGL = function () {
         }
     }, {
         key: "enqueueVertexFragmentProgram",
+
 
         /**
          * Perform WebGL graphical representation
@@ -478,6 +481,7 @@ var WebCLGL = exports.WebCLGL = function () {
         }
     }, {
         key: "readBuffer",
+
 
         /**
          * Get Float32Array array from a WebCLGLBuffer
@@ -525,6 +529,7 @@ var WebCLGL = exports.WebCLGL = function () {
     }], [{
         key: "enqueueReadBuffer_WebGLTexture",
 
+
         /**
          * Get the internally WebGLTexture (type FLOAT), if the WebGLRenderingContext was given.
          * @param {WebCLGLBuffer} buffer
@@ -540,7 +545,6 @@ var WebCLGL = exports.WebCLGL = function () {
 
 global.WebCLGL = WebCLGL;
 module.exports.WebCLGL = WebCLGL;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebCLGLBuffer.class":2,"./WebCLGLKernel.class":4,"./WebCLGLUtils.class":5,"./WebCLGLVertexFragmentProgram.class":6}],2:[function(require,module,exports){
 (function (global){
@@ -550,21 +554,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createClass = function () {
-    function defineProperties(target, props) {
-        for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-        }
-    }return function (Constructor, protoProps, staticProps) {
-        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-    };
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-        throw new TypeError("Cannot call a class as a function");
-    }
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
 * WebCLGLBuffer
@@ -611,6 +603,7 @@ var WebCLGLBuffer = exports.WebCLGLBuffer = function () {
      * createFramebufferAndRenderbuffer
      */
 
+
     _createClass(WebCLGLBuffer, [{
         key: "createFramebufferAndRenderbuffer",
         value: function createFramebufferAndRenderbuffer() {
@@ -641,6 +634,7 @@ var WebCLGLBuffer = exports.WebCLGLBuffer = function () {
         }
     }, {
         key: "writeWebGLTextureBuffer",
+
 
         /**
          * Write WebGLTexture buffer
@@ -695,6 +689,7 @@ var WebCLGLBuffer = exports.WebCLGLBuffer = function () {
         }
     }, {
         key: "writeBuffer",
+
 
         /**
          * Write on buffer
@@ -762,6 +757,7 @@ var WebCLGLBuffer = exports.WebCLGLBuffer = function () {
     }, {
         key: "remove",
 
+
         /**
          * Remove this buffer
          */
@@ -788,7 +784,6 @@ var WebCLGLBuffer = exports.WebCLGLBuffer = function () {
 
 global.WebCLGLBuffer = WebCLGLBuffer;
 module.exports.WebCLGLBuffer = WebCLGLBuffer;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],3:[function(require,module,exports){
 (function (global){
@@ -799,15 +794,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WebCLGLFor = undefined;
 
-var _createClass = function () {
-    function defineProperties(target, props) {
-        for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-        }
-    }return function (Constructor, protoProps, staticProps) {
-        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-    };
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 exports.gpufor = gpufor;
 
@@ -815,11 +802,7 @@ var _WebCLGL = require("./WebCLGL.class");
 
 var _WebCLGLUtils = require("./WebCLGLUtils.class");
 
-function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-        throw new TypeError("Cannot call a class as a function");
-    }
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * WebCLGLFor
@@ -843,6 +826,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
      * defineOutputTempModes
      * @returns {Array<boolean>}
      */
+
 
     _createClass(WebCLGLFor, [{
         key: "defineOutputTempModes",
@@ -871,6 +855,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
         }
     }, {
         key: "prepareReturnCode",
+
 
         /**
          * prepareReturnCode
@@ -923,6 +908,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "addKernel",
 
+
         /**
          * Add one WebCLGLKernel to the work
          * @param {Object} kernelJson
@@ -971,6 +957,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
         }
     }, {
         key: "addGraphic",
+
 
         /**
          * addGraphic
@@ -1050,6 +1037,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "checkArg",
 
+
         /**
          * checkArg
          * @param {String} argument
@@ -1098,6 +1086,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "fillArg",
 
+
         /**
          * fillArg
          * @param {String} argName
@@ -1109,6 +1098,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "getAllArgs",
 
+
         /**
          * Get all arguments existing in passed kernels & vertexFragmentPrograms
          * @returns {Object}
@@ -1119,6 +1109,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "addArg",
 
+
         /**
          * addArg
          * @param {String} arg
@@ -1128,6 +1119,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
         }
     }, {
         key: "getGPUForArg",
+
 
         /**
          * Get argument from other gpufor (instead of addArg & setArg)
@@ -1152,6 +1144,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
         }
     }, {
         key: "setArg",
+
 
         /**
          * Assign value of a argument for all added Kernels and vertexFragmentPrograms
@@ -1217,6 +1210,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "readArg",
 
+
         /**
          * Get Float32Array array from a argument
          * @param {String} argument
@@ -1227,6 +1221,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
         }
     }, {
         key: "setIndices",
+
 
         /**
          * Set indices for the geometry passed in vertexFragmentProgram
@@ -1239,6 +1234,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "getCtx",
 
+
         /**
          * getCtx
          * returns {WebGLRenderingContext}
@@ -1248,6 +1244,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
         }
     }, {
         key: "setCtx",
+
 
         /**
          * setCtx
@@ -1259,6 +1256,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "getWebCLGL",
 
+
         /**
          * getWebCLGL
          * returns {WebCLGL}
@@ -1268,6 +1266,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
         }
     }, {
         key: "onPreProcessKernel",
+
 
         /**
          * onPreProcessKernel
@@ -1280,6 +1279,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "onPostProcessKernel",
 
+
         /**
          * onPostProcessKernel
          * @param {int} [kernelNum=0]
@@ -1291,6 +1291,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "enableKernel",
 
+
         /**
          * enableKernel
          * @param {int} [kernelNum=0]
@@ -1301,6 +1302,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "disableKernel",
 
+
         /**
          * disableKernel
          * @param {int} [kernelNum=0]
@@ -1310,6 +1312,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
         }
     }, {
         key: "getKernel",
+
 
         /**
          * Get one added WebCLGLKernel
@@ -1326,6 +1329,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "getAllKernels",
 
+
         /**
          * Get all added WebCLGLKernels
          * @returns {Object}
@@ -1335,6 +1339,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
         }
     }, {
         key: "onPreProcessGraphic",
+
 
         /**
          * onPreProcessGraphic
@@ -1347,6 +1352,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "onPostProcessGraphic",
 
+
         /**
          * onPostProcessGraphic
          * @param {int} [graphicNum=0]
@@ -1358,6 +1364,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "enableGraphic",
 
+
         /**
          * enableGraphic
          * @param {int} [graphicNum=0]
@@ -1368,6 +1375,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "disableGraphic",
 
+
         /**
          * disableGraphic
          * @param {int} [graphicNum=0]
@@ -1377,6 +1385,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
         }
     }, {
         key: "getVertexFragmentProgram",
+
 
         /**
          * Get one added WebCLGLVertexFragmentProgram
@@ -1393,6 +1402,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "getAllVertexFragmentProgram",
 
+
         /**
          * Get all added WebCLGLVertexFragmentPrograms
          * @returns {Object}
@@ -1402,6 +1412,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
         }
     }, {
         key: "processKernel",
+
 
         /**
          * Process kernels
@@ -1455,6 +1466,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "processKernels",
 
+
         /**
          * Process kernels
          * @param {boolean} [outputToTemp=null]
@@ -1468,6 +1480,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
         }
     }, {
         key: "processGraphic",
+
 
         /**
          * processGraphic
@@ -1518,6 +1531,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
     }, {
         key: "ini",
 
+
         /**
          * initialize numeric
          */
@@ -1564,6 +1578,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
         }
     }, {
         key: "iniG",
+
 
         /**
          * initialize Graphic
@@ -1629,7 +1644,6 @@ function gpufor() {
 }
 global.gpufor = gpufor;
 module.exports.gpufor = gpufor;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebCLGL.class":1,"./WebCLGLUtils.class":5}],4:[function(require,module,exports){
 (function (global){
@@ -1640,23 +1654,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WebCLGLKernel = undefined;
 
-var _createClass = function () {
-    function defineProperties(target, props) {
-        for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-        }
-    }return function (Constructor, protoProps, staticProps) {
-        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-    };
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _WebCLGLUtils = require('./WebCLGLUtils.class');
 
-function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-        throw new TypeError("Cannot call a class as a function");
-    }
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
 * WebCLGLKernel Object
@@ -1706,6 +1708,7 @@ var WebCLGLKernel = exports.WebCLGLKernel = function () {
      * @param {String} source
      * @param {String} [header=undefined] Additional functions
      */
+
 
     _createClass(WebCLGLKernel, [{
         key: 'setKernelSource',
@@ -1783,7 +1786,6 @@ var WebCLGLKernel = exports.WebCLGLKernel = function () {
 
 global.WebCLGLKernel = WebCLGLKernel;
 module.exports.WebCLGLKernel = WebCLGLKernel;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebCLGLUtils.class":5}],5:[function(require,module,exports){
 (function (global){
@@ -1793,21 +1795,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createClass = function () {
-    function defineProperties(target, props) {
-        for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-        }
-    }return function (Constructor, protoProps, staticProps) {
-        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-    };
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-        throw new TypeError("Cannot call a class as a function");
-    }
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /** 
 * Utilities
@@ -1822,6 +1812,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
     /**
      * loadQuad
      */
+
 
     _createClass(WebCLGLUtils, [{
         key: "loadQuad",
@@ -1843,6 +1834,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
         }
     }, {
         key: "createShader",
+
 
         /**
          * createShader
@@ -1927,6 +1919,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
     }, {
         key: "pack",
 
+
         /**
          * Pack 1float (0.0-1.0) to 4float rgba (0.0-1.0, 0.0-1.0, 0.0-1.0, 0.0-1.0)
          */
@@ -1946,6 +1939,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
     }, {
         key: "unpack",
 
+
         /**
          * Unpack 4float rgba (0.0-1.0, 0.0-1.0, 0.0-1.0, 0.0-1.0) to 1float (0.0-1.0)
          */
@@ -1955,6 +1949,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
         }
     }], [{
         key: "getWebGLContextFromCanvas",
+
 
         /**
          * getWebGLContextFromCanvas
@@ -2003,6 +1998,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
     }, {
         key: "getUint8ArrayFromHTMLImageElement",
 
+
         /**
          * Get Uint8Array from HTMLImageElement
          * @param {HTMLImageElement} imageElement
@@ -2021,6 +2017,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
     }, {
         key: "dot4",
 
+
         /**
          * Dot product vector4float
          */
@@ -2030,6 +2027,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
     }, {
         key: "fract",
 
+
         /**
          * Compute the fractional part of the argument. fract(pi)=0.14159265...
          */
@@ -2038,6 +2036,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
         }
     }, {
         key: "packGLSLFunctionString",
+
 
         /**
          * Get pack GLSL function string
@@ -2049,6 +2048,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
     }, {
         key: "unpackGLSLFunctionString",
 
+
         /**
          * Get unpack GLSL function string
          * @returns {String}
@@ -2058,6 +2058,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
         }
     }, {
         key: "getOutputBuffers",
+
 
         /**
          * getOutputBuffers
@@ -2082,6 +2083,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
         }
     }, {
         key: "parseSource",
+
 
         /**
          * parseSource
@@ -2118,6 +2120,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
     }, {
         key: "lines_vertex_attrs",
 
+
         /**
          * lines_vertex_attrs
          * @param {Object} values
@@ -2138,6 +2141,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
     }, {
         key: "lines_fragment_attrs",
 
+
         /**
          * lines_fragment_attrs
          * @param {Object} values
@@ -2155,6 +2159,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
         }
     }, {
         key: "lines_drawBuffersInit",
+
 
         /**
          * lines_drawBuffersInit
@@ -2179,6 +2184,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
     }, {
         key: "lines_drawBuffersWrite",
 
+
         /**
          * lines_drawBuffersWrite
          * @param {int} maxDrawBuffers
@@ -2192,6 +2198,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
         }
     }, {
         key: "checkArgNameInitialization",
+
 
         /**
          * checkArgNameInitialization
@@ -2209,6 +2216,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
     }, {
         key: "get_global_id3_GLSLFunctionString",
 
+
         /**
          * get_global_id3_GLSLFunctionString
          */
@@ -2217,6 +2225,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
         }
     }, {
         key: "get_global_id2_GLSLFunctionString",
+
 
         /**
          * get_global_id2_GLSLFunctionString
@@ -2231,7 +2240,6 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
 
 global.WebCLGLUtils = WebCLGLUtils;
 module.exports.WebCLGLUtils = WebCLGLUtils;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],6:[function(require,module,exports){
 (function (global){
@@ -2242,23 +2250,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WebCLGLVertexFragmentProgram = undefined;
 
-var _createClass = function () {
-    function defineProperties(target, props) {
-        for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-        }
-    }return function (Constructor, protoProps, staticProps) {
-        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-    };
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _WebCLGLUtils = require('./WebCLGLUtils.class');
 
-function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-        throw new TypeError("Cannot call a class as a function");
-    }
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
 * WebCLGLVertexFragmentProgram Object
@@ -2311,6 +2307,7 @@ var WebCLGLVertexFragmentProgram = exports.WebCLGLVertexFragmentProgram = functi
      * compileVertexFragmentSource
      */
 
+
     _createClass(WebCLGLVertexFragmentProgram, [{
         key: 'compileVertexFragmentSource',
         value: function compileVertexFragmentSource() {
@@ -2357,6 +2354,7 @@ var WebCLGLVertexFragmentProgram = exports.WebCLGLVertexFragmentProgram = functi
         }
     }, {
         key: 'setVertexSource',
+
 
         /**
          * Update the vertex source
@@ -2412,6 +2410,7 @@ var WebCLGLVertexFragmentProgram = exports.WebCLGLVertexFragmentProgram = functi
     }, {
         key: 'setFragmentSource',
 
+
         /**
          * Update the fragment source
          * @param {String} fragmentSource
@@ -2465,7 +2464,6 @@ var WebCLGLVertexFragmentProgram = exports.WebCLGLVertexFragmentProgram = functi
 
 global.WebCLGLVertexFragmentProgram = WebCLGLVertexFragmentProgram;
 module.exports.WebCLGLVertexFragmentProgram = WebCLGLVertexFragmentProgram;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebCLGLUtils.class":5}],7:[function(require,module,exports){
 (function (global){
@@ -2494,6 +2492,5 @@ module.exports.WebCLGLKernel = global.WebCLGLKernel = WebCLGLKernel;
 module.exports.WebCLGLUtils = global.WebCLGLUtils = WebCLGLUtils;
 
 module.exports.WebCLGLVertexFragmentProgram = global.WebCLGLVertexFragmentProgram = WebCLGLVertexFragmentProgram;
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./WebCLGL.class":1,"./WebCLGLBuffer.class":2,"./WebCLGLFor.class":3,"./WebCLGLKernel.class":4,"./WebCLGLUtils.class":5,"./WebCLGLVertexFragmentProgram.class":6}]},{},[7]);
