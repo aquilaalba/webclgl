@@ -11,7 +11,7 @@ export class WebCLGLKernel {
     constructor(gl, source, header) {
         this._gl = gl;
 
-        let highPrecisionSupport = (this._gl instanceof WebGL2RenderingContext) ? 1 : this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
+        let highPrecisionSupport = this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
         this._precision = (highPrecisionSupport.precision !== 0)
             ? 'precision highp float;\n\nprecision highp int;\n\n'
             : 'precision lowp float;\n\nprecision lowp int;\n\n';
