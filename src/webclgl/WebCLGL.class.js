@@ -103,7 +103,7 @@ export class WebCLGL {
         let sourceFragment = this.version+
                 this._precision+
                 'uniform sampler2D sampler_buffer;\n'+
-                varyingInStr+'in vec2 vCoord;\n'+
+                varyingInStr+' vec2 vCoord;\n'+
 
                 ((this._gl instanceof WebGL2RenderingContext) ? 'out vec4 fragmentColor;' : "")+
                 'void main(void) {\n'+
