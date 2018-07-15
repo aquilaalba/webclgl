@@ -63,7 +63,7 @@ var WebCLGL = exports.WebCLGL = function () {
             this._gl = _WebCLGLUtils.WebCLGLUtils.getWebGLContextFromCanvas(this.e, { antialias: false });
         } else this._gl = webglcontext;
 
-        var highPrecisionSupport = this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
+        var highPrecisionSupport = this._gl instanceof WebGL2RenderingContext ? 1 : this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
         this._precision = highPrecisionSupport.precision !== 0 ? 'precision highp float;\n\nprecision highp int;\n\n' : 'precision lowp float;\n\nprecision lowp int;\n\n';
 
         this.version = this._gl instanceof WebGL2RenderingContext ? "#version 300 es \n " : "";
@@ -1710,7 +1710,7 @@ var WebCLGLKernel = exports.WebCLGLKernel = function () {
 
         this._gl = gl;
 
-        var highPrecisionSupport = this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
+        var highPrecisionSupport = this._gl instanceof WebGL2RenderingContext ? 1 : this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
         this._precision = highPrecisionSupport.precision !== 0 ? 'precision highp float;\n\nprecision highp int;\n\n' : 'precision lowp float;\n\nprecision lowp int;\n\n';
 
         this.version = this._gl instanceof WebGL2RenderingContext ? "#version 300 es \n " : "";
@@ -2337,7 +2337,7 @@ var WebCLGLVertexFragmentProgram = exports.WebCLGLVertexFragmentProgram = functi
 
         this._gl = gl;
 
-        var highPrecisionSupport = this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
+        var highPrecisionSupport = this._gl instanceof WebGL2RenderingContext ? 1 : this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
         this._precision = highPrecisionSupport.precision !== 0 ? 'precision highp float;\n\nprecision highp int;\n\n' : 'precision lowp float;\n\nprecision lowp int;\n\n';
 
         this.version = this._gl instanceof WebGL2RenderingContext ? "#version 300 es \n " : "";
