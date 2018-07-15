@@ -369,7 +369,7 @@ var arrayResult = gpufG.readArg("result");
 ```
 
     <h4>v4.1.0</h4>
-    - Allowing WebGL2 again. <br />
+    - Allowing WebGL2 again (if your code has some varying change it to out or in according to WebGL specification). <br />
 
     <h4>v3.5.2</h4>
     - using WebCLGL.min.js instead WebCLGL.class.js
