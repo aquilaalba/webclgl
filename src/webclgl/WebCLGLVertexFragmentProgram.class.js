@@ -12,13 +12,30 @@ import {WebCLGLUtils} from "./WebCLGLUtils.class";
 export class WebCLGLVertexFragmentProgram {
     constructor(gl, vertexSource, vertexHeader, fragmentSource, fragmentHeader) {
         this._gl = gl;
-        let highPrecisionSupport = this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
-        this._precision = (highPrecisionSupport.precision !== 0) ? 'precision highp float;\n\nprecision highp int;\n\n' : 'precision lowp float;\n\nprecision lowp int;\n\n';
 
-        let _glDrawBuff_ext = this._gl.getExtension("WEBGL_draw_buffers");
-        this._maxDrawBuffers = null;
-        if(_glDrawBuff_ext != null)
-            this._maxDrawBuffers = this._gl.getParameter(_glDrawBuff_ext.MAX_DRAW_BUFFERS_WEBGL);
+        let highPrecisionSupport = this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
+        this._precision = (highPrecisionSupport.precision !== 0)
+            ? 'precision highp float;\n\nprecision highp int;\n\n'
+            : 'precision lowp float;\n\nprecision lowp int;\n\n';
+
+        this.version = (this._gl instanceof WebGL2RenderingContext)
+            ? "#version 300 es \n "
+            : "";
+
+        this._arrExt = (this._gl instanceof WebGL2RenderingContext)
+            ? {"EXT_color_buffer_float":null}
+            : {"OES_texture_float":null, "OES_texture_float_linear":null, "OES_element_index_uint":null, "WEBGL_draw_buffers":null};
+        for(let key in this._arrExt) {
+            this._arrExt[key] = this._gl.getExtension(key);
+            if(this._arrExt[key] == null)
+                console.error("extension "+key+" not available");
+            else
+                console.log("using extension "+key);
+        }
+
+        this.extDrawBuff = (this._gl instanceof WebGL2RenderingContext)
+            ? ""
+            : " #extension GL_EXT_draw_buffers : require\n";
 
         this.name = "";
         this.viewSource = false;
@@ -52,12 +69,12 @@ export class WebCLGLVertexFragmentProgram {
      * compileVertexFragmentSource
      */
     compileVertexFragmentSource() {
-        let sourceVertex = 	""+
+        let sourceVertex = this.version+
             this._precision+
             'uniform float uOffset;\n'+
             'uniform float uBufferWidth;'+
 
-            WebCLGLUtils.lines_vertex_attrs(this.in_vertex_values)+
+            WebCLGLUtils.lines_vertex_attrs(this.in_vertex_values, (this._gl instanceof WebGL2RenderingContext))+
 
             WebCLGLUtils.unpackGLSLFunctionString()+
 
@@ -71,7 +88,8 @@ export class WebCLGLVertexFragmentProgram {
                 this._vertexSource+
 
             '}\n';
-        let sourceFragment = '#extension GL_EXT_draw_buffers : require\n'+
+        let sourceFragment = this.version+
+            this.extDrawBuff+
             this._precision+
 
             WebCLGLUtils.lines_fragment_attrs(this.in_fragment_values)+
@@ -81,13 +99,13 @@ export class WebCLGLVertexFragmentProgram {
 
             this._fragmentHead+
 
-            //WebCLGLUtils.lines_drawBuffersWriteInit(8)+
+            ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWriteInit_GL2(8) : "")+
             'void main(void) {\n'+
                 WebCLGLUtils.lines_drawBuffersInit(8)+
 
                 this._fragmentSource+
 
-                WebCLGLUtils.lines_drawBuffersWrite(8)+
+            ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWrite_GL2(8) : WebCLGLUtils.lines_drawBuffersWrite(8))+
             '}\n';
 
         this.vertexFragmentProgram = this._gl.createProgram();
@@ -175,12 +193,12 @@ export class WebCLGLVertexFragmentProgram {
         // parse header
         this._vertexHead = (vertexHeader !== undefined && vertexHeader !== null) ? vertexHeader : '';
         this._vertexHead = this._vertexHead.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
-        this._vertexHead = WebCLGLUtils.parseSource(this._vertexHead, this.in_vertex_values);
+        this._vertexHead = WebCLGLUtils.parseSource(this._vertexHead, this.in_vertex_values, (this._gl instanceof WebGL2RenderingContext));
 
         // parse source
         this._vertexSource = vertexSource.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
         this._vertexSource = this._vertexSource.replace(/^\w* \w*\([\w\s\*,]*\) {/gi, '').replace(/}(\s|\t)*$/gi, '');
-        this._vertexSource = WebCLGLUtils.parseSource(this._vertexSource, this.in_vertex_values);
+        this._vertexSource = WebCLGLUtils.parseSource(this._vertexSource, this.in_vertex_values, (this._gl instanceof WebGL2RenderingContext));
 
         this._vertexP_ready = true;
         if(this._fragmentP_ready === true) {
@@ -235,12 +253,12 @@ export class WebCLGLVertexFragmentProgram {
         // parse header
         this._fragmentHead = (fragmentHeader !== undefined && fragmentHeader !== null) ? fragmentHeader : '';
         this._fragmentHead = this._fragmentHead.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
-        this._fragmentHead = WebCLGLUtils.parseSource(this._fragmentHead, this.in_fragment_values);
+        this._fragmentHead = WebCLGLUtils.parseSource(this._fragmentHead, this.in_fragment_values, (this._gl instanceof WebGL2RenderingContext));
 
         // parse source
         this._fragmentSource = fragmentSource.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
         this._fragmentSource = this._fragmentSource.replace(/^\w* \w*\([\w\s\*,]*\) {/gi, '').replace(/}(\s|\t)*$/gi, '');
-        this._fragmentSource = WebCLGLUtils.parseSource(this._fragmentSource, this.in_fragment_values);
+        this._fragmentSource = WebCLGLUtils.parseSource(this._fragmentSource, this.in_fragment_values, (this._gl instanceof WebGL2RenderingContext));
 
 
         this._fragmentP_ready = true;

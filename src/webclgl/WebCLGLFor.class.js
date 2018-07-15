@@ -773,7 +773,7 @@ module.exports.WebCLGLFor = WebCLGLFor;
 export function gpufor() {
     let clglFor = new WebCLGLFor();
     let _gl = null;
-    if(arguments[0] instanceof WebGLRenderingContext) {
+    if(arguments[0] instanceof WebGLRenderingContext || arguments[0] instanceof WebGL2RenderingContext) {
         _gl = arguments[0];
 
         clglFor.setCtx(_gl);

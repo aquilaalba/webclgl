@@ -41,8 +41,8 @@ export class WebCLGLUtils {
      */
     static getWebGLContextFromCanvas(canvas, ctxOpt) {
         let gl = null;
-        /*try {
-            if(ctxOpt == undefined || ctxOpt === null) gl = canvas.getContext("webgl2");
+        try {
+            if(ctxOpt === undefined || ctxOpt === null) gl = canvas.getContext("webgl2");
             else gl = canvas.getContext("webgl2", ctxOpt);
 
             console.log((gl == null)?"no webgl2":"using webgl2");
@@ -51,14 +51,14 @@ export class WebCLGLUtils {
         }
         if(gl == null) {
             try {
-                if(ctxOpt == undefined || ctxOpt === null) gl = canvas.getContext("experimental-webgl2");
+                if(ctxOpt === undefined || ctxOpt === null) gl = canvas.getContext("experimental-webgl2");
                 else gl = canvas.getContext("experimental-webgl2", ctxOpt);
 
                 console.log((gl == null)?"no experimental-webgl2":"using experimental-webgl2");
             } catch(e) {
                 gl = null;
             }
-        }*/
+        }
         if(gl == null) {
             try {
                 if(ctxOpt === undefined || ctxOpt === null) gl = canvas.getContext("webgl");
@@ -284,9 +284,12 @@ export class WebCLGLUtils {
      * parseSource
      * @param {String} source
      * @param {Object} values
+     * @param {boolean} isGL2
      * @returns {String}
      */
-    static parseSource(source, values) {
+    static parseSource(source, values, isGL2) {
+        let texStr = (isGL2 === true) ? "texture" : "texture2D";
+
         for(let key in values) {
             let regexp = new RegExp(key+"\\[(?!\\d).*?\\]","gm"); // avoid normal uniform arrays
             let varMatches = source.match(regexp);// "Search current "argName" in source and store in array varMatches
@@ -299,8 +302,8 @@ export class WebCLGLUtils {
                         let name = varMatches[nB].split('[')[0];
                         let vari = varMatches[nB].split('[')[1].split(']')[0];
 
-                        let map = { 'float4_fromSampler': source.replace(name+"["+vari+"]", 'texture2D('+name+','+vari+')'),
-                            'float_fromSampler': source.replace(name+"["+vari+"]", 'texture2D('+name+','+vari+').x'),
+                        let map = { 'float4_fromSampler': source.replace(name+"["+vari+"]", texStr+'('+name+','+vari+')'),
+                            'float_fromSampler': source.replace(name+"["+vari+"]", texStr+'('+name+','+vari+').x'),
                             'float4_fromAttr': source.replace(name+"["+vari+"]", name),
                             'float_fromAttr': source.replace(name+"["+vari+"]", name)};
                         source = map[values[key].type];
@@ -315,14 +318,17 @@ export class WebCLGLUtils {
     /**
      * lines_vertex_attrs
      * @param {Object} values
+     * @param {boolean} isGL2
      */
-    static lines_vertex_attrs(values) {
+    static lines_vertex_attrs(values, isGL2) {
+        let attrStr = (isGL2 === true) ? "in" : "attribute";
+
         let str = '';
         for(let key in values) {
             str += {'float4_fromSampler': 'uniform sampler2D '+key+';',
                     'float_fromSampler': 'uniform sampler2D '+key+';',
-                    'float4_fromAttr': 'attribute vec4 '+key+';',
-                    'float_fromAttr': 'attribute float '+key+';',
+                    'float4_fromAttr': attrStr+' vec4 '+key+';',
+                    'float_fromAttr': attrStr+' float '+key+';',
                     'float': 'uniform float '+key+';',
                     'float4': 'uniform vec4 '+key+';',
                     'mat4': 'uniform mat4 '+key+';'}[values[key].type]+'\n';
@@ -360,11 +366,25 @@ export class WebCLGLUtils {
         return str;
     };
 
-    static lines_drawBuffersWriteInit(maxDrawBuffers) {
+    static lines_drawBuffersWriteInit_GL2(maxDrawBuffers) {
         let str = '';
         for(let n= 0, fn=maxDrawBuffers; n < fn; n++) {
             str += ''+
             'layout(location = '+n+') out vec4 outCol'+n+';\n';
+        }
+        return str;
+    };
+
+    /**
+     * lines_drawBuffersWrite
+     * @param {int} maxDrawBuffers
+     */
+    static lines_drawBuffersWrite_GL2(maxDrawBuffers) {
+        let str = '';
+        for(let n= 0, fn=maxDrawBuffers; n < fn; n++) {
+            str += ''+
+                'if(out'+n+'_float != -999.99989) outCol'+n+' = vec4(out'+n+'_float,0.0,0.0,1.0);\n'+
+                ' else outCol'+n+' = out'+n+'_float4;\n';
         }
         return str;
     };

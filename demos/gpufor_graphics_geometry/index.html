@@ -127,7 +127,7 @@
                                     // GRAPHIC PROGRAM
                                     {"type": "GRAPHIC",
                                     "config": [ // vertex head
-                                                'varying vec4 vVertexColor;',
+                                                'out vec4 vVertexColor;',
 
                                                 // vertex source
                                                 'vec2 xx = get_global_id(nodeId[], uBufferWidth, '+geometryLength.toFixed(1)+');'+
@@ -146,7 +146,7 @@
                                                 'gl_PointSize = 2.0;\n',
 
                                                 // fragment head
-                                                'varying vec4 vVertexColor;',
+                                                'in vec4 vVertexColor;',
 
                                                 // fragment source
                                                 'return vVertexColor;\n']

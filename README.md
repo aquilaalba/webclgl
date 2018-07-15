@@ -1,7 +1,7 @@
 [![Logo](demos/webclgl.jpg)](https://github.com/stormcolor/webclgl)
 
 <h2>Javascript Library for GPGPU computing</h2>
-WebCLGL use WebGL specification to interpret code.<br />
+WebCLGL use WebGL2 specification to interpret code.<br />
 First version of algorithm was created in 2013 (hosted on <a href="https://code.google.com/archive/p/webclgl/downloads">Google Code</a>). On this, WebGL is used like OpenCL for GPGPU calculus using the traditional Render To Texture technique. <br />
 
 Features: <br />
@@ -10,7 +10,7 @@ Features: <br />
 - WebCLGL handle any WebGL operation preparing all neccesary resources (buffers and programs initialization, vertex/fragment programs buffers interconnection, Renders to texture, etc... reducing time to write any advanced shaders. <br /> 
 
 <h3><a href="https://rawgit.com/stormcolor/webclgl/master/APIdoc/WebCLGLFor.html">API Doc WebCLGL</a></h3>
-<h3><a href="http://www.khronos.org/files/webgl/webgl-reference-card-1_0.pdf">OpenGL ES Shading Language 1.0 Reference Card (Pag 3-4)</a></h3>
+<h3><a href="https://www.khronos.org/files/webgl20-reference-guide.pdf">WebGL 2.0 API Quick Reference Guide</a></h3>
 
 <h3>Import library</h3>
 
@@ -222,6 +222,7 @@ float*			            | Array<Float or Int>, Float32Array, Uint8Array, WebGLTextu
 float4*		            	| Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
 float		            	| 30
 float4		            	| [30.0, 10.0, 5.0, 100.0]
+float Array                 | (example: float varname[64];)
 mat4		            	| new Float32Array([1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, -100.0, 0.0, 0.0, 0.0, 1.0]);
 float*attr			        | Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
 float4*attr		            | Array<Float or Int>, Float32Array, Uint8Array, WebGLTexture, HTMLImageElement
@@ -366,6 +367,9 @@ var arrayResult = gpufG.readArg("result");
 <h3>ChangeLog</h3>
 
 ```
+
+    <h4>v4.1.0</h4>
+    - Allowing WebGL2 again. <br />
 
     <h4>v3.5.2</h4>
     - using WebCLGL.min.js instead WebCLGL.class.js

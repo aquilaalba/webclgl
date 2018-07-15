@@ -44,7 +44,12 @@ export class WebCLGLBuffer {
         let createWebGLRenderBuffer = (function() {
             let rBuffer = this._gl.createRenderbuffer();
             this._gl.bindRenderbuffer(this._gl.RENDERBUFFER, rBuffer);
-            this._gl.renderbufferStorage(this._gl.RENDERBUFFER, this._gl.DEPTH_COMPONENT16, this.W, this.H);
+
+            // WebGL2: GLenum target, GLenum internalformat, GLsizei width, GLsizei height
+            let intFormat = (this._gl instanceof WebGL2RenderingContext) ? this._gl.DEPTH_COMPONENT32F : this._gl.DEPTH_COMPONENT16;
+
+            this._gl.renderbufferStorage(this._gl.RENDERBUFFER, intFormat, this.W, this.H);
+
             this._gl.bindRenderbuffer(this._gl.RENDERBUFFER, null);
             return rBuffer;
         }).bind(this);
@@ -83,14 +88,22 @@ export class WebCLGLBuffer {
             this._gl.bindTexture(this._gl.TEXTURE_2D, tex);
         }).bind(this);
 
+        // WebGL2
+        // texImage2D(enum target, int level, int internalformat, sizei width, sizei height, int border, enum format, enum type, ArrayBufferView srcData, uint srcOffset)
+        // texImage2D(enum target, int level, int internalformat, sizei width, sizei height, int border, enum format, enum type, TexImageSource source);
+        // texImage2D(enum target, int level, int internalformat, sizei width, sizei height, int border, enum format, enum type, intptr offset);
         let writeTexNow = (function(arr) {
             if(arr instanceof HTMLImageElement)  {
                 //this._gl.texImage2D(this._gl.TEXTURE_2D, 0, this._gl.RGBA, arr.width, arr.height, 0, this._gl.RGBA, this._gl.UNSIGNED_BYTE, arr);
                 if(this.type === 'FLOAT4')
-                    this._gl.texImage2D(	this._gl.TEXTURE_2D, 0, this._gl.RGBA, this._gl.RGBA, this._supportFormat, arr);
+                    (this._gl instanceof WebGL2RenderingContext)
+                        ? this._gl.texImage2D(this._gl.TEXTURE_2D, 0, this._gl.RGBA32F, arr.width, arr.height, 0, this._gl.RGBA, this._supportFormat, arr)
+                        : this._gl.texImage2D(this._gl.TEXTURE_2D, 0, this._gl.RGBA, this._gl.RGBA, this._supportFormat, arr);
             } else {
                 //this._gl.texImage2D(this._gl.TEXTURE_2D, 0, this._gl.RGBA, this.W, this.H, 0, this._gl.RGBA, this._supportFormat, arr, 0);
-                this._gl.texImage2D(this._gl.TEXTURE_2D, 0, this._gl.RGBA, this.W, this.H, 0, this._gl.RGBA, this._supportFormat, arr);
+                (this._gl instanceof WebGL2RenderingContext)
+                    ? this._gl.texImage2D(this._gl.TEXTURE_2D, 0, this._gl.RGBA32F, this.W, this.H, 0, this._gl.RGBA, this._supportFormat, arr)
+                    : this._gl.texImage2D(this._gl.TEXTURE_2D, 0, this._gl.RGBA, this.W, this.H, 0, this._gl.RGBA, this._supportFormat, arr);
             }
         }).bind(this);
 

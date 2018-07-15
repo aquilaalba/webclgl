@@ -10,13 +10,30 @@ import {WebCLGLUtils} from "./WebCLGLUtils.class";
 export class WebCLGLKernel {
     constructor(gl, source, header) {
         this._gl = gl;
-        let highPrecisionSupport = this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
-        this._precision = (highPrecisionSupport.precision !== 0) ? 'precision highp float;\n\nprecision highp int;\n\n' : 'precision lowp float;\n\nprecision lowp int;\n\n';
 
-        let _glDrawBuff_ext = this._gl.getExtension("WEBGL_draw_buffers");
-        this._maxDrawBuffers = null;
-        if(_glDrawBuff_ext != null)
-            this._maxDrawBuffers = this._gl.getParameter(_glDrawBuff_ext.MAX_DRAW_BUFFERS_WEBGL);
+        let highPrecisionSupport = this._gl.getShaderPrecisionFormat(this._gl.FRAGMENT_SHADER, this._gl.HIGH_FLOAT);
+        this._precision = (highPrecisionSupport.precision !== 0)
+            ? 'precision highp float;\n\nprecision highp int;\n\n'
+            : 'precision lowp float;\n\nprecision lowp int;\n\n';
+
+        this.version = (this._gl instanceof WebGL2RenderingContext)
+            ? "#version 300 es \n "
+            : "";
+
+        this._arrExt = (this._gl instanceof WebGL2RenderingContext)
+            ? {"EXT_color_buffer_float":null}
+            : {"OES_texture_float":null, "OES_texture_float_linear":null, "OES_element_index_uint":null, "WEBGL_draw_buffers":null};
+        for(let key in this._arrExt) {
+            this._arrExt[key] = this._gl.getExtension(key);
+            if(this._arrExt[key] == null)
+                console.error("extension "+key+" not available");
+            else
+                console.log("using extension "+key);
+        }
+
+        this.extDrawBuff = (this._gl instanceof WebGL2RenderingContext)
+            ? ""
+            : " #extension GL_EXT_draw_buffers : require\n";
 
         this.name = "";
         this.enabled = true;
@@ -49,22 +66,27 @@ export class WebCLGLKernel {
      * @param {String} [header=undefined] Additional functions
      */
     setKernelSource(source, header) {
+        let attrStr = (this._gl instanceof WebGL2RenderingContext === true) ? "in" : "attribute";
+        let varyingOutStr = (this._gl instanceof WebGL2RenderingContext === true) ? "out" : "varying";
+        let varyingInStr = (this._gl instanceof WebGL2RenderingContext === true) ? "in" : "varying";
+
         let compile = (function() {
-            let sourceVertex = 	""+
+            let sourceVertex = 	this.version+
                 this._precision+
-                'attribute vec3 aVertexPosition;\n'+
-                'varying vec2 global_id;\n'+
+                attrStr+' vec3 aVertexPosition;\n'+
+                varyingOutStr+' vec2 global_id;\n'+
 
                 'void main(void) {\n'+
                     'gl_Position = vec4(aVertexPosition, 1.0);\n'+
                     'global_id = aVertexPosition.xy*0.5+0.5;\n'+
                 '}\n';
-            let sourceFragment = '#extension GL_EXT_draw_buffers : require\n'+
+            let sourceFragment = this.version+
+                this.extDrawBuff+
                 this._precision+
 
                 WebCLGLUtils.lines_fragment_attrs(this.in_values)+
 
-                'varying vec2 global_id;\n'+
+                varyingInStr+' vec2 global_id;\n'+
                 'uniform float uBufferWidth;'+
 
                 'vec2 get_global_id() {\n'+
@@ -76,13 +98,13 @@ export class WebCLGLKernel {
 
                 this._head+
 
-                //WebCLGLUtils.lines_drawBuffersWriteInit(8)+
+                ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWriteInit_GL2(8) : "")+
                 'void main(void) {\n'+
                     WebCLGLUtils.lines_drawBuffersInit(8)+
 
                     this._source+
 
-                    WebCLGLUtils.lines_drawBuffersWrite(8)+
+                ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWrite_GL2(8) : WebCLGLUtils.lines_drawBuffersWrite(8))+
                 '}\n';
 
             this.kernel = this._gl.createProgram();
@@ -142,12 +164,12 @@ export class WebCLGLKernel {
         // parse header
         this._head = (header !== undefined && header !== null) ? header : '';
         this._head = this._head.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
-        this._head = WebCLGLUtils.parseSource(this._head, this.in_values);
+        this._head = WebCLGLUtils.parseSource(this._head, this.in_values, (this._gl instanceof WebGL2RenderingContext));
 
         // parse source
         this._source = source.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
         this._source = this._source.replace(/^\w* \w*\([\w\s\*,]*\) {/gi, '').replace(/}(\s|\t)*$/gi, '');
-        this._source = WebCLGLUtils.parseSource(this._source, this.in_values);
+        this._source = WebCLGLUtils.parseSource(this._source, this.in_values, (this._gl instanceof WebGL2RenderingContext));
 
         let ts = compile();
 
