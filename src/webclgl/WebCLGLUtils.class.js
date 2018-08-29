@@ -411,6 +411,7 @@ export class WebCLGLUtils {
     static checkArgNameInitialization(inValues, argName) {
         if(inValues.hasOwnProperty(argName) === false) {
             inValues[argName] = {
+                "varname": null,
                 "type": null,
                 "expectedMode": null, // "ATTRIBUTE", "SAMPLER", "UNIFORM"
                 "location": null};

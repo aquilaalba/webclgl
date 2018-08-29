@@ -429,7 +429,7 @@ var WebCLGL = exports.WebCLGL = function () {
                     }
                     this._gl instanceof WebGL2RenderingContext ? this._gl.drawBuffers(arrDBuff) : this._arrExt["WEBGL_draw_buffers"].drawBuffersWEBGL(arrDBuff);
 
-                    return this.checkFramebufferStatus();
+                    return true;
                 } else {
                     this._gl.bindFramebuffer(this._gl.FRAMEBUFFER, null);
                     return true;
@@ -1773,15 +1773,7 @@ var WebCLGLKernel = exports.WebCLGLKernel = function () {
                 this.uBufferWidth = this._gl.getUniformLocation(this.kernel, "uBufferWidth");
 
                 for (var key in this.in_values) {
-                    var expectedMode = { 'float4_fromSampler': "SAMPLER",
-                        'float_fromSampler': "SAMPLER",
-                        'float': "UNIFORM",
-                        'float4': "UNIFORM",
-                        'mat4': "UNIFORM" }[this.in_values[key].type];
-
-                    _WebCLGLUtils.WebCLGLUtils.checkArgNameInitialization(this.in_values, key);
-                    this.in_values[key].location = [this._gl.getUniformLocation(this.kernel, key.replace(/\[\d.*/, ""))];
-                    this.in_values[key].expectedMode = expectedMode;
+                    this.in_values[key].location = [this._gl.getUniformLocation(this.kernel, this.in_values[key].varname)];
                 }
 
                 return "VERTEX PROGRAM\n" + sourceVertex + "\n FRAGMENT PROGRAM\n" + sourceFragment;
@@ -1819,6 +1811,18 @@ var WebCLGLKernel = exports.WebCLGLKernel = function () {
             this._source = source.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
             this._source = this._source.replace(/^\w* \w*\([\w\s\*,]*\) {/gi, '').replace(/}(\s|\t)*$/gi, '');
             this._source = _WebCLGLUtils.WebCLGLUtils.parseSource(this._source, this.in_values, this._gl instanceof WebGL2RenderingContext);
+
+            for (var _key in this.in_values) {
+                var expectedMode = { 'float4_fromSampler': "SAMPLER",
+                    'float_fromSampler': "SAMPLER",
+                    'float': "UNIFORM",
+                    'float4': "UNIFORM",
+                    'mat4': "UNIFORM" }[this.in_values[_key].type];
+
+                this.in_values[_key].varname = _key.replace(/\[\d.*/, "");
+                this.in_values[_key].varnameC = _key;
+                this.in_values[_key].expectedMode = expectedMode;
+            }
 
             var ts = compile();
 
@@ -2274,6 +2278,7 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
         value: function checkArgNameInitialization(inValues, argName) {
             if (inValues.hasOwnProperty(argName) === false) {
                 inValues[argName] = {
+                    "varname": null,
                     "type": null,
                     "expectedMode": null, // "ATTRIBUTE", "SAMPLER", "UNIFORM"
                     "location": null };
@@ -2394,30 +2399,12 @@ var WebCLGLVertexFragmentProgram = exports.WebCLGLVertexFragmentProgram = functi
             this.uBufferWidth = this._gl.getUniformLocation(this.vertexFragmentProgram, "uBufferWidth");
 
             for (var key in this.in_vertex_values) {
-                var expectedMode = { 'float4_fromSampler': "SAMPLER",
-                    'float_fromSampler': "SAMPLER",
-                    'float4_fromAttr': "ATTRIBUTE",
-                    'float_fromAttr': "ATTRIBUTE",
-                    'float': "UNIFORM",
-                    'float4': "UNIFORM",
-                    'mat4': "UNIFORM" }[this.in_vertex_values[key].type];
-
-                _WebCLGLUtils.WebCLGLUtils.checkArgNameInitialization(this.in_vertex_values, key);
-                var loc = expectedMode === "ATTRIBUTE" ? this._gl.getAttribLocation(this.vertexFragmentProgram, key) : this._gl.getUniformLocation(this.vertexFragmentProgram, key.replace(/\[\d.*/, ""));
+                var loc = this.in_vertex_values[key].expectedMode === "ATTRIBUTE" ? this._gl.getAttribLocation(this.vertexFragmentProgram, this.in_vertex_values[key].varname) : this._gl.getUniformLocation(this.vertexFragmentProgram, this.in_vertex_values[key].varname);
                 this.in_vertex_values[key].location = [loc];
-                this.in_vertex_values[key].expectedMode = expectedMode;
             }
 
             for (var _key in this.in_fragment_values) {
-                var _expectedMode = { 'float4_fromSampler': "SAMPLER",
-                    'float_fromSampler': "SAMPLER",
-                    'float': "UNIFORM",
-                    'float4': "UNIFORM",
-                    'mat4': "UNIFORM" }[this.in_fragment_values[_key].type];
-
-                _WebCLGLUtils.WebCLGLUtils.checkArgNameInitialization(this.in_fragment_values, _key);
-                this.in_fragment_values[_key].location = [this._gl.getUniformLocation(this.vertexFragmentProgram, _key.replace(/\[\d.*/, ""))];
-                this.in_fragment_values[_key].expectedMode = _expectedMode;
+                this.in_fragment_values[_key].location = [this._gl.getUniformLocation(this.vertexFragmentProgram, this.in_fragment_values[_key].varname)];
             }
 
             return "VERTEX PROGRAM\n" + sourceVertex + "\n FRAGMENT PROGRAM\n" + sourceFragment;
@@ -2470,6 +2457,20 @@ var WebCLGLVertexFragmentProgram = exports.WebCLGLVertexFragmentProgram = functi
             this._vertexSource = this._vertexSource.replace(/^\w* \w*\([\w\s\*,]*\) {/gi, '').replace(/}(\s|\t)*$/gi, '');
             this._vertexSource = _WebCLGLUtils.WebCLGLUtils.parseSource(this._vertexSource, this.in_vertex_values, this._gl instanceof WebGL2RenderingContext);
 
+            for (var _key2 in this.in_vertex_values) {
+                var expectedMode = { 'float4_fromSampler': "SAMPLER",
+                    'float_fromSampler': "SAMPLER",
+                    'float4_fromAttr': "ATTRIBUTE",
+                    'float_fromAttr': "ATTRIBUTE",
+                    'float': "UNIFORM",
+                    'float4': "UNIFORM",
+                    'mat4': "UNIFORM" }[this.in_vertex_values[_key2].type];
+
+                this.in_vertex_values[_key2].varname = expectedMode === "ATTRIBUTE" ? _key2 : _key2.replace(/\[\d.*/, "");
+                this.in_vertex_values[_key2].varnameC = _key2;
+                this.in_vertex_values[_key2].expectedMode = expectedMode;
+            }
+
             this._vertexP_ready = true;
             if (this._fragmentP_ready === true) {
                 var ts = this.compileVertexFragmentSource();
@@ -2519,6 +2520,18 @@ var WebCLGLVertexFragmentProgram = exports.WebCLGLVertexFragmentProgram = functi
             this._fragmentSource = fragmentSource.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
             this._fragmentSource = this._fragmentSource.replace(/^\w* \w*\([\w\s\*,]*\) {/gi, '').replace(/}(\s|\t)*$/gi, '');
             this._fragmentSource = _WebCLGLUtils.WebCLGLUtils.parseSource(this._fragmentSource, this.in_fragment_values, this._gl instanceof WebGL2RenderingContext);
+
+            for (var _key3 in this.in_fragment_values) {
+                var expectedMode = { 'float4_fromSampler': "SAMPLER",
+                    'float_fromSampler': "SAMPLER",
+                    'float': "UNIFORM",
+                    'float4': "UNIFORM",
+                    'mat4': "UNIFORM" }[this.in_fragment_values[_key3].type];
+
+                this.in_fragment_values[_key3].varname = _key3.replace(/\[\d.*/, "");
+                this.in_fragment_values[_key3].varnameC = _key3;
+                this.in_fragment_values[_key3].expectedMode = expectedMode;
+            }
 
             this._fragmentP_ready = true;
             if (this._vertexP_ready === true) {

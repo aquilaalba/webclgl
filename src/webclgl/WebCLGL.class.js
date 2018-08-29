@@ -447,7 +447,7 @@ export class WebCLGL {
                     ? this._gl.drawBuffers(arrDBuff)
                     : this._arrExt["WEBGL_draw_buffers"].drawBuffersWEBGL(arrDBuff);
 
-                return this.checkFramebufferStatus();
+                return true;
             } else {
                 this._gl.bindFramebuffer(this._gl.FRAMEBUFFER, null);
                 return true;

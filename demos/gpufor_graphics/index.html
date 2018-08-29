@@ -9,7 +9,14 @@
 
         <script src="scene_utils.js"></script>
 
-        <script src="../../dist/webclgl/WebCLGL.min.js"></script>
+        <!--<script src="../../dist/webclgl/WebCLGL.min.js"></script>-->
+
+        <script src="../../dist/webclgl/WebCLGLBuffer.class.js"></script>
+        <script src="../../dist/webclgl/WebCLGLFor.class.js"></script>
+        <script src="../../dist/webclgl/WebCLGLKernel.class.js"></script>
+        <script src="../../dist/webclgl/WebCLGLVertexFragmentProgram.class.js"></script>
+        <script src="../../dist/webclgl/WebCLGLUtils.class.js"></script>
+        <script src="../../dist/webclgl/WebCLGL.class.js"></script>
     </head>
     <body style="background-color:#FFF" onload="tick()">
 
@@ -97,7 +104,7 @@
                                                 'vec3 currentPos = posXYZW[n].xyz;\n'+
                                                 pole_code()+
                                                 'vec3 newDir = currentDir*0.995;\n'+
-                                                'return [vec4(newDir,0.0), vec4(currentPos,1.0)+vec4(newDir,0.0)];\n'],
+                                                'return [vec4(newDir,1.0), vec4(currentPos,1.0)+vec4(newDir,0.0)];\n'],
                                     "drawMode": 4,
                                     "depthTest": true,
                                     "blend": false,

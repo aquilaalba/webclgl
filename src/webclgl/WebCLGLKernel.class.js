@@ -115,15 +115,7 @@ export class WebCLGLKernel {
             this.uBufferWidth = this._gl.getUniformLocation(this.kernel, "uBufferWidth");
 
             for(let key in this.in_values) {
-                let expectedMode = {'float4_fromSampler': "SAMPLER",
-                                    'float_fromSampler': "SAMPLER",
-                                    'float': "UNIFORM",
-                                    'float4': "UNIFORM",
-                                    'mat4': "UNIFORM"}[this.in_values[key].type];
-
-                WebCLGLUtils.checkArgNameInitialization(this.in_values, key);
-                this.in_values[key].location = [this._gl.getUniformLocation(this.kernel, key.replace(/\[\d.*/, ""))];
-                this.in_values[key].expectedMode = expectedMode;
+                this.in_values[key].location = [this._gl.getUniformLocation(this.kernel, this.in_values[key].varname)];
             }
 
             return "VERTEX PROGRAM\n"+sourceVertex+"\n FRAGMENT PROGRAM\n"+sourceFragment;
@@ -170,6 +162,18 @@ export class WebCLGLKernel {
         this._source = source.replace(/\r\n/gi, '').replace(/\r/gi, '').replace(/\n/gi, '');
         this._source = this._source.replace(/^\w* \w*\([\w\s\*,]*\) {/gi, '').replace(/}(\s|\t)*$/gi, '');
         this._source = WebCLGLUtils.parseSource(this._source, this.in_values, (this._gl instanceof WebGL2RenderingContext));
+
+        for(let key in this.in_values) {
+            let expectedMode = {'float4_fromSampler': "SAMPLER",
+                'float_fromSampler': "SAMPLER",
+                'float': "UNIFORM",
+                'float4': "UNIFORM",
+                'mat4': "UNIFORM"}[this.in_values[key].type];
+
+            this.in_values[key].varname = key.replace(/\[\d.*/, "");
+            this.in_values[key].varnameC = key;
+            this.in_values[key].expectedMode = expectedMode;
+        }
 
         let ts = compile();
 

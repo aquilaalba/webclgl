@@ -115,30 +115,12 @@ export class WebCLGLVertexFragmentProgram {
         this.uBufferWidth = this._gl.getUniformLocation(this.vertexFragmentProgram, "uBufferWidth");
 
         for(let key in this.in_vertex_values) {
-            let expectedMode = {'float4_fromSampler': "SAMPLER",
-                                'float_fromSampler': "SAMPLER",
-                                'float4_fromAttr': "ATTRIBUTE",
-                                'float_fromAttr': "ATTRIBUTE",
-                                'float': "UNIFORM",
-                                'float4': "UNIFORM",
-                                'mat4': "UNIFORM"}[this.in_vertex_values[key].type];
-
-            WebCLGLUtils.checkArgNameInitialization(this.in_vertex_values, key);
-            let loc = (expectedMode === "ATTRIBUTE") ? this._gl.getAttribLocation(this.vertexFragmentProgram, key) : this._gl.getUniformLocation(this.vertexFragmentProgram, key.replace(/\[\d.*/, ""));
+            let loc = (this.in_vertex_values[key].expectedMode === "ATTRIBUTE") ? this._gl.getAttribLocation(this.vertexFragmentProgram, this.in_vertex_values[key].varname) : this._gl.getUniformLocation(this.vertexFragmentProgram, this.in_vertex_values[key].varname);
             this.in_vertex_values[key].location = [loc];
-            this.in_vertex_values[key].expectedMode = expectedMode;
         }
 
         for(let key in this.in_fragment_values) {
-            let expectedMode = {'float4_fromSampler': "SAMPLER",
-                                'float_fromSampler': "SAMPLER",
-                                'float': "UNIFORM",
-                                'float4': "UNIFORM",
-                                'mat4': "UNIFORM"}[this.in_fragment_values[key].type];
-
-            WebCLGLUtils.checkArgNameInitialization(this.in_fragment_values, key);
-            this.in_fragment_values[key].location = [this._gl.getUniformLocation(this.vertexFragmentProgram, key.replace(/\[\d.*/, ""))];
-            this.in_fragment_values[key].expectedMode = expectedMode;
+            this.in_fragment_values[key].location = [this._gl.getUniformLocation(this.vertexFragmentProgram, this.in_fragment_values[key].varname)];
         }
 
 
@@ -200,6 +182,20 @@ export class WebCLGLVertexFragmentProgram {
         this._vertexSource = this._vertexSource.replace(/^\w* \w*\([\w\s\*,]*\) {/gi, '').replace(/}(\s|\t)*$/gi, '');
         this._vertexSource = WebCLGLUtils.parseSource(this._vertexSource, this.in_vertex_values, (this._gl instanceof WebGL2RenderingContext));
 
+        for(let key in this.in_vertex_values) {
+            let expectedMode = {'float4_fromSampler': "SAMPLER",
+                'float_fromSampler': "SAMPLER",
+                'float4_fromAttr': "ATTRIBUTE",
+                'float_fromAttr': "ATTRIBUTE",
+                'float': "UNIFORM",
+                'float4': "UNIFORM",
+                'mat4': "UNIFORM"}[this.in_vertex_values[key].type];
+
+            this.in_vertex_values[key].varname = (expectedMode === "ATTRIBUTE") ? key : key.replace(/\[\d.*/, "");
+            this.in_vertex_values[key].varnameC = key;
+            this.in_vertex_values[key].expectedMode = expectedMode;
+        }
+
         this._vertexP_ready = true;
         if(this._fragmentP_ready === true) {
             let ts = this.compileVertexFragmentSource();
@@ -260,6 +256,17 @@ export class WebCLGLVertexFragmentProgram {
         this._fragmentSource = this._fragmentSource.replace(/^\w* \w*\([\w\s\*,]*\) {/gi, '').replace(/}(\s|\t)*$/gi, '');
         this._fragmentSource = WebCLGLUtils.parseSource(this._fragmentSource, this.in_fragment_values, (this._gl instanceof WebGL2RenderingContext));
 
+        for(let key in this.in_fragment_values) {
+            let expectedMode = {'float4_fromSampler': "SAMPLER",
+                'float_fromSampler': "SAMPLER",
+                'float': "UNIFORM",
+                'float4': "UNIFORM",
+                'mat4': "UNIFORM"}[this.in_fragment_values[key].type];
+
+            this.in_fragment_values[key].varname = key.replace(/\[\d.*/, "");
+            this.in_fragment_values[key].varnameC = key;
+            this.in_fragment_values[key].expectedMode = expectedMode;
+        }
 
         this._fragmentP_ready = true;
         if(this._vertexP_ready === true) {
