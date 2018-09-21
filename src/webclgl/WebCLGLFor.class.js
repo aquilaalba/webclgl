@@ -287,6 +287,10 @@ export class WebCLGLFor {
         this._webCLGL.fillBuffer(this._argsValues[argName].textureDataTemp, clearColor, this._argsValues[argName].fBufferTemp);
     };
 
+    getArgBufferWidth(argName) {
+        return this._argsValues[argName].W;
+    };
+
     /**
      * Get all arguments existing in passed kernels & vertexFragmentPrograms
      * @returns {Object}

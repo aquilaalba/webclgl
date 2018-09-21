@@ -1133,6 +1133,11 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
             this._webCLGL.fillBuffer(this._argsValues[argName].textureData, clearColor, this._argsValues[argName].fBuffer), this._webCLGL.fillBuffer(this._argsValues[argName].textureDataTemp, clearColor, this._argsValues[argName].fBufferTemp);
         }
     }, {
+        key: "getArgBufferWidth",
+        value: function getArgBufferWidth(argName) {
+            return this._argsValues[argName].W;
+        }
+    }, {
         key: "getAllArgs",
 
 
