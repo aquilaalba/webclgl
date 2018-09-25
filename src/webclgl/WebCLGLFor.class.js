@@ -369,6 +369,7 @@ export class WebCLGLFor {
 
 
                         if(value !== undefined && value !== null) {
+                            console.log("[WebCLGLFor setArgBuffer] "+argument+")\n");
                             if(this._argsValues.hasOwnProperty(argument) === false ||
                                 (this._argsValues.hasOwnProperty(argument) === true && this._argsValues[argument] == null)) {
                                 this._argsValues[argument] = this._webCLGL.createBuffer(type, false, mode);
@@ -378,12 +379,15 @@ export class WebCLGLFor {
                             }
                             this._argsValues[argument].writeBuffer(value, false, overrideDimensions);
                         } else {
+                            console.log("[WebCLGLFor setArgNull] "+argument+")\n");
                             this._argsValues[argument] = null;
                         }
                     } else {
                         // UNIFORM
-                        if(value !== undefined && value !== null)
+                        if(value !== undefined && value !== null) {
+                            console.log("[WebCLGLFor setArgUniform] "+argument+" "+value+")\n");
                             this._argsValues[argument] = value;
+                        }
 
                         updateCalledArg = true;
                     }

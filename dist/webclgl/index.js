@@ -780,6 +780,9 @@ var WebCLGLBuffer = exports.WebCLGLBuffer = function () {
             if (this.mode === "SAMPLER") {
                 this.writeWebGLTextureBuffer(prepareArr(arr), flip);
             }
+
+            console.log("[WebCLGLBuffer writeBuffer] mode: " + this.mode + ", vl: " + this.length + ", size(" + this.W + " " + this.H + ")\n");
+
             if (this.mode === "SAMPLER" || this.mode === "ATTRIBUTE") {
                 this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this.vertexData0);
                 this._gl.bufferData(this._gl.ARRAY_BUFFER, arr instanceof Float32Array ? arr : new Float32Array(arr), this._gl.STATIC_DRAW);
@@ -1219,6 +1222,7 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
                             if (overrideType !== undefined && overrideType !== null) type = overrideType;
 
                             if (value !== undefined && value !== null) {
+                                console.log("[WebCLGLFor setArgBuffer] " + argument + ")\n");
                                 if (this._argsValues.hasOwnProperty(argument) === false || this._argsValues.hasOwnProperty(argument) === true && this._argsValues[argument] == null) {
                                     this._argsValues[argument] = this._webCLGL.createBuffer(type, false, mode);
                                     this._argsValues[argument].argument = argument;
@@ -1227,11 +1231,15 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
                                 }
                                 this._argsValues[argument].writeBuffer(value, false, overrideDimensions);
                             } else {
+                                console.log("[WebCLGLFor setArgNull] " + argument + ")\n");
                                 this._argsValues[argument] = null;
                             }
                         } else {
                             // UNIFORM
-                            if (value !== undefined && value !== null) this._argsValues[argument] = value;
+                            if (value !== undefined && value !== null) {
+                                console.log("[WebCLGLFor setArgUniform] " + argument + " " + value + ")\n");
+                                this._argsValues[argument] = value;
+                            }
 
                             updateCalledArg = true;
                         }

@@ -195,6 +195,9 @@ export class WebCLGLBuffer {
         if(this.mode === "SAMPLER") {
             this.writeWebGLTextureBuffer(prepareArr(arr), flip);
         }
+
+        console.log("[WebCLGLBuffer writeBuffer] mode: "+this.mode+", vl: "+this.length+", size("+this.W+" "+this.H+")\n");
+
         if(this.mode === "SAMPLER" || this.mode === "ATTRIBUTE") {
             this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this.vertexData0);
             this._gl.bufferData(this._gl.ARRAY_BUFFER, ((arr instanceof Float32Array) ? arr : new Float32Array(arr)), this._gl.STATIC_DRAW);
