@@ -1136,6 +1136,11 @@ var WebCLGLFor = exports.WebCLGLFor = function () {
             this._webCLGL.fillBuffer(this._argsValues[argName].textureData, clearColor, this._argsValues[argName].fBuffer), this._webCLGL.fillBuffer(this._argsValues[argName].textureDataTemp, clearColor, this._argsValues[argName].fBufferTemp);
         }
     }, {
+        key: "argIsNull",
+        value: function argIsNull(argName) {
+            return this._argsValues[argName] === undefined || this._argsValues[argName] === null;
+        }
+    }, {
         key: "getArgBufferWidth",
         value: function getArgBufferWidth(argName) {
             return this._argsValues[argName].W;

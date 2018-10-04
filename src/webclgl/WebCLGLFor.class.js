@@ -287,6 +287,10 @@ export class WebCLGLFor {
         this._webCLGL.fillBuffer(this._argsValues[argName].textureDataTemp, clearColor, this._argsValues[argName].fBufferTemp);
     };
 
+    argIsNull(argName) {
+        return (this._argsValues[argName] === undefined || this._argsValues[argName] === null);
+    }
+
     getArgBufferWidth(argName) {
         return this._argsValues[argName].W;
     };
