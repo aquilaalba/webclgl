@@ -6,6 +6,8 @@
 export class WebCLGLUtils {
     constructor() {
 
+        // TODO NULL handling
+        this._maxDrawBuffers = gl.getParameter(gl.MAX_DRAW_BUFFERS);
     }
 
     /**
@@ -356,9 +358,9 @@ export class WebCLGLUtils {
      * lines_drawBuffersInit
      * @param {int} maxDrawBuffers
      */
-    static lines_drawBuffersInit(maxDrawBuffers) {
+    static lines_drawBuffersInit() {
         let str = '';
-        for(let n= 0, fn=maxDrawBuffers; n < fn; n++) {
+        for(let n= 0, fn=this._maxDrawBuffers; n < fn; n++) {
             str += ''+
             'float out'+n+'_float = -999.99989;\n'+
             'vec4 out'+n+'_float4;\n';
@@ -366,9 +368,9 @@ export class WebCLGLUtils {
         return str;
     };
 
-    static lines_drawBuffersWriteInit_GL2(maxDrawBuffers) {
+    static lines_drawBuffersWriteInit_GL2() {
         let str = '';
-        for(let n= 0, fn=maxDrawBuffers; n < fn; n++) {
+        for(let n= 0, fn=this._maxDrawBuffers; n < fn; n++) {
             str += ''+
             'layout(location = '+n+') out vec4 outCol'+n+';\n';
         }
@@ -379,9 +381,9 @@ export class WebCLGLUtils {
      * lines_drawBuffersWrite
      * @param {int} maxDrawBuffers
      */
-    static lines_drawBuffersWrite_GL2(maxDrawBuffers) {
+    static lines_drawBuffersWrite_GL2() {
         let str = '';
-        for(let n= 0, fn=maxDrawBuffers; n < fn; n++) {
+        for(let n= 0, fn=this._maxDrawBuffers; n < fn; n++) {
             str += ''+
                 'if(out'+n+'_float != -999.99989) outCol'+n+' = vec4(out'+n+'_float,0.0,0.0,1.0);\n'+
                 ' else outCol'+n+' = out'+n+'_float4;\n';
@@ -393,9 +395,9 @@ export class WebCLGLUtils {
      * lines_drawBuffersWrite
      * @param {int} maxDrawBuffers
      */
-    static lines_drawBuffersWrite(maxDrawBuffers) {
+    static lines_drawBuffersWrite() {
         let str = '';
-        for(let n= 0, fn=maxDrawBuffers; n < fn; n++) {
+        for(let n= 0, fn=this._maxDrawBuffers; n < fn; n++) {
             str += ''+
             'if(out'+n+'_float != -999.99989) gl_FragData['+n+'] = vec4(out'+n+'_float,0.0,0.0,1.0);\n'+
             ' else gl_FragData['+n+'] = out'+n+'_float4;\n';

@@ -98,13 +98,13 @@ export class WebCLGLKernel {
 
                 this._head+
 
-                ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWriteInit_GL2(8) : "")+
+                ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWriteInit_GL2() : "")+
                 'void main(void) {\n'+
-                    WebCLGLUtils.lines_drawBuffersInit(8)+
+                    WebCLGLUtils.lines_drawBuffersInit()+
 
                     this._source+
 
-                ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWrite_GL2(8) : WebCLGLUtils.lines_drawBuffersWrite(8))+
+                ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWrite_GL2() : WebCLGLUtils.lines_drawBuffersWrite())+
                 '}\n';
 
             this.kernel = this._gl.createProgram();
