@@ -80,6 +80,7 @@ export class WebCLGLKernel {
                     'gl_Position = vec4(aVertexPosition, 1.0);\n'+
                     'global_id = aVertexPosition.xy*0.5+0.5;\n'+
                 '}\n';
+            let maxDrawBuffers = this._gl.getParameter(this._gl.MAX_DRAW_BUFFERS);
             let sourceFragment = this.version+
                 this.extDrawBuff+
                 this._precision+
@@ -98,13 +99,13 @@ export class WebCLGLKernel {
 
                 this._head+
 
-                ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWriteInit_GL2(8) : "")+
+                ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWriteInit_GL2(maxDrawBuffers) : "")+
                 'void main(void) {\n'+
-                    WebCLGLUtils.lines_drawBuffersInit(8)+
+                    WebCLGLUtils.lines_drawBuffersInit(maxDrawBuffers)+
 
                     this._source+
 
-                ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWrite_GL2(8) : WebCLGLUtils.lines_drawBuffersWrite(8))+
+                ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWrite_GL2(maxDrawBuffers) : WebCLGLUtils.lines_drawBuffersWrite(maxDrawBuffers))+
                 '}\n';
 
             this.kernel = this._gl.createProgram();
