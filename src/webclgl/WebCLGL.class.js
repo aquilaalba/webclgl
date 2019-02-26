@@ -69,7 +69,7 @@ export class WebCLGL {
             ? ""
             : " #extension GL_EXT_draw_buffers : require\n";
 
-        this._maxDrawBuffers = 8;
+        this._maxDrawBuffers = this._gl.getParameter(this._gl.MAX_DRAW_BUFFERS);
         this._currentTextureUnit = 0;
         this._bufferWidth = 0;
 

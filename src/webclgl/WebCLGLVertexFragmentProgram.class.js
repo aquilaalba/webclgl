@@ -88,6 +88,7 @@ export class WebCLGLVertexFragmentProgram {
                 this._vertexSource+
 
             '}\n';
+        let maxDrawBuffers = this._gl.getParameter(this._gl.MAX_DRAW_BUFFERS);
         let sourceFragment = this.version+
             this.extDrawBuff+
             this._precision+
@@ -99,13 +100,13 @@ export class WebCLGLVertexFragmentProgram {
 
             this._fragmentHead+
 
-            ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWriteInit_GL2(8) : "")+
+            ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWriteInit_GL2(maxDrawBuffers) : "")+
             'void main(void) {\n'+
-                WebCLGLUtils.lines_drawBuffersInit(8)+
+                WebCLGLUtils.lines_drawBuffersInit(maxDrawBuffers)+
 
                 this._fragmentSource+
 
-            ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWrite_GL2(8) : WebCLGLUtils.lines_drawBuffersWrite(8))+
+            ((this._gl instanceof WebGL2RenderingContext) ? WebCLGLUtils.lines_drawBuffersWrite_GL2(maxDrawBuffers) : WebCLGLUtils.lines_drawBuffersWrite(maxDrawBuffers))+
             '}\n';
 
         this.vertexFragmentProgram = this._gl.createProgram();
