@@ -1,10 +1,10 @@
 {
   "name": "webclgl",
-  "version": "4.1.27",
+  "version": "4.1.26",
   "description": "GPGPU Javascript library",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aquilaalba/webclgl.git"
+    "url": "https://github.com/stormcolor/webclgl.git"
   },
   "dependencies": {},
   "devDependencies": {
@@ -18,8 +18,8 @@
   },
   "main": "dist/webclgl/WebCLGL.min.js",
   "scripts": {
-    "build:watch": "node build.js -b -s",
-    "build:deploy": "node build.js -db && node build.js -d=dist/webclgl/WebCLGL.min.js"
+    "build_&_watch": "node build.js -b -s",
+    "build_&_deploy": "node build.js -db && node build.js -d=dist/webclgl/WebCLGL.min.js"
   },
   "license": "MIT"
 }

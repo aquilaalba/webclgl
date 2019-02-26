@@ -1,4 +1,4 @@
-(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+(function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -76,9 +76,7 @@ var WebCLGL = exports.WebCLGL = function () {
 
         this.extDrawBuff = this._gl instanceof WebGL2RenderingContext ? "" : " #extension GL_EXT_draw_buffers : require\n";
 
-        // TODO NULL handling
-        console.log("MAX_DRAW_BUFFERS " + this._gl.getParameter(this._gl.MAX_DRAW_BUFFERS));
-        this._maxDrawBuffers = this._gl.getParameter(this._gl.MAX_DRAW_BUFFERS);
+        this._maxDrawBuffers = 8;
         this._currentTextureUnit = 0;
         this._bufferWidth = 0;
 
@@ -1783,7 +1781,7 @@ var WebCLGLKernel = exports.WebCLGLKernel = function () {
 
             var compile = function () {
                 var sourceVertex = this.version + this._precision + attrStr + ' vec3 aVertexPosition;\n' + varyingOutStr + ' vec2 global_id;\n' + 'void main(void) {\n' + 'gl_Position = vec4(aVertexPosition, 1.0);\n' + 'global_id = aVertexPosition.xy*0.5+0.5;\n' + '}\n';
-                var sourceFragment = this.version + this.extDrawBuff + this._precision + _WebCLGLUtils.WebCLGLUtils.lines_fragment_attrs(this.in_values) + varyingInStr + ' vec2 global_id;\n' + 'uniform float uBufferWidth;' + 'vec2 get_global_id() {\n' + 'return global_id;\n' + '}\n' + _WebCLGLUtils.WebCLGLUtils.get_global_id3_GLSLFunctionString() + _WebCLGLUtils.WebCLGLUtils.get_global_id2_GLSLFunctionString() + this._head + (this._gl instanceof WebGL2RenderingContext ? _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWriteInit_GL2() : "") + 'void main(void) {\n' + _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersInit() + this._source + (this._gl instanceof WebGL2RenderingContext ? _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWrite_GL2() : _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWrite()) + '}\n';
+                var sourceFragment = this.version + this.extDrawBuff + this._precision + _WebCLGLUtils.WebCLGLUtils.lines_fragment_attrs(this.in_values) + varyingInStr + ' vec2 global_id;\n' + 'uniform float uBufferWidth;' + 'vec2 get_global_id() {\n' + 'return global_id;\n' + '}\n' + _WebCLGLUtils.WebCLGLUtils.get_global_id3_GLSLFunctionString() + _WebCLGLUtils.WebCLGLUtils.get_global_id2_GLSLFunctionString() + this._head + (this._gl instanceof WebGL2RenderingContext ? _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWriteInit_GL2(8) : "") + 'void main(void) {\n' + _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersInit(8) + this._source + (this._gl instanceof WebGL2RenderingContext ? _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWrite_GL2(8) : _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWrite(8)) + '}\n';
 
                 this.kernel = this._gl.createProgram();
                 var result = new _WebCLGLUtils.WebCLGLUtils().createShader(this._gl, "WEBCLGL", sourceVertex, sourceFragment, this.kernel);
@@ -1876,9 +1874,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var WebCLGLUtils = exports.WebCLGLUtils = function () {
     function WebCLGLUtils() {
         _classCallCheck(this, WebCLGLUtils);
-
-        // TODO NULL handling
-        this._maxDrawBuffers = gl.getParameter(gl.MAX_DRAW_BUFFERS);
     }
 
     /**
@@ -2243,18 +2238,18 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
          * lines_drawBuffersInit
          * @param {int} maxDrawBuffers
          */
-        value: function lines_drawBuffersInit() {
+        value: function lines_drawBuffersInit(maxDrawBuffers) {
             var str = '';
-            for (var n = 0, fn = this._maxDrawBuffers; n < fn; n++) {
+            for (var n = 0, fn = maxDrawBuffers; n < fn; n++) {
                 str += '' + 'float out' + n + '_float = -999.99989;\n' + 'vec4 out' + n + '_float4;\n';
             }
             return str;
         }
     }, {
         key: "lines_drawBuffersWriteInit_GL2",
-        value: function lines_drawBuffersWriteInit_GL2() {
+        value: function lines_drawBuffersWriteInit_GL2(maxDrawBuffers) {
             var str = '';
-            for (var n = 0, fn = this._maxDrawBuffers; n < fn; n++) {
+            for (var n = 0, fn = maxDrawBuffers; n < fn; n++) {
                 str += '' + 'layout(location = ' + n + ') out vec4 outCol' + n + ';\n';
             }
             return str;
@@ -2267,9 +2262,9 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
          * lines_drawBuffersWrite
          * @param {int} maxDrawBuffers
          */
-        value: function lines_drawBuffersWrite_GL2() {
+        value: function lines_drawBuffersWrite_GL2(maxDrawBuffers) {
             var str = '';
-            for (var n = 0, fn = this._maxDrawBuffers; n < fn; n++) {
+            for (var n = 0, fn = maxDrawBuffers; n < fn; n++) {
                 str += '' + 'if(out' + n + '_float != -999.99989) outCol' + n + ' = vec4(out' + n + '_float,0.0,0.0,1.0);\n' + ' else outCol' + n + ' = out' + n + '_float4;\n';
             }
             return str;
@@ -2282,9 +2277,9 @@ var WebCLGLUtils = exports.WebCLGLUtils = function () {
          * lines_drawBuffersWrite
          * @param {int} maxDrawBuffers
          */
-        value: function lines_drawBuffersWrite() {
+        value: function lines_drawBuffersWrite(maxDrawBuffers) {
             var str = '';
-            for (var n = 0, fn = this._maxDrawBuffers; n < fn; n++) {
+            for (var n = 0, fn = maxDrawBuffers; n < fn; n++) {
                 str += '' + 'if(out' + n + '_float != -999.99989) gl_FragData[' + n + '] = vec4(out' + n + '_float,0.0,0.0,1.0);\n' + ' else gl_FragData[' + n + '] = out' + n + '_float4;\n';
             }
             return str;
@@ -2413,7 +2408,7 @@ var WebCLGLVertexFragmentProgram = exports.WebCLGLVertexFragmentProgram = functi
         key: 'compileVertexFragmentSource',
         value: function compileVertexFragmentSource() {
             var sourceVertex = this.version + this._precision + 'uniform float uOffset;\n' + 'uniform float uBufferWidth;' + _WebCLGLUtils.WebCLGLUtils.lines_vertex_attrs(this.in_vertex_values, this._gl instanceof WebGL2RenderingContext) + _WebCLGLUtils.WebCLGLUtils.unpackGLSLFunctionString() + _WebCLGLUtils.WebCLGLUtils.get_global_id3_GLSLFunctionString() + _WebCLGLUtils.WebCLGLUtils.get_global_id2_GLSLFunctionString() + this._vertexHead + 'void main(void) {\n' + this._vertexSource + '}\n';
-            var sourceFragment = this.version + this.extDrawBuff + this._precision + _WebCLGLUtils.WebCLGLUtils.lines_fragment_attrs(this.in_fragment_values) + _WebCLGLUtils.WebCLGLUtils.get_global_id3_GLSLFunctionString() + _WebCLGLUtils.WebCLGLUtils.get_global_id2_GLSLFunctionString() + this._fragmentHead + (this._gl instanceof WebGL2RenderingContext ? _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWriteInit_GL2() : "") + 'void main(void) {\n' + _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersInit() + this._fragmentSource + (this._gl instanceof WebGL2RenderingContext ? _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWrite_GL2() : _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWrite()) + '}\n';
+            var sourceFragment = this.version + this.extDrawBuff + this._precision + _WebCLGLUtils.WebCLGLUtils.lines_fragment_attrs(this.in_fragment_values) + _WebCLGLUtils.WebCLGLUtils.get_global_id3_GLSLFunctionString() + _WebCLGLUtils.WebCLGLUtils.get_global_id2_GLSLFunctionString() + this._fragmentHead + (this._gl instanceof WebGL2RenderingContext ? _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWriteInit_GL2(8) : "") + 'void main(void) {\n' + _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersInit(8) + this._fragmentSource + (this._gl instanceof WebGL2RenderingContext ? _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWrite_GL2(8) : _WebCLGLUtils.WebCLGLUtils.lines_drawBuffersWrite(8)) + '}\n';
 
             this.vertexFragmentProgram = this._gl.createProgram();
             var result = new _WebCLGLUtils.WebCLGLUtils().createShader(this._gl, "WEBCLGL VERTEX FRAGMENT PROGRAM", sourceVertex, sourceFragment, this.vertexFragmentProgram);
